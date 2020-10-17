@@ -15,6 +15,12 @@
     a quicker way to implement useful design patterns.
   </description>
 
+  <properties>
+    <sonar.projectKey>justDoji_coding-utils</sonar.projectKey>
+    <sonar.organization>justdoji-github</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+  </properties>
+
   <organization>
     <name>SD Development</name>
     <url>http://www.sddevelopment.be</url>
@@ -75,8 +81,8 @@
         <configuration>
           <show>private</show>
           <nohelp>true</nohelp>
-          <reportOutputDirectory>${project.basedir}/documentation</reportOutputDirectory>
-          <destDir>javadoc</destDir>
+          <reportOutputDirectory>docs</reportOutputDirectory>
+          <destDir>.</destDir>
         </configuration>
       </plugin>
       <plugin>
@@ -125,7 +131,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.2.0</version>
         <configuration>
-          <reportOutputDirectory>${project.basedir}/documentation</reportOutputDirectory>
+          <reportOutputDirectory>docs</reportOutputDirectory>
           <destDir>javadoc</destDir>
         </configuration>
         <reportSets>
