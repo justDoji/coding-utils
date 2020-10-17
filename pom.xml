@@ -113,6 +113,8 @@
           <inceptionYear>2020</inceptionYear>
           <emptyLineAfterHeader>true</emptyLineAfterHeader>
           <writeVersions>true</writeVersions>
+          <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
+          <licenseName>eupl_v1_1</licenseName>
         </configuration>
         <executions>
           <execution>

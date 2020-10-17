@@ -1,5 +1,3 @@
-package be.sddevelopment.utils.validation;
-
 /*-
  * #%L
  * code-utils
@@ -22,6 +20,8 @@ package be.sddevelopment.utils.validation;
  * limitations under the Licence.
  * #L%
  */
+
+package be.sddevelopment.utils.validation;
 
 import lombok.Getter;
 
