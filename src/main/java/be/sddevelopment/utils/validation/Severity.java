@@ -26,10 +26,15 @@ package be.sddevelopment.utils.validation;
 import lombok.Getter;
 
 /**
- * <p>Severity class.</p>
+ * <p>
+ *   Enumeration indicating the severity of a {@link be.sddevelopment.utils.validation.Failure}.
+ *   A severity can be either blocking or non-blocking.
+ * </p>
  *
- * @author doji
- * @version $Id: $Id
+ * @author <a href="https://github.com/justDoji" target="_blank">Stijn Dejongh</a>
+ * @version 1.0.0
+ * @since 1.0.0
+ * @created 2020/10/17
  */
 @SuppressWarnings("ALL")
 public enum Severity {

@@ -28,10 +28,12 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * <p>Fallible class.</p>
+ * <p>Summary.</p>
  *
- * @author doji
- * @version $Id: $Id
+ * @author <a href="https://github.com/justDoji" target="_blank">Stijn Dejongh</a>
+ * @version 1.0.0
+ * @since 1.0.0
+ * @created 2020/10/17
  */
 public class Fallible<T> {
 
@@ -43,11 +45,14 @@ public class Fallible<T> {
   }
 
   /**
-   * <p>of.</p>
+   * <p>
+   *   Create a {@link be.sddevelopment.utils.validation.Fallible} for an {@link Object} of type S.
+   * </p>
    *
-   * @param toValidate a S object.
-   * @param <S> a S object.
-   * @return a {@link be.sddevelopment.utils.validation.Fallible} object.
+   *
+   * @param toValidate the data object to execute conditional operations on.
+   * @param <S>        class of the data object, will be inferred at creation time.
+   * @return a {@link be.sddevelopment.utils.validation.Fallible} for a data object of class S.
    */
   public static <S> Fallible<S> of(S toValidate) {
     return new Fallible<S>(toValidate);
@@ -56,8 +61,8 @@ public class Fallible<T> {
   /**
    * <p>ensure.</p>
    *
-   * @param toValidate a {@link java.util.function.Function} object.
-   * @return a {@link be.sddevelopment.utils.validation.Fallible} object.
+   * @param toValidate a {@link java.util.function.Function} object taking an object of type T as an input, and returning a {@link List} of {@link Failure} objects.
+   * @return a {@link be.sddevelopment.utils.validation.Fallible} object for further chaining.
    */
   public Fallible<T> ensure(Function<T, List<Failure>> toValidate) {
     this.failures.addAll(toValidate.apply(data));
@@ -65,9 +70,9 @@ public class Fallible<T> {
   }
 
   /**
-   * <p>failures.</p>
+   * <p>Get the {@link Failure} objects resulting from applying all required rules to the data object.</p>
    *
-   * @return a {@link java.util.List} object.
+   * @return a {@link java.util.List} containing {@link Failure} objects.
    */
   public List<Failure> failures() {
     return new ArrayList<>(failures);

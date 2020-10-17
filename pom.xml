@@ -95,6 +95,7 @@
           <organizationName>${project.organization.name}</organizationName>
           <inceptionYear>2020</inceptionYear>
           <emptyLineAfterHeader>true</emptyLineAfterHeader>
+          <writeVersions>true</writeVersions>
         </configuration>
         <executions>
           <execution>

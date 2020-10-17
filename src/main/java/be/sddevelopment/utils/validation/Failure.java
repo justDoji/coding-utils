@@ -30,18 +30,24 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 /**
- * <p>Failure class.</p>
+ * <p>
+ *   <a href="https://deviq.com/value-object/" target="_blank">Value Object</a> used to return issues found when evaluating {@link be.sddevelopment.utils.validation.Fallible} assertions.
+ *   Depening on the {@link be.sddevelopment.utils.validation.Severity} of this object, the author can choose to take the appropriate
+ *   action (e.g. recover, hard fail, skip execution, ...).
+ * </p>
  *
- * @author doji
- * @version $Id: $Id
+ * @author <a href="https://github.com/justDoji" target="_blank">Stijn Dejongh</a>
+ * @version 1.0.0
+ * @since 1.0.0
+ * @created 2020/10/17
  */
 @Getter
 @Builder(builderMethodName = "failure", builderClassName = "FailureBuilder")
 @EqualsAndHashCode
 public class Failure {
 
-  private Severity severity;
-  private String errorCode;
-  private String reason;
+  private final Severity severity;
+  private final String errorCode;
+  private final String reason;
 
 }
