@@ -50,4 +50,8 @@ public enum Severity {
     this.blocking = blocking;
   }
 
+  public static Severity defaultVal() {
+    return WARNING;
+  }
+
 }

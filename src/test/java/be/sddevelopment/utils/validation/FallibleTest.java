@@ -7,12 +7,12 @@
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
  * EUPL (the "Licence");
- * 
+ *
  * You may not use this work except in compliance with the Licence.
  * You may obtain a copy of the Licence at:
- * 
+ *
  * http://ec.europa.eu/idabc/eupl5
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" basis,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,45 +23,219 @@
 
 package be.sddevelopment.utils.validation;
 
-import static be.sddevelopment.utils.validation.Failure.failure;
-import static java.lang.String.format;
+import static be.sddevelopment.utils.validation.ErrorTemplate.template;
+import static be.sddevelopment.utils.validation.FallibleTest.ConsumerServiceStub.consumerStub;
+import static java.util.Collections.singletonList;
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Collections;
+import be.sddevelopment.utils.testing.ReplaceUnderscoredCamelCasing;
 import java.util.List;
-import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+@DisplayNameGeneration(ReplaceUnderscoredCamelCasing.class)
+@DisplayName("Tests for the Fallible class")
 class FallibleTest {
 
-  public static final List<String> NAUGHTY_WORDS = Collections.singletonList("string");
-  public static final String NAUGHTY_ERROR = "Your words %s, seems to contain a naughty word [%s]";
+  public final List<String> NAUGHTY_WORDS = singletonList("string");
+  public final String NAUGHTY_ERROR = "Your word seems to contain a naughty bit [%s]";
 
-  @Test
-  void aFallible_returnsAListOfErrors_ifAConditionIsNotMet() {
-    List<Failure> errors = Fallible.of("StringToCheck")
-        .ensure(this::mayNotContainNaughtyWords)
-        .failures();
+  @Nested
+  @DisplayName("Fallible basic ensure functionality")
+  class FallibleEnsureTest {
 
-    assertThat(errors).hasSize(1);
+
+    @Test
+    void when1ContitionIsNotMet_thenTheErrorListContains1Failure() {
+      List<Failure> errors = Fallible.of("StringToCheck")
+          .ensure(FallibleTest.this::mayNotContainNaughtyWords)
+          .failures();
+
+      assertThat(errors).hasSize(1);
+    }
+
+    @Test
+    void whenAllConditionsAreMet_thenReturnedFailures_mustBeEmpty() {
+      List<Failure> failures = Fallible.of("This text contains no naught words")
+          .ensure(FallibleTest.this::mayNotContainNaughtyWords)
+          .failures();
+
+      assertThat(failures).isEmpty();
+    }
+
+    @Test
+    void whenAllConditionsAreMet_thenIsValid_returnsTrue() {
+      assertThat(
+          Fallible.of("This text contains no naughty words")
+              .ensure(FallibleTest.this::mayNotContainNaughtyWords)
+              .isValid()
+      ).isTrue();
+    }
   }
 
-  @Test
-  void whenAllConditionsAreMet_theReturnedFailures_mustBeEmpty() {
-    List<Failure> failures = Fallible.of("This text contains no naught words")
-        .ensure(this::mayNotContainNaughtyWords)
-        .failures();
+  @Nested
+  @DisplayName("Ensures takes the failure builder into account")
+  class FallibleFailureBuilderTests {
 
-    assertThat(failures).isEmpty();
+    @Test
+    void givenAConditionWithAnErrorCode_whenContitionIsNotMet_thenTheFailureContainsTheCode() {
+      List<Failure> errors = Fallible.of("StringToCheck")
+          .ensure(FallibleTest.this::mayNotContainNaughtyWords,
+              d -> b -> b.errorCode("NAUGHTY_ERROR"))
+          .ensure(StringUtils::isNotBlank, d -> b -> b.errorCode("MUST_BE_FILLED_IN"))
+          .failures();
+
+      assertThat(errors).hasSize(1);
+      assertThat(errors).extracting(Failure::getErrorCode).containsExactly("NAUGHTY_ERROR");
+    }
+
+    @Test
+    void givenMultipleConditionsWithErrorCodes_whenContitionsAreNotMet_thenTheFailureContainsAllCodes() {
+      List<Failure> errors = Fallible.of("")
+          .ensure(FallibleTest.this::mayNotContainNaughtyWords,
+              d -> b -> b.errorCode("NAUGHTY_ERROR"))
+          .ensure(StringUtils::isNotBlank, d -> b -> b.errorCode("MUST_BE_FILLED_IN"))
+          .ensure(StringUtils::isMixedCase, d -> b -> b.errorCode("MUST_BE_MIXED_CASE"))
+          .failures();
+
+      assertThat(errors).extracting(Failure::getErrorCode)
+          .containsExactlyInAnyOrder("MUST_BE_MIXED_CASE", "MUST_BE_FILLED_IN");
+    }
+
+    @Test
+    void givenConditionWithSeverity_whenContitionsAreNotMet_thenTheFailureHasSetSeverity() {
+      List<Failure> errors = Fallible.of("")
+          .ensure(
+              StringUtils::isNotBlank,
+              d -> b -> b.severity(Severity.ERROR)
+          )
+          .failures();
+
+      assertThat(errors).extracting(Failure::getSeverity)
+          .containsExactlyInAnyOrder(Severity.ERROR);
+    }
+
+    @Test
+    void givenConditionsWithoutExplicitSeverity_whenContitionsAreNotMet_thenTheFailureHasDefaultSeverity() {
+      List<Failure> errors = Fallible.of("")
+          .ensure(StringUtils::isNotBlank)
+          .failures();
+
+      assertThat(errors).extracting(Failure::getSeverity)
+          .containsExactlyInAnyOrder(Severity.defaultVal());
+    }
   }
 
-  private List<Failure> mayNotContainNaughtyWords(String toCheck) {
-    return NAUGHTY_WORDS.stream()
-        .filter(w -> containsIgnoreCase(toCheck, w))
-        .map(w -> format(NAUGHTY_ERROR, toCheck, w))
-        .map(e -> failure().errorCode("BAD_WORD").reason(e).severity(Severity.ERROR).build())
-        .collect(Collectors.toList());
+  Boolean mayNotContainNaughtyWords(String toCheck) {
+    return NAUGHTY_WORDS.stream().noneMatch(w -> containsIgnoreCase(toCheck, w));
+  }
+
+  @Nested
+  @DisplayName("Fallible conditional menthod executions")
+  class FallibleExecutionsTests {
+
+    @Test
+    void givenASuccesActionIsDefined_whenAllConditionsAreMet_thenTheActionIsExecuted() {
+      ConsumerServiceStub<String> stringConsumer = consumerStub();
+
+      Fallible.of("word123")
+          .ensure(StringUtils::isNotBlank)
+          .ifValid(stringConsumer::doSomething);
+
+      assertThat(stringConsumer.isCalled()).isTrue();
+    }
+
+    @Test
+    void givenASuccesActionIsDefined_whenConditionsAreNotMet_thenTheActionIsSkipped() {
+      ConsumerServiceStub<String> stringConsumer = consumerStub();
+
+      Fallible.of("word123")
+          .ensure(StringUtils::isBlank)
+          .ifValid(stringConsumer::doSomething);
+
+      assertThat(stringConsumer.isCalled()).isFalse();
+    }
+
+    @Test
+    void givenASuccesActionIsDefined_AndMultipleConditionsExists_whenConditionsAreNotMet_thenTheActionIsSkipped() {
+      ConsumerServiceStub<String> stringConsumer = consumerStub();
+
+      Fallible.of("word123")
+          .ensure(StringUtils::isNotBlank)
+          .ensure(StringUtils::isMixedCase)
+          .ifValid(stringConsumer::doSomething);
+
+      assertThat(stringConsumer.isCalled()).isFalse();
+    }
+
+    @Test
+    void givenASuccesActionIsDefined_AndMultipleConditionsExists_whenConditionsAreMet_thenTheActionIsExecutedOnce() {
+      ConsumerServiceStub<String> stringConsumer = consumerStub();
+
+      Fallible.of("word123")
+          .ensure(StringUtils::isNotBlank)
+          .ensure(StringUtils::isAlphanumeric)
+          .ifValid(stringConsumer::doSomething);
+
+      assertThat(stringConsumer.callAmount()).isEqualTo(1);
+    }
+  }
+
+  @Nested
+  @DisplayName("Fallible accepts an ErrorTemplate to generate reason messages")
+  class FallibleWorksWithErrorTemplates {
+
+    @Test
+    void givenATemplate_whenAFailureOccurs_thenAFailureExistsWithADerivativeMessage() {
+
+      List<Failure> failures = Fallible.of("")
+          .errorTemplate(template(s -> "The string [" + s + "] does not match rule: {%s}"))
+          .ensure(StringUtils::isNotBlank, s -> b -> b.reason("Input can not be blank"))
+          .failures();
+
+      assertThat(failures).hasSize(1);
+      assertThat(failures).extracting(Failure::getReason)
+          .contains("The string [] does not match rule: {Input can not be blank}");
+    }
+
+    @Test
+    void givenATemplateWithoutDataReference_whenAFailureOccurs_thenAFailureExistsWithADerivativeMessage() {
+
+      List<Failure> failures = Fallible.of("")
+          .errorTemplate(template(s -> "The string [" + s + "] does not match rule: {%s}"))
+          .ensure(StringUtils::isNotBlank, s -> b -> b.reason("Input can not be blank"))
+          .failures();
+
+      assertThat(failures).hasSize(1);
+      assertThat(failures).extracting(Failure::getReason)
+          .contains("The string [] does not match rule: {Input can not be blank}");
+    }
+
+  }
+
+  static class ConsumerServiceStub<T> {
+
+    private int amountOfCalls = 0;
+
+    public static <S> ConsumerServiceStub<S> consumerStub() {
+      return new ConsumerServiceStub<>();
+    }
+
+    public void doSomething(T input) {
+      this.amountOfCalls++;
+    }
+
+    public boolean isCalled() {
+      return amountOfCalls > 0;
+    }
+
+    public int callAmount() {
+      return this.amountOfCalls;
+    }
   }
 
 }
