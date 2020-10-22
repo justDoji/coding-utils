@@ -24,7 +24,7 @@
 /**
  * <p>Description of file/class</p>
  *
- * @author <a href="https://github.com/justDoji" target="_blank">Stijn Dejongh</a>
+ * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
  * @created 22.10.20, Thursday
  **/
 package be.sddevelopment.utils.testing;

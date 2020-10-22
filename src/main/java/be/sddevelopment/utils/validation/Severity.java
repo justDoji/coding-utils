@@ -31,7 +31,7 @@ import lombok.Getter;
  *   A severity can be either blocking or non-blocking.
  * </p>
  *
- * @author <a href="https://github.com/justDoji" target="_blank">Stijn Dejongh</a>
+ * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
  * @version 1.0.0
  * @since 1.0.0
  * @created 2020/10/17

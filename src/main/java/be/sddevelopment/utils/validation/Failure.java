@@ -32,11 +32,11 @@ import lombok.Getter;
  * <p>
  * <a href="https://deviq.com/value-object/" target="_blank">Value Object</a> used to return issues
  * found when evaluating {@link be.sddevelopment.utils.validation.Fallible} assertions. <br />
- * Depending on the {@link be.sddevelopment.utils.validation.Severity} of this object, the author can choose to
- * take the appropriate action (e.g. recover, hard fail, skip execution, ...).
+ * Depending on the {@link be.sddevelopment.utils.validation.Severity} of this object, the author
+ * can choose to take the appropriate action (e.g. recover, hard fail, skip execution, ...).
  * </p>
  *
- * @author <a href="https://github.com/justDoji" target="_blank">Stijn Dejongh</a>
+ * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
  * @version 1.0.0
  * @created 2020/10/17
  * @since 1.0.0
