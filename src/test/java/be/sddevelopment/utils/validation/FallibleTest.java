@@ -32,6 +32,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import be.sddevelopment.utils.testing.ReplaceUnderscoredCamelCasing;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
+import org.assertj.core.api.Condition;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Nested;
@@ -47,7 +49,6 @@ class FallibleTest {
   @Nested
   @DisplayName("Fallible basic ensure functionality")
   class FallibleEnsureTest {
-
 
     @Test
     void when1ContitionIsNotMet_thenTheErrorListContains1Failure() {
@@ -135,12 +136,84 @@ class FallibleTest {
   }
 
   @Nested
-  @DisplayName("Fallible conditional menthod executions")
-  class FallibleExecutionsTests {
+  @DisplayName("Fallible conditional menthod executions when failure")
+  class FallibleFailedConditionalTests {
+
+    private ConsumerServiceStub<String> stringConsumer;
+
+    public final Condition<ConsumerServiceStub<String>> NOT_YET_CALLED = new Condition<>(
+        c -> !c.isCalled(),
+        "Precondition: Service is not yet called"
+    );
+
+    @BeforeEach
+    void init() {
+      stringConsumer = consumerStub();
+    }
+
+    @Test
+    void givenAFailureActionIsDefined_whenNoConditionsAreDefined_thenTHeActionIsNotExecuted() {
+      assertThat(stringConsumer).is(NOT_YET_CALLED);
+
+      Fallible.of("This should works").orElse(stringConsumer::doSomething);
+
+      assertThat(stringConsumer.isCalled()).isFalse();
+    }
+
+    @Test
+    void givenAFailureActionIsDefined_whenNoConditionsAreMet_thenTHeActionIsNotExecuted() {
+      assertThat(stringConsumer).is(NOT_YET_CALLED);
+
+      Fallible.of("This should works")
+          .ensure(StringUtils::isBlank)
+          .orElse(stringConsumer::doSomething);
+
+      assertThat(stringConsumer.isCalled()).isTrue();
+    }
+
+    @Test
+    void givenAFailureActionIsDefined_andMultipleConditionsAreChained_whenTheFirstConditionIsMet_thenTHeActionIsExecutedOnce() {
+      assertThat(stringConsumer).is(NOT_YET_CALLED);
+
+      Fallible.of("This should works")
+          .ensure(StringUtils::isAlphanumericSpace)
+          .orElse(stringConsumer::doSomething)
+          .ensure(StringUtils::isBlank)
+          .orElse(stringConsumer::doSomething);
+
+      assertThat(stringConsumer.callAmount()).isEqualTo(1);
+    }
+
+  }
+
+  @Nested
+  @DisplayName("Fallible conditional menthod executions when succesful")
+  class FallibleConditionalExecutionsTests {
+
+    private ConsumerServiceStub<String> stringConsumer;
+
+    public final Condition<ConsumerServiceStub<String>> NOT_YET_CALLED = new Condition<>(
+        c -> !c.isCalled(),
+        "Precondition: Service is not yet called"
+    );
+
+    @BeforeEach
+    void init() {
+      stringConsumer = consumerStub();
+    }
+
+    @Test
+    void givenASuccesActionIsDefined_whenThereAreNoConditions_thenTheActionIsExecuted() {
+      assertThat(stringConsumer).is(NOT_YET_CALLED);
+
+      Fallible.of("This should works").ifValid(stringConsumer::doSomething);
+
+      assertThat(stringConsumer.isCalled()).isTrue();
+    }
 
     @Test
     void givenASuccesActionIsDefined_whenAllConditionsAreMet_thenTheActionIsExecuted() {
-      ConsumerServiceStub<String> stringConsumer = consumerStub();
+      assertThat(stringConsumer).is(NOT_YET_CALLED);
 
       Fallible.of("word123")
           .ensure(StringUtils::isNotBlank)
@@ -151,7 +224,7 @@ class FallibleTest {
 
     @Test
     void givenASuccesActionIsDefined_whenConditionsAreNotMet_thenTheActionIsSkipped() {
-      ConsumerServiceStub<String> stringConsumer = consumerStub();
+      assertThat(stringConsumer).is(NOT_YET_CALLED);
 
       Fallible.of("word123")
           .ensure(StringUtils::isBlank)
@@ -161,8 +234,21 @@ class FallibleTest {
     }
 
     @Test
+    void givenASuccesActionIsDefined_andConditionsAreAddedAfterSuccesAction_whenConditionsAreNotMet_thenTheActionIsSkipped() {
+      assertThat(stringConsumer).is(NOT_YET_CALLED);
+
+      Fallible.of("word123")
+          .ensure(StringUtils::isBlank)
+          .ifValid(stringConsumer::doSomething)
+          .ensure(StringUtils::isNotBlank)
+          .ifValid(stringConsumer::doSomething);
+
+      assertThat(stringConsumer.isCalled()).isFalse();
+    }
+
+    @Test
     void givenASuccesActionIsDefined_AndMultipleConditionsExists_whenConditionsAreNotMet_thenTheActionIsSkipped() {
-      ConsumerServiceStub<String> stringConsumer = consumerStub();
+      assertThat(stringConsumer).is(NOT_YET_CALLED);
 
       Fallible.of("word123")
           .ensure(StringUtils::isNotBlank)
@@ -174,11 +260,37 @@ class FallibleTest {
 
     @Test
     void givenASuccesActionIsDefined_AndMultipleConditionsExists_whenConditionsAreMet_thenTheActionIsExecutedOnce() {
-      ConsumerServiceStub<String> stringConsumer = consumerStub();
+      assertThat(stringConsumer).is(NOT_YET_CALLED);
 
       Fallible.of("word123")
           .ensure(StringUtils::isNotBlank)
           .ensure(StringUtils::isAlphanumeric)
+          .ifValid(stringConsumer::doSomething);
+
+      assertThat(stringConsumer.callAmount()).isEqualTo(1);
+    }
+
+    @Test
+    void givenASuccesActionIsDefined_andConditionsAreAddedAfterSuccesAction_whenConditionsAreMet_thenTheActionIsCalledTwice() {
+      assertThat(stringConsumer).is(NOT_YET_CALLED);
+
+      Fallible.of("word123")
+          .ensure(StringUtils::isAlphanumeric)
+          .ifValid(stringConsumer::doSomething)
+          .ensure(StringUtils::isNotBlank)
+          .ifValid(stringConsumer::doSomething);
+
+      assertThat(stringConsumer.callAmount()).isEqualTo(2);
+    }
+
+    @Test
+    void givenASuccesActionIsDefined_andConditionsAreAddedAfterSuccesAction_whenOnlyTheFirstConditionIsMet_thenTheActionIsCalledOnce() {
+      assertThat(stringConsumer).is(NOT_YET_CALLED);
+
+      Fallible.of("word123")
+          .ensure(StringUtils::isAlphanumeric)
+          .ifValid(stringConsumer::doSomething)
+          .ensure(StringUtils::isBlank)
           .ifValid(stringConsumer::doSomething);
 
       assertThat(stringConsumer.callAmount()).isEqualTo(1);
@@ -198,7 +310,8 @@ class FallibleTest {
           .failures();
 
       assertThat(failures).hasSize(1);
-      assertThat(failures).extracting(Failure::getReason)
+      assertThat(failures)
+          .extracting(Failure::getReason)
           .contains("The string [] does not match rule: {Input can not be blank}");
     }
 
@@ -211,7 +324,8 @@ class FallibleTest {
           .failures();
 
       assertThat(failures).hasSize(1);
-      assertThat(failures).extracting(Failure::getReason)
+      assertThat(failures)
+          .extracting(Failure::getReason)
           .contains("The string [] does not match rule: {Input can not be blank}");
     }
 

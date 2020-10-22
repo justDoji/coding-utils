@@ -28,12 +28,11 @@ import java.util.function.UnaryOperator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-
 /**
  * <p>
  * <a href="https://deviq.com/value-object/" target="_blank">Value Object</a> used to return issues
- * found when evaluating {@link be.sddevelopment.utils.validation.Fallible} assertions. Depening on
- * the {@link be.sddevelopment.utils.validation.Severity} of this object, the author can choose to
+ * found when evaluating {@link be.sddevelopment.utils.validation.Fallible} assertions. <br />
+ * Depending on the {@link be.sddevelopment.utils.validation.Severity} of this object, the author can choose to
  * take the appropriate action (e.g. recover, hard fail, skip execution, ...).
  * </p>
  *
@@ -57,6 +56,11 @@ public class Failure {
     this.reason = reason;
   }
 
+  /**
+   * <p>failure.</p>
+   *
+   * @return a {@link be.sddevelopment.utils.validation.Failure.FailureBuilder} object.
+   */
   public static FailureBuilder failure() {
     return new FailureBuilder();
   }

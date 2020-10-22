@@ -89,16 +89,24 @@
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok-maven-plugin</artifactId>
         <version>1.18.12.0</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.2.0</version>
         <configuration>
-          <show>private</show>
+          <show>public</show>
           <nohelp>true</nohelp>
           <reportOutputDirectory>docs</reportOutputDirectory>
           <destDir>.</destDir>
+          <stylesheet>maven</stylesheet>
+          <stylesheetfile>${project.basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
+          <defaultVersion>${project.version}</defaultVersion>
+          <sourcepath>${project.basedir}/target/generated-sources/delombok</sourcepath>
         </configuration>
       </plugin>
       <plugin>
@@ -175,6 +183,8 @@
         <configuration>
           <reportOutputDirectory>docs</reportOutputDirectory>
           <destDir>javadoc</destDir>
+          <stylesheet>maven</stylesheet>
+          <stylesheetfile>${project.basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
         </configuration>
         <reportSets>
           <reportSet>

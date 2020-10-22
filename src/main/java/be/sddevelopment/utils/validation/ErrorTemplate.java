@@ -30,22 +30,52 @@ import lombok.AllArgsConstructor;
 /**
  * <p>Description of file/class</p>
  *
- * @author : <a href="https://github.com/justDoji" target="_blank">Stijn Dejongh</a>
+ * <h6>Usage examples</h6>
+ *  <pre>
+ *   <code>
+ *      List<Failure> failures = Fallible.of("")
+ *           .errorTemplate(template(s -> "The string [" + s + "] does not match rule: {%s}"))
+ *           .ensure(StringUtils::isNotBlank, s -> b -> b.reason("Input can not be blank"))
+ *           .failures();
+ *   </code>
+ *  </pre>
+ *
+ * @author <a href="https://github.com/justDoji" target="_blank">Stijn Dejongh</a>
  * @created : 18.10.20, Sunday
- **/
+ * @version 1.0.0
+ */
 @AllArgsConstructor
 public class ErrorTemplate<T> {
 
   private final Function<T, String> template;
 
+  /**
+   * <p>template.</p>
+   *
+   * @param templateCreator a {@link java.util.function.Function} object.
+   * @param <S> a S object.
+   * @return a {@link be.sddevelopment.utils.validation.ErrorTemplate} object.
+   */
   public static <S> ErrorTemplate<S> template(Function<S, String> templateCreator) {
     return new ErrorTemplate<>(templateCreator);
   }
 
+  /**
+   * <p>template.</p>
+   *
+   * @param <S> a S object.
+   * @return a {@link be.sddevelopment.utils.validation.ErrorTemplate} object.
+   */
   public static <S> ErrorTemplate<S> template() {
     return new ErrorTemplate<>(Object::toString);
   }
 
+  /**
+   * <p>failure.</p>
+   *
+   * @param data a T object.
+   * @return a {@link be.sddevelopment.utils.validation.Failure.FailureBuilder} object.
+   */
   public FailureBuilder failure(T data) {
     return Failure.failure().reasonCreator(message -> String.format(this.template.apply(data), message));
   }

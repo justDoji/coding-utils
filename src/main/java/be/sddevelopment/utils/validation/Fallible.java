@@ -32,7 +32,22 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * <p>Summary.</p>
+ * <p>
+ * <a href="https://en.wikipedia.org/wiki/Monad_(functional_programming)
+ * target="_blank">Monad</a>-style Wrapper class to be used for condition based
+ * execution flows. Intended for use in validation-style flows.
+ * </p>
+ *
+ * <h6>Usage examples</h6>
+ * <pre>
+ *   <code>
+ *  List<Failure> errors = Fallible.of("")
+ *           .ensure(this::mayNotContainNaughtyWords, d -> b -> b.errorCode("NAUGHTY_ERROR"))
+ *           .ensure(StringUtils::isNotBlank, d -> b -> b.errorCode("MUST_BE_FILLED_IN"))
+ *           .ensure(StringUtils::isMixedCase, d -> b -> b.errorCode("MUST_BE_MIXED_CASE"))
+ *           .failures();
+ *   </code>
+ * </pre>
  *
  * @author <a href="https://github.com/justDoji" target="_blank">Stijn Dejongh</a>
  * @version 1.0.0
@@ -54,7 +69,8 @@ public class Fallible<T> {
 
   /**
    * <p>
-   * Create a {@link be.sddevelopment.utils.validation.Fallible} for an {@link Object} of type S.
+   * Create a {@link be.sddevelopment.utils.validation.Fallible} for an {@link java.lang.Object} of
+   * type S.
    * </p>
    *
    * @param toValidate the data object to execute conditional operations on.
@@ -65,16 +81,39 @@ public class Fallible<T> {
     return new Fallible<>(toValidate);
   }
 
+  /**
+   * <p>ensure.</p>
+   *
+   * @param assertion a {@link java.util.function.Function} object.
+   * @param error     a {@link java.util.function.Function} object.
+   * @return a {@link be.sddevelopment.utils.validation.Fallible} object.
+   */
   public Fallible<T> ensure(Function<T, Boolean> assertion,
       Function<T, Function<FailureBuilder, FailureBuilder>> error) {
+    this.failures = null;
     this.validations.add(new ValidationRule<>(assertion, error));
     return this;
   }
 
+  /**
+   * <p>ensure.</p>
+   *
+   * @param assertion a {@link java.util.function.Function} object.
+   * @return a {@link be.sddevelopment.utils.validation.Fallible} object.
+   */
   public Fallible<T> ensure(Function<T, Boolean> assertion) {
     return this.ensure(assertion, d -> (b -> b.reason(DEFAULT_REASON)));
   }
 
+  /**
+   * <p>
+   * Execute a {@link Consumer} that takes an object of type T, when all previous {#link ensure()}
+   * conditions are met.
+   * </p>
+   *
+   * @param actionToTake a {@link java.util.function.Consumer} object.
+   * @return a {@link be.sddevelopment.utils.validation.Fallible} object.
+   */
   public Fallible<T> ifValid(Consumer<T> actionToTake) {
     if (isValid()) {
       actionToTake.accept(this.data);
@@ -82,20 +121,40 @@ public class Fallible<T> {
     return this;
   }
 
+  public Fallible<T> orElse(Consumer<T> actionToTake) {
+    if (!isValid()) {
+      actionToTake.accept(this.data);
+    }
+    return this;
+  }
+
+  /**
+   * <p>isValid.</p>
+   *
+   * @return a boolean.
+   */
   public boolean isValid() {
     return this.failures().isEmpty();
   }
 
+  /**
+   * <p>errorTemplate.</p>
+   *
+   * @param template a {@link be.sddevelopment.utils.validation.ErrorTemplate} object.
+   * @return a {@link be.sddevelopment.utils.validation.Fallible} object.
+   */
   public Fallible<T> errorTemplate(ErrorTemplate<T> template) {
     this.errorTemplate = template;
     return this;
   }
 
   /**
-   * <p>Get the {@link Failure} objects resulting from applying all required rules to the data
+   * <p>Get the {@link be.sddevelopment.utils.validation.Failure} objects resulting from applying
+   * all required rules to the data
    * object.</p>
    *
-   * @return a {@link java.util.List} containing {@link Failure} objects.
+   * @return a {@link java.util.List} containing {@link be.sddevelopment.utils.validation.Failure}
+   * objects.
    */
   public List<Failure> failures() {
     validate();

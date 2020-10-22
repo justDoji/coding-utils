@@ -50,6 +50,11 @@ public enum Severity {
     this.blocking = blocking;
   }
 
+  /**
+   * <p>defaultVal.</p>
+   *
+   * @return a {@link be.sddevelopment.utils.validation.Severity} object.
+   */
   public static Severity defaultVal() {
     return WARNING;
   }
