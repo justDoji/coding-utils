@@ -37,5 +37,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       - name: Build JavaDoc
-        run: bash .rebuildDocs.sh
-      -
+        run: bash ./scripts/rebuildDocs.sh
