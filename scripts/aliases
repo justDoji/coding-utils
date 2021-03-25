@@ -1,0 +1,7 @@
+alias ll = 'ls -ltr'
+
+alias ci="mvn clean install"
+alias st="mvn clean install -DskipTests=true"
+
+alias gitsquash = "!f(){ git reset --soft HEAD~${1} && git commit --edit -m\"$(git log --format=%B --reverse HEAD..HEAD@{1})\"; };f"
+alias gitlog = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
