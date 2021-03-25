@@ -31,9 +31,9 @@ import lombok.Data;
 /**
  * <p>Description of file/class</p>
  *
- * @author  <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
- * @created  18.10.20, Sunday
+ * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
  * @version 1.0.0
+ * @created 18.10.20, Sunday
  */
 @Data
 @AllArgsConstructor

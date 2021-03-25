@@ -7,12 +7,12 @@
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
  * EUPL (the "Licence");
- * 
+ *
  * You may not use this work except in compliance with the Licence.
  * You may obtain a copy of the Licence at:
- * 
+ *
  * http://ec.europa.eu/idabc/eupl5
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" basis,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -52,27 +52,29 @@ import static java.lang.String.format;
 @Utility
 public final class AccessProtectionUtils {
 
-    private AccessProtectionUtils() {
-        AccessProtectionUtils.utilityClassConstructor();
+  private AccessProtectionUtils() {
+    AccessProtectionUtils.utilityClassConstructor();
+  }
+
+  public static final class AccessProtectionConstants {
+
+    private AccessProtectionConstants() {
+      utilityClassConstructor();
     }
 
-    public static final class AccessProtectionConstants {
-    	
-        private AccessProtectionConstants() {
-            utilityClassConstructor();
-        }
+    public static final String OPERATION_NOT_ALLOWED = "This operation is not allowed for reason: [ %1$s ]";
+    public static final String UTILITY_CLASS = "Utility classes should not have a public or default constructor";
+  }
 
-        public static final String OPERATION_NOT_ALLOWED = "This operation is not allowed for reason: [ %1$s ]";
-        public static final String UTILITY_CLASS = "Utility classes should not have a public or default constructor";
-    }
+  public static void utilityClassConstructor() {
+    unsupportedOperation(
+        format(AccessProtectionConstants.OPERATION_NOT_ALLOWED,
+            AccessProtectionConstants.UTILITY_CLASS));
+  }
 
-    public static void utilityClassConstructor() {
-        unsupportedOperation(
-                format(AccessProtectionConstants.OPERATION_NOT_ALLOWED, AccessProtectionConstants.UTILITY_CLASS));
-    }
-
-    public static void unsupportedOperation(String reason) {
-        throw new UnsupportedOperationException(format(AccessProtectionConstants.OPERATION_NOT_ALLOWED, reason));
-    }
+  public static void unsupportedOperation(String reason) {
+    throw new UnsupportedOperationException(
+        format(AccessProtectionConstants.OPERATION_NOT_ALLOWED, reason));
+  }
 
 }

@@ -54,10 +54,9 @@ import org.reflections.Reflections;
  * @created 25.03.21, Thursday
  * @since 1.0.0
  */
-public class CodeInvariantTests {
+class CodeInvariantTests {
 
   @Test
-  @SuppressWarnings("rawtypes")
   void givenMyCodeBase_allUtilityClasses_shouldHaveASafeguardedPrivateConstructor() {
     Reflections reflections = new Reflections("be.sddevelopment.commons");
     Set<Class<?>> classesToTest = reflections.getTypesAnnotatedWith(Utility.class);

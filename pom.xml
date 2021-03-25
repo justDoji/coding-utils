@@ -83,6 +83,7 @@
           <target>8</target>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok-maven-plugin</artifactId>
@@ -92,6 +93,7 @@
           <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -107,6 +109,7 @@
           <sourcepath>${project.basedir}/target/generated-sources/delombok</sourcepath>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>license-maven-plugin</artifactId>
@@ -138,6 +141,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.22.0</version>
@@ -146,13 +150,12 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>2.22.0</version>
       </plugin>
+
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.6</version>
-        <configuration>
 
-        </configuration>
         <executions>
           <execution>
             <goals>
@@ -169,6 +172,7 @@
           </execution>
         </executions>
       </plugin>
+
     </plugins>
   </build>
 

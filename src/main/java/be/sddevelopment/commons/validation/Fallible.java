@@ -33,7 +33,8 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- * <a href="https://en.wikipedia.org/wiki/Monad_(functional_programming)" target="_blank">Monad</a>-style Wrapper class to be used for condition based execution flows.
+ * <a href="https://en.wikipedia.org/wiki/Monad_(functional_programming)"
+ * target="_blank">Monad</a>-style Wrapper class to be used for condition based execution flows.
  * Intended for use in validation-style flows.
  * </p>
  *
@@ -68,7 +69,8 @@ public class Fallible<T> {
 
   /**
    * <p>
-   * Create a {@link be.sddevelopment.commons.validation.Fallible} for an {@link java.lang.Object} of
+   * Create a {@link be.sddevelopment.commons.validation.Fallible} for an {@link java.lang.Object}
+   * of
    * type S.
    * </p>
    *
@@ -152,7 +154,7 @@ public class Fallible<T> {
    * all required rules to the data object.</p>
    *
    * @return a {@link java.util.List} containing {@link be.sddevelopment.commons.validation.Failure}
-   * objects.
+   *     objects.
    */
   public List<Failure> failures() {
     validate();

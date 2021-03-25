@@ -51,7 +51,7 @@ import java.util.function.Function;
 @Utility
 public final class ExceptionSuppressor {
 
-  public ExceptionSuppressor() {
+  private ExceptionSuppressor() {
     AccessProtectionUtils.utilityClassConstructor();
   }
 

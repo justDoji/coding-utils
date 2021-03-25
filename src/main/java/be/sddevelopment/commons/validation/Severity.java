@@ -27,14 +27,14 @@ import lombok.Getter;
 
 /**
  * <p>
- *   Enumeration indicating the severity of a {@link be.sddevelopment.commons.validation.Failure}.
- *   A severity can be either blocking or non-blocking.
+ * Enumeration indicating the severity of a {@link be.sddevelopment.commons.validation.Failure}.
+ * A severity can be either blocking or non-blocking.
  * </p>
  *
  * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
  * @version 1.0.0
- * @since 1.0.0
  * @created 2020/10/17
+ * @since 1.0.0
  */
 @SuppressWarnings("ALL")
 public enum Severity {

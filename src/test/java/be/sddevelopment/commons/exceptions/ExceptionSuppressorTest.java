@@ -79,9 +79,10 @@ class ExceptionSuppressorTest {
 
   @Test
   void whenAnExceptionIsSupressed_ByConvertingToRuntime_thenItIsThrown() {
-    assertThatThrownBy(() -> Optional.of(Strings.NON_EMPTY_STRING)
+    Optional<String> nonEmptyString = Optional.of(Strings.NON_EMPTY_STRING);
+    assertThatThrownBy(() -> nonEmptyString
         .map(ExceptionSuppressor.uncheck(TestMethods::throwExceptionIfNotBLank)))
-        .isInstanceOf(RuntimeException.class);
+        .isInstanceOf(WrappedException.class);
   }
 
   public final Condition<Throwable> messageOfOriginalException = new Condition<>(

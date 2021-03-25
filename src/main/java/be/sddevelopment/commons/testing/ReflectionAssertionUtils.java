@@ -7,12 +7,12 @@
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
  * EUPL (the "Licence");
- * 
+ *
  * You may not use this work except in compliance with the Licence.
  * You may obtain a copy of the Licence at:
- * 
+ *
  * http://ec.europa.eu/idabc/eupl5
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" basis,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,6 +26,8 @@ package be.sddevelopment.commons.testing;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import be.sddevelopment.commons.access.AccessProtectionUtils;
+import be.sddevelopment.commons.access.Utility;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -48,7 +50,12 @@ import java.lang.reflect.InvocationTargetException;
  * @created 25.03.21, Thursday
  * @since 1.0.0
  */
-public class ReflectionAssertionUtils {
+@Utility
+public final class ReflectionAssertionUtils {
+
+  private ReflectionAssertionUtils() {
+    AccessProtectionUtils.utilityClassConstructor();
+  }
 
   public static void assertPrivateMemberReflectionProtection(
       @SuppressWarnings("rawtypes") final Constructor constructor) {

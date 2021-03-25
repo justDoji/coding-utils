@@ -7,12 +7,12 @@
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
  * EUPL (the "Licence");
- * 
+ *
  * You may not use this work except in compliance with the Licence.
  * You may obtain a copy of the Licence at:
- * 
+ *
  * http://ec.europa.eu/idabc/eupl5
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" basis,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,6 +40,7 @@
  */
 package be.sddevelopment.commons.testing;
 
+import static org.apache.commons.lang3.StringUtils.isAlpha;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import be.sddevelopment.commons.access.AccessProtectionUtils;
@@ -47,8 +48,6 @@ import be.sddevelopment.commons.access.Utility;
 import java.util.Optional;
 import java.util.function.Supplier;
 import org.apache.commons.lang3.StringUtils;
-import org.assertj.core.api.AbstractStringAssert;
-import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.assertj.core.api.Condition;
 import org.assertj.core.api.OptionalAssert;
 
@@ -62,45 +61,42 @@ import org.assertj.core.api.OptionalAssert;
 @Utility
 public final class TextualAssertionUtils {
 
-    private static final String FIELD_NOT_EMPTY = "Field expected to not be empty";
+  private static final String FIELD_NOT_EMPTY = "Field expected to not be empty";
 
-    private TextualAssertionUtils() {
-        AccessProtectionUtils.utilityClassConstructor();
-    }
+  private TextualAssertionUtils() {
+    AccessProtectionUtils.utilityClassConstructor();
+  }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public static <T> AbstractStringAssert<?> assertThatNumber(Supplier<Optional<String>> fieldSelector) {
-        assertNotEmpty(fieldSelector);
-        return assertThat(fieldSelector.get().get())
-                .as("must be numeric field")
-                .is(new Condition<>(StringUtils::isNumeric, "numeric"));
-    }
+  @SuppressWarnings("OptionalGetWithoutIsPresent")
+  public static OptionalAssert<String> assertThatNumber(Supplier<Optional<String>> fieldSelector) {
+    return assertNotEmpty(fieldSelector)
+        .as("must be numeric field")
+        .is(new Condition<>(s -> StringUtils.isNumeric(s.get()), "numeric"));
+  }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public static <T> AbstractStringAssert<?> assertThatAlpha(Supplier<Optional<String>> fieldSelector) {
-        assertNotEmpty(fieldSelector);
-        return assertThat(fieldSelector.get().get())
-                .as("must be alphabetical field")
-                .is(new Condition<>(StringUtils::isAlpha, "alphabetical"));
-    }
+  @SuppressWarnings("OptionalGetWithoutIsPresent")
+  public static OptionalAssert<String> assertThatAlpha(Supplier<Optional<String>> fieldSelector) {
+    return assertNotEmpty(fieldSelector)
+        .as("must be alphabetical field")
+        .is(new Condition<>(s -> isAlpha(s.get()), "alphabetical"));
+  }
 
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public static <T> AbstractStringAssert<?> assertThatAlphanumeric(Supplier<Optional<String>> fieldSelector) {
-        assertNotEmpty(fieldSelector);
-        return assertThat(fieldSelector.get().get())
-                .as("must be alphabetical field")
-                .is(new Condition<>(StringUtils::isAlphanumeric, "alphanumeric"));
-    }
+  @SuppressWarnings("OptionalGetWithoutIsPresent")
+  public static OptionalAssert<String> assertThatAlphanumeric(
+      Supplier<Optional<String>> fieldSelector) {
+    return assertNotEmpty(fieldSelector)
+        .as("must be alphabetical field")
+        .is(new Condition<>(s -> StringUtils.isAlphanumeric(s.get()), "alphanumeric"));
+  }
 
-    private static void assertNotEmpty(Supplier<Optional<String>> fieldSelector) {
-        assertThat(fieldSelector.get()).as(FIELD_NOT_EMPTY).isPresent().isNotEmpty();
-    }
+  private static OptionalAssert<String> assertNotEmpty(Supplier<Optional<String>> fieldSelector) {
+    return assertThat(fieldSelector.get()).as(FIELD_NOT_EMPTY).isPresent().isNotEmpty();
+  }
 
-
-    public static <T> OptionalAssert<T> assertEmpty(Supplier<Optional<T>> fieldSelector) {
-        return AssertionsForInterfaceTypes.assertThat(fieldSelector.get())
-                .as("Expecting empty Optional")
-                .isEmpty();
-    }
+  public static <T> OptionalAssert<T> assertEmpty(Supplier<Optional<T>> fieldSelector) {
+    return assertThat(fieldSelector.get())
+        .as("Expecting empty Optional")
+        .isEmpty();
+  }
 }
