@@ -316,6 +316,18 @@ class FallibleTest {
     }
 
     @Test
+    void givenThatNoTemplateIsProvided_andAReasonIsProvided_whenAFailureOccurs_theReasonIsReturnedAsIs() {
+      List<Failure> failures = Fallible.of("")
+              .ensure(StringUtils::isNotBlank, s -> b -> b.reason("Input can not be blank"))
+              .failures();
+
+      assertThat(failures).hasSize(1);
+      assertThat(failures)
+              .extracting(Failure::getReason)
+              .contains("Input can not be blank");
+    }
+
+    @Test
     void givenATemplateWithoutDataReference_whenAFailureOccurs_thenAFailureExistsWithADerivativeMessage() {
 
       List<Failure> failures = Fallible.of("")

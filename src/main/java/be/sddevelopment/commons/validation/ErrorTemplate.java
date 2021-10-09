@@ -69,7 +69,7 @@ public class ErrorTemplate<T> {
 	 * @return a {@link be.sddevelopment.commons.validation.ErrorTemplate} object.
 	 */
 	public static <S> ErrorTemplate<S> template() {
-		return new ErrorTemplate<>(Object::toString);
+		return new ErrorTemplate<>(data -> "%s");
 	}
 
 	/**

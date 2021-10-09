@@ -47,17 +47,27 @@ public class FieldValidationRule<R, T> implements Rule<R> {
 	private Function<T, Boolean> fieldAssertion;
 	private Function<T, Function<FailureBuilder, FailureBuilder>> failureCreator;
 
-
-
 	public static <R, T> FieldValidationRule<R, T> field(Function<R, T> fieldExtractor) {
 		return FieldValidationRule.<R, T>builder()
 				.extractor(dataStruct -> Optional.of(dataStruct).map(fieldExtractor).orElse(null))
 				.build();
 	}
 
-  public FieldValidationRule<R, T> compliesTo(Function<T, Boolean> toAssert) {
-        return this.toBuilder().fieldAssertion(toAssert).build();
-    }
+	static <T> Function<T, Function<FailureBuilder, FailureBuilder>> andReason(String reason) {
+		return FieldValidationRule.withReason(reason);
+	}
+
+	static <T> Function<T, Function<FailureBuilder, FailureBuilder>> withReason(String reason) {
+		return s -> failureBuilder -> failureBuilder.reason(reason);
+	}
+
+	public FieldValidationRule<R, T> elseFail(Function<T, Function<FailureBuilder, FailureBuilder>> failureDelta) {
+		return this.toBuilder().failureCreator(failureDelta).build();
+	}
+
+	public FieldValidationRule<R, T> compliesTo(Function<T, Boolean> toAssert) {
+		return this.toBuilder().fieldAssertion(toAssert).build();
+	}
 
 	@Override
 	public Function<R, Boolean> getAssertion() {

@@ -28,9 +28,10 @@ import static be.sddevelopment.commons.validation.FieldValidationRule.*;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
 
+import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Test;
@@ -61,30 +62,29 @@ public class ValidationToolsUsageTest {
 		Fallible<EmailContact> toBeValid = Fallible.of(toValidate)
 				.ensure(emailContact -> Optional.of(emailContact)
 								.map(EmailContact::getEmail)
-								.map(Objects::nonNull)
+								.map(mail -> StringUtils.containsIgnoreCase("invalid", mail))
 								.orElse(false),
 						emailContact -> failureBuilder -> failureBuilder
 								.errorCode("ERROR")
-								.reason("email should not be null")
+								.reason("email should not be null or contain invalid atoms")
+								.severity(Severity.ERROR)
 				);
 
 //		 I Would rather write this as ensure(field(EmailContact::getEmail)
 //		 .compliesTo(Objects::nonNull)
+// 		 .and(mail -> StringUtils.containsIgnoreCase("invalid", mail))
 //		 .elseFail(withCode("123").andReason("email should not be null").andSeverity(CRITICAL)))
 
 		Fallible<EmailContact> redesigned = Fallible.of(toValidate)
-				.ensure(elseFail(field(EmailContact::getEmail).compliesTo(Objects::nonNull))
+				.ensure(field(EmailContact::getEmail)
+						.compliesTo(Objects::nonNull)
+						.elseFail(withReason("email should not be null"))
 				);
 
-		Assertions.assertThat(toBeValid.isValid()).isTrue();
-	}
-
-	public static  <R, T> FieldValidationRule<R, T> elseFail(FieldValidationRule<R, T> rule) {
-		return rule.toBuilder().failureCreator(withReason("email should not be null")).build();
-	}
-
-	private static <T> Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> withReason(String reason) {
-		return s -> failureBuilder -> failureBuilder.reason(reason);
+		Assertions.assertThat(toBeValid.isValid()).isFalse();
+		Assertions.assertThat(toBeValid.failures())
+				.extracting(Failure::getErrorCode, Failure::getReason, Failure::getSeverity)
+				.containsExactlyInAnyOrder(Tuple.tuple("ERROR", "email should not be null or contain invalid atoms", Severity.ERROR));
 	}
 
 	@Value
