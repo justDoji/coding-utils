@@ -43,17 +43,29 @@ import lombok.Data;
 @Builder(toBuilder = true)
 public class FieldValidationRule<R, T> implements Rule<R> {
 
-	private Function<R, Optional<T>> extractor;
-	private Function<T, Boolean> assertion;
+	private Function<R, T> extractor;
+	private Function<T, Boolean> fieldAssertion;
 	private Function<T, Function<FailureBuilder, FailureBuilder>> failureCreator;
+
+
 
 	public static <R, T> FieldValidationRule<R, T> field(Function<R, T> fieldExtractor) {
 		return FieldValidationRule.<R, T>builder()
-				.extractor(dataStruct -> Optional.of(dataStruct).map(fieldExtractor))
+				.extractor(dataStruct -> Optional.of(dataStruct).map(fieldExtractor).orElse(null))
 				.build();
 	}
 
   public FieldValidationRule<R, T> compliesTo(Function<T, Boolean> toAssert) {
-        return this.toBuilder().assertion(toAssert).build();
+        return this.toBuilder().fieldAssertion(toAssert).build();
     }
+
+	@Override
+	public Function<R, Boolean> getAssertion() {
+		return data -> this.fieldAssertion.apply(this.extractor.apply(data));
+	}
+
+	@Override
+	public Function<R, Function<FailureBuilder, FailureBuilder>> getFailureCreator() {
+		return data -> failureCreator.apply(this.extractor.apply(data));
+	}
 }

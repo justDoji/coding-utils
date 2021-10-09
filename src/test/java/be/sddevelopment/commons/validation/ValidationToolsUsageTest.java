@@ -1,8 +1,34 @@
+/*-
+ * #%L
+ * code-utils
+ * %%
+ * Copyright (C) 2020 - 2021 SD Development
+ * %%
+ * Licensed under the EUPL, Version 1.1 or – as soon they will be
+ * approved by the European Commission - subsequent versions of the
+ * EUPL (the "Licence");
+ * 
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at:
+ * 
+ * http://ec.europa.eu/idabc/eupl5
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Licence for the specific language governing permissions and
+ * limitations under the Licence.
+ * #L%
+ */
+
 package be.sddevelopment.commons.validation;
+
+import static be.sddevelopment.commons.validation.FieldValidationRule.*;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -44,12 +70,21 @@ public class ValidationToolsUsageTest {
 
 //		 I Would rather write this as ensure(field(EmailContact::getEmail)
 //		 .compliesTo(Objects::nonNull)
-//		 .otherwise(fail().withCode("123").andReason("email should not be null").andSeverity(CRITICAL)))
+//		 .elseFail(withCode("123").andReason("email should not be null").andSeverity(CRITICAL)))
 
 		Fallible<EmailContact> redesigned = Fallible.of(toValidate)
-				.ensure(FieldValidationRule.field(EmailContact::getEmail).compliesTo(Objects::nonNull));
+				.ensure(elseFail(field(EmailContact::getEmail).compliesTo(Objects::nonNull))
+				);
 
 		Assertions.assertThat(toBeValid.isValid()).isTrue();
+	}
+
+	public static  <R, T> FieldValidationRule<R, T> elseFail(FieldValidationRule<R, T> rule) {
+		return rule.toBuilder().failureCreator(withReason("email should not be null")).build();
+	}
+
+	private static <T> Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> withReason(String reason) {
+		return s -> failureBuilder -> failureBuilder.reason(reason);
 	}
 
 	@Value
