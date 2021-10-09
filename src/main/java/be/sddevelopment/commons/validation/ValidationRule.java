@@ -38,7 +38,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class ValidationRule<T> {
+public class ValidationRule<T> implements Rule<T> {
 
 	private Function<T, Boolean> assertion;
 	private Function<T, Function<FailureBuilder, FailureBuilder>> failureCreator;

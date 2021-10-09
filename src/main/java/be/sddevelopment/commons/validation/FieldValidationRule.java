@@ -41,7 +41,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class FieldValidationRule<R, T> {
+public class FieldValidationRule<R, T> implements Rule<R> {
 
 	private Function<R, Optional<T>> extractor;
 	private Function<T, Boolean> assertion;
@@ -53,4 +53,7 @@ public class FieldValidationRule<R, T> {
 				.build();
 	}
 
+  public FieldValidationRule<R, T> compliesTo(Function<T, Boolean> toAssert) {
+        return this.toBuilder().assertion(toAssert).build();
+    }
 }

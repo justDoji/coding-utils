@@ -3,7 +3,6 @@ package be.sddevelopment.commons.validation;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -34,16 +33,21 @@ public class ValidationToolsUsageTest {
 				.build();
 
 		Fallible<EmailContact> toBeValid = Fallible.of(toValidate)
-				.ensure(emailContact -> Optional.of(emailContact).map(EmailContact::getEmail).map(Objects::nonNull).orElse(false),
-						emailContact -> failureBuilder -> failureBuilder.errorCode("ERROR").reason("email should not be null"));
+				.ensure(emailContact -> Optional.of(emailContact)
+								.map(EmailContact::getEmail)
+								.map(Objects::nonNull)
+								.orElse(false),
+						emailContact -> failureBuilder -> failureBuilder
+								.errorCode("ERROR")
+								.reason("email should not be null")
+				);
 
-		// I Would rather write this as ensure(field(EmailContact::getEmail)
-		// .compliesTo(Objects::nonNull)
-		// .otherwise(fail().withCode("123").andReason("email should not be null").andSeverity(CRITICAL)))
+//		 I Would rather write this as ensure(field(EmailContact::getEmail)
+//		 .compliesTo(Objects::nonNull)
+//		 .otherwise(fail().withCode("123").andReason("email should not be null").andSeverity(CRITICAL)))
 
-//		Fallible<EmailContact> toBeValid = Fallible.of(toValidate)
-//				.ensure(FieldValidationRule.field(EmailContact::getEmail),
-//						emailContact -> failureBuilder -> failureBuilder.errorCode("ERROR").reason("email should not be null"));
+		Fallible<EmailContact> redesigned = Fallible.of(toValidate)
+				.ensure(FieldValidationRule.field(EmailContact::getEmail).compliesTo(Objects::nonNull));
 
 		Assertions.assertThat(toBeValid.isValid()).isTrue();
 	}

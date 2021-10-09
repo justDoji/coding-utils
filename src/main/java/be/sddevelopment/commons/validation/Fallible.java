@@ -60,7 +60,7 @@ public class Fallible<T> {
 	private static final String DEFAULT_REASON = "Assertion error";
 
 	private final T data;
-	private final List<ValidationRule<T>> validations = new ArrayList<>();
+	private final List<Rule<T>> validations = new ArrayList<>();
 	private ErrorTemplate<T> errorTemplate = ErrorTemplate.template();
 	private List<Failure> failures;
 
@@ -94,6 +94,16 @@ public class Fallible<T> {
 			Function<T, Function<FailureBuilder, FailureBuilder>> error) {
 		this.failures = null;
 		this.validations.add(new ValidationRule<>(assertion, error));
+		return this;
+	}
+
+	/**
+	 * @param rule to check
+	 * @return a {@link be.sddevelopment.commons.validation.Fallible} object.
+	 */
+	public Fallible<T> ensure(Rule<T> rule) {
+		this.failures = null;
+		this.validations.add(rule);
 		return this;
 	}
 
@@ -173,7 +183,7 @@ public class Fallible<T> {
 		}
 	}
 
-	private boolean assertionFailed(ValidationRule<T> a) {
+	private boolean assertionFailed(Rule<T> a) {
 		return !a.getAssertion().apply(this.data);
 	}
 }
