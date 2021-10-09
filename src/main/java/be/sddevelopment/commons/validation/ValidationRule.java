@@ -23,8 +23,9 @@
 
 package be.sddevelopment.commons.validation;
 
-import be.sddevelopment.commons.validation.Failure.FailureBuilder;
 import java.util.function.Function;
+
+import be.sddevelopment.commons.validation.Failure.FailureBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -39,8 +40,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class ValidationRule<T> {
 
-  private Function<T, Boolean> assertion;
-  private Function<T, Function<FailureBuilder, FailureBuilder>> failureCreator;
-
+	private Function<T, Boolean> assertion;
+	private Function<T, Function<FailureBuilder, FailureBuilder>> failureCreator;
 
 }

@@ -25,6 +25,7 @@ package be.sddevelopment.commons.validation;
 
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -46,56 +47,56 @@ import lombok.Getter;
 @SuppressWarnings("FieldMayBeFinal")
 public class Failure {
 
-  private Severity severity;
-  private String errorCode;
-  private String reason;
+	private Severity severity;
+	private String errorCode;
+	private String reason;
 
-  private Failure(Severity severity, String errorCode, String reason) {
-    this.severity = severity;
-    this.errorCode = errorCode;
-    this.reason = reason;
-  }
+	private Failure(Severity severity, String errorCode, String reason) {
+		this.severity = severity;
+		this.errorCode = errorCode;
+		this.reason = reason;
+	}
 
-  /**
-   * <p>failure.</p>
-   *
-   * @return a {@link be.sddevelopment.commons.validation.Failure.FailureBuilder} object.
-   */
-  public static FailureBuilder failure() {
-    return new FailureBuilder();
-  }
+	/**
+	 * <p>failure.</p>
+	 *
+	 * @return a {@link be.sddevelopment.commons.validation.Failure.FailureBuilder} object.
+	 */
+	public static FailureBuilder failure() {
+		return new FailureBuilder();
+	}
 
-  public static class FailureBuilder {
+	public static class FailureBuilder {
 
-    private Severity severity = Severity.defaultVal();
-    private String errorCode;
-    private String reason;
-    private Function<String, String> reasonCreator = Function.identity();
+		private Severity severity = Severity.defaultVal();
+		private String errorCode;
+		private String reason;
+		private Function<String, String> reasonCreator = Function.identity();
 
-    public FailureBuilder severity(Severity severity) {
-      this.severity = severity;
-      return this;
-    }
+		public FailureBuilder severity(Severity severity) {
+			this.severity = severity;
+			return this;
+		}
 
-    public FailureBuilder errorCode(String errorCode) {
-      this.errorCode = errorCode;
-      return this;
-    }
+		public FailureBuilder errorCode(String errorCode) {
+			this.errorCode = errorCode;
+			return this;
+		}
 
-    public FailureBuilder reason(String reason) {
-      this.reason = reason;
-      return this;
-    }
+		public FailureBuilder reason(String reason) {
+			this.reason = reason;
+			return this;
+		}
 
-    public FailureBuilder reasonCreator(
-        UnaryOperator<String> reasonCreator) {
-      this.reasonCreator = reasonCreator;
-      return this;
-    }
+		public FailureBuilder reasonCreator(
+				UnaryOperator<String> reasonCreator) {
+			this.reasonCreator = reasonCreator;
+			return this;
+		}
 
-    public Failure build() {
-      return new Failure(this.severity, this.errorCode, this.reasonCreator.apply(this.reason));
-    }
-  }
+		public Failure build() {
+			return new Failure(this.severity, this.errorCode, this.reasonCreator.apply(this.reason));
+		}
+	}
 
 }

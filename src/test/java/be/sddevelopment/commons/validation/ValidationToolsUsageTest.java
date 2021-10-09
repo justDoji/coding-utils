@@ -3,6 +3,7 @@ package be.sddevelopment.commons.validation;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -39,6 +40,10 @@ public class ValidationToolsUsageTest {
 		// I Would rather write this as ensure(field(EmailContact::getEmail)
 		// .compliesTo(Objects::nonNull)
 		// .otherwise(fail().withCode("123").andReason("email should not be null").andSeverity(CRITICAL)))
+
+//		Fallible<EmailContact> toBeValid = Fallible.of(toValidate)
+//				.ensure(FieldValidationRule.field(EmailContact::getEmail),
+//						emailContact -> failureBuilder -> failureBuilder.errorCode("ERROR").reason("email should not be null"));
 
 		Assertions.assertThat(toBeValid.isValid()).isTrue();
 	}

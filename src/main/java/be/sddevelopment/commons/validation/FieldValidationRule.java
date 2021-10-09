@@ -23,40 +23,34 @@
 
 package be.sddevelopment.commons.validation;
 
-import lombok.Getter;
+import java.util.Optional;
+import java.util.function.Function;
+
+import be.sddevelopment.commons.validation.Failure.FailureBuilder;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
 /**
- * <p>
- * Enumeration indicating the severity of a {@link be.sddevelopment.commons.validation.Failure}.
- * A severity can be either blocking or non-blocking.
- * </p>
+ * <p>ValidationRule to be used to check validity of an object's field</p>
  *
  * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
  * @version 1.0.0
- * @created 2020/10/17
- * @since 1.0.0
+ * @created 18.10.20, Sunday
  */
-@SuppressWarnings("ALL")
-public enum Severity {
+@Data
+@AllArgsConstructor
+@Builder(toBuilder = true)
+public class FieldValidationRule<R, T> {
 
-	INFO(false),
-	WARNING(false),
-	ERROR(true);
+	private Function<R, Optional<T>> extractor;
+	private Function<T, Boolean> assertion;
+	private Function<T, Function<FailureBuilder, FailureBuilder>> failureCreator;
 
-	@Getter
-	private boolean blocking;
-
-	Severity(boolean blocking) {
-		this.blocking = blocking;
-	}
-
-	/**
-	 * <p>defaultVal.</p>
-	 *
-	 * @return a {@link be.sddevelopment.commons.validation.Severity} object.
-	 */
-	public static Severity defaultVal() {
-		return WARNING;
+	public static <R, T> FieldValidationRule<R, T> field(Function<R, T> fieldExtractor) {
+		return FieldValidationRule.<R, T>builder()
+				.extractor(dataStruct -> Optional.of(dataStruct).map(fieldExtractor))
+				.build();
 	}
 
 }

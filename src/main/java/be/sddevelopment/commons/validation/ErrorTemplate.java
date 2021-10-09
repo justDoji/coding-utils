@@ -23,8 +23,9 @@
 
 package be.sddevelopment.commons.validation;
 
-import be.sddevelopment.commons.validation.Failure.FailureBuilder;
 import java.util.function.Function;
+
+import be.sddevelopment.commons.validation.Failure.FailureBuilder;
 import lombok.AllArgsConstructor;
 
 /**
@@ -48,37 +49,37 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ErrorTemplate<T> {
 
-  private final Function<T, String> template;
+	private final Function<T, String> template;
 
-  /**
-   * <p>template.</p>
-   *
-   * @param templateCreator a {@link java.util.function.Function} object.
-   * @param <S>             a S object.
-   * @return a {@link be.sddevelopment.commons.validation.ErrorTemplate} object.
-   */
-  public static <S> ErrorTemplate<S> template(Function<S, String> templateCreator) {
-    return new ErrorTemplate<>(templateCreator);
-  }
+	/**
+	 * <p>template.</p>
+	 *
+	 * @param templateCreator a {@link java.util.function.Function} object.
+	 * @param <S>             a S object.
+	 * @return a {@link be.sddevelopment.commons.validation.ErrorTemplate} object.
+	 */
+	public static <S> ErrorTemplate<S> template(Function<S, String> templateCreator) {
+		return new ErrorTemplate<>(templateCreator);
+	}
 
-  /**
-   * <p>template.</p>
-   *
-   * @param <S> a S object.
-   * @return a {@link be.sddevelopment.commons.validation.ErrorTemplate} object.
-   */
-  public static <S> ErrorTemplate<S> template() {
-    return new ErrorTemplate<>(Object::toString);
-  }
+	/**
+	 * <p>template.</p>
+	 *
+	 * @param <S> a S object.
+	 * @return a {@link be.sddevelopment.commons.validation.ErrorTemplate} object.
+	 */
+	public static <S> ErrorTemplate<S> template() {
+		return new ErrorTemplate<>(Object::toString);
+	}
 
-  /**
-   * <p>failure.</p>
-   *
-   * @param data a T object.
-   * @return a {@link be.sddevelopment.commons.validation.Failure.FailureBuilder} object.
-   */
-  public FailureBuilder failure(T data) {
-    return Failure.failure()
-        .reasonCreator(message -> String.format(this.template.apply(data), message));
-  }
+	/**
+	 * <p>failure.</p>
+	 *
+	 * @param data a T object.
+	 * @return a {@link be.sddevelopment.commons.validation.Failure.FailureBuilder} object.
+	 */
+	public FailureBuilder failure(T data) {
+		return Failure.failure()
+				.reasonCreator(message -> String.format(this.template.apply(data), message));
+	}
 }
