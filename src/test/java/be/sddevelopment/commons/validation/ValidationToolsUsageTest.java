@@ -28,6 +28,7 @@ import static be.sddevelopment.commons.validation.FieldValidationRule.*;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
@@ -78,6 +79,7 @@ public class ValidationToolsUsageTest {
 		Fallible<EmailContact> redesigned = Fallible.of(toValidate)
 				.ensure(field(EmailContact::getEmail)
 						.compliesTo(Objects::nonNull)
+						.compliesTo(mail -> StringUtils.containsIgnoreCase("invalid", mail))
 						.elseFail(withReason("email should not be null"))
 				);
 
@@ -85,6 +87,15 @@ public class ValidationToolsUsageTest {
 		Assertions.assertThat(toBeValid.failures())
 				.extracting(Failure::getErrorCode, Failure::getReason, Failure::getSeverity)
 				.containsExactlyInAnyOrder(Tuple.tuple("ERROR", "email should not be null or contain invalid atoms", Severity.ERROR));
+
+		Assertions.assertThat(redesigned.isValid()).isFalse();
+		Assertions.assertThat(redesigned.failures())
+				.extracting(Failure::getErrorCode, Failure::getReason, Failure::getSeverity)
+				.containsExactlyInAnyOrder(Tuple.tuple("ERROR", "email should not be null or contain invalid atoms", Severity.ERROR));
+	}
+
+	private <T> Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> withCode(String errorCode) {
+		return t -> failureBuilder -> failureBuilder.errorCode(errorCode);
 	}
 
 	@Value
