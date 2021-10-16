@@ -67,35 +67,25 @@ public class ValidationToolsUsageTest {
 								.orElse(false),
 						emailContact -> failureBuilder -> failureBuilder
 								.errorCode("ERROR")
-								.reason("email should not be null or contain invalid atoms")
+								.reason("email should not contain invalid atoms")
 								.severity(Severity.ERROR)
 				);
-
-//		 I Would rather write this as ensure(field(EmailContact::getEmail)
-//		 .compliesTo(Objects::nonNull)
-// 		 .and(mail -> StringUtils.containsIgnoreCase("invalid", mail))
-//		 .elseFail(withCode("123").andReason("email should not be null").andSeverity(CRITICAL)))
 
 		Fallible<EmailContact> redesigned = Fallible.of(toValidate)
 				.ensure(field(EmailContact::getEmail)
 						.compliesTo(Objects::nonNull)
-						.compliesTo(mail -> StringUtils.containsIgnoreCase("invalid", mail))
-						.elseFail(withReason("email should not be null"))
-				);
+						.andTo(mail -> StringUtils.containsIgnoreCase("invalid", mail))
+						.elseFail(FailureBuilderClause.<String>withCode("ERROR").andReason("email should not contain invalid atoms").andSeverity(Severity.ERROR)));
 
 		Assertions.assertThat(toBeValid.isValid()).isFalse();
 		Assertions.assertThat(toBeValid.failures())
 				.extracting(Failure::getErrorCode, Failure::getReason, Failure::getSeverity)
-				.containsExactlyInAnyOrder(Tuple.tuple("ERROR", "email should not be null or contain invalid atoms", Severity.ERROR));
+				.containsExactlyInAnyOrder(Tuple.tuple("ERROR", "email should contain invalid atoms", Severity.ERROR));
 
 		Assertions.assertThat(redesigned.isValid()).isFalse();
 		Assertions.assertThat(redesigned.failures())
 				.extracting(Failure::getErrorCode, Failure::getReason, Failure::getSeverity)
-				.containsExactlyInAnyOrder(Tuple.tuple("ERROR", "email should not be null or contain invalid atoms", Severity.ERROR));
-	}
-
-	private <T> Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> withCode(String errorCode) {
-		return t -> failureBuilder -> failureBuilder.errorCode(errorCode);
+				.containsExactlyInAnyOrder(Tuple.tuple("ERROR", "email should contain invalid atoms", Severity.ERROR));
 	}
 
 	@Value

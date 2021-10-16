@@ -45,7 +45,7 @@ public class FieldValidationRule<R, T> implements Rule<R> {
 
 	private Function<R, T> extractor;
 	private Function<T, Boolean> fieldAssertion;
-	private Function<T, Function<FailureBuilder, FailureBuilder>> failureCreator;
+	private FailureBuilderClause<T> failureCreator;
 
 	public static <R, T> FieldValidationRule<R, T> field(Function<R, T> fieldExtractor) {
 		return FieldValidationRule.<R, T>builder()
@@ -53,16 +53,12 @@ public class FieldValidationRule<R, T> implements Rule<R> {
 				.build();
 	}
 
-	static <T> Function<T, Function<FailureBuilder, FailureBuilder>> andReason(String reason) {
-		return FieldValidationRule.withReason(reason);
-	}
-
-	static <T> Function<T, Function<FailureBuilder, FailureBuilder>> withReason(String reason) {
-		return s -> failureBuilder -> failureBuilder.reason(reason);
-	}
-
-	public FieldValidationRule<R, T> elseFail(Function<T, Function<FailureBuilder, FailureBuilder>> failureDelta) {
+	public FieldValidationRule<R, T> elseFail(FailureBuilderClause<T> failureDelta) {
 		return this.toBuilder().failureCreator(failureDelta).build();
+	}
+
+	public FieldValidationRule<R, T> andTo(Function<T, Boolean> toAssert) {
+		return compliesTo(toAssert);
 	}
 
 	public FieldValidationRule<R, T> compliesTo(Function<T, Boolean> toAssert) {
