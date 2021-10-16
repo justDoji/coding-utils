@@ -80,12 +80,12 @@ public class ValidationToolsUsageTest {
 		Assertions.assertThat(toBeValid.isValid()).isFalse();
 		Assertions.assertThat(toBeValid.failures())
 				.extracting(Failure::getErrorCode, Failure::getReason, Failure::getSeverity)
-				.containsExactlyInAnyOrder(Tuple.tuple("ERROR", "email should contain invalid atoms", Severity.ERROR));
+				.containsExactlyInAnyOrder(Tuple.tuple("ERROR", "email should not contain invalid atoms", Severity.ERROR));
 
 		Assertions.assertThat(redesigned.isValid()).isFalse();
 		Assertions.assertThat(redesigned.failures())
 				.extracting(Failure::getErrorCode, Failure::getReason, Failure::getSeverity)
-				.containsExactlyInAnyOrder(Tuple.tuple("ERROR", "email should contain invalid atoms", Severity.ERROR));
+				.containsExactlyInAnyOrder(Tuple.tuple("ERROR", "email should not contain invalid atoms", Severity.ERROR));
 	}
 
 	@Value
