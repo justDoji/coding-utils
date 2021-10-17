@@ -5,6 +5,7 @@ on:
       - master
       - main
       - main_*
+      - features/*
   pull_request:
     types: [ opened, synchronize, reopened ]
 jobs:
@@ -36,5 +37,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn clean install -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-      - name: Build JavaDoc
+      - name: Build Documentation
         run: bash ./scripts/rebuildDocs.sh
+      - name: Push Documentation back to repository
+        uses: actions-x/commit@v2
+        with:
+            name: GitHub Actions Autocommitter
+            files: ./docs
+            message: '[GITOPS] Pipeline updated documentation'
