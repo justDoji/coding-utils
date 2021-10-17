@@ -8,7 +8,7 @@ The source code will contain the classes needed to simplify your code.
 If you are interested in seeing them in action, take a look at the test cases for a certain utility.
 These will give you a very concrete and runnable example of the utility class in action.
 
-#i# Documentation
+## Documentation
 
 ### JavaDoc for Library API
 
@@ -17,7 +17,7 @@ The code is documented using standard Java practices, meaning that the public fa
 This JavaDoc is then processed through maven and hosted on a github-pages webspace, which you can find here:
  [deployed javadocs](https://sddevelopment-be.github.io/coding-utils/javadoc/). To learn more about github-pages, take a look at 
 the [github documentation](https://pages.github.com/).
-i
+
 ### Design
 
 

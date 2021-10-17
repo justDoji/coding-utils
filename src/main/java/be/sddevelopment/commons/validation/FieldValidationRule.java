@@ -39,7 +39,6 @@ import lombok.Value;
  * @version 1.0.0
  * @created 18.10.20, Sunday
  */
-@Value
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class FieldValidationRule<R, T> implements Rule<R> {

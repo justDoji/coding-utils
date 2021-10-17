@@ -23,6 +23,10 @@
 
 package be.sddevelopment.commons.exceptions;
 
+import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -51,6 +55,11 @@ public class WrappedException extends RuntimeException {
 
   private final Exception originalException;
 
+  public WrappedException(String message, Exception cause) {
+    super(message, cause);
+    this.originalException = cause;
+  }
+
   @Override
   public String getMessage() {
     return this.originalException.getMessage();
@@ -58,7 +67,8 @@ public class WrappedException extends RuntimeException {
 
   @Override
   public synchronized Throwable getCause() {
-    return this.originalException.getCause();
+    Throwable cause = this.originalException.getCause();
+    return Objects.isNull(cause) ? this.originalException : cause;
   }
 
   @Override

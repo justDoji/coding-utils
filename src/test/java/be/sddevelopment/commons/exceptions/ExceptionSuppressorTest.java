@@ -82,7 +82,8 @@ class ExceptionSuppressorTest {
     Optional<String> nonEmptyString = Optional.of(Strings.NON_EMPTY_STRING);
     assertThatThrownBy(() -> nonEmptyString
         .map(ExceptionSuppressor.uncheck(TestMethods::throwExceptionIfNotBLank)))
-        .isInstanceOf(WrappedException.class);
+        .isInstanceOf(WrappedException.class)
+        .hasCauseInstanceOf(MalformedURLException.class);
   }
 
   public final Condition<Throwable> messageOfOriginalException = new Condition<>(
