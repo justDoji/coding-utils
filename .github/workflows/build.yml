@@ -4,8 +4,8 @@ on:
     branches:
       - master
       - main
-      - main_*
-      - features/*
+      - main_**
+      - features/**
   pull_request:
     types: [ opened, synchronize, reopened ]
 jobs:
@@ -43,5 +43,5 @@ jobs:
         uses: actions-x/commit@v2
         with:
             name: GitHub Actions Autocommitter
-            files: ./docs
+            files: ./docs/javadoc
             message: '[GITOPS] Pipeline updated documentation'

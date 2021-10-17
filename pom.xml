@@ -102,7 +102,7 @@
         <configuration>
           <show>public</show>
           <nohelp>true</nohelp>
-          <reportOutputDirectory>docs</reportOutputDirectory>
+          <reportOutputDirectory>docs/javadoc</reportOutputDirectory>
           <destDir>.</destDir>
           <stylesheet>maven</stylesheet>
           <stylesheetfile>${project.basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
@@ -194,7 +194,6 @@
           </excludes>
         </configuration>
       </plugin>
-
     </plugins>
   </build>
 
@@ -205,7 +204,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.2.0</version>
         <configuration>
-          <reportOutputDirectory>docs</reportOutputDirectory>
+          <reportOutputDirectory>docs/javadoc</reportOutputDirectory>
           <destDir>javadoc</destDir>
           <stylesheet>maven</stylesheet>
           <stylesheetfile>${project.basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
