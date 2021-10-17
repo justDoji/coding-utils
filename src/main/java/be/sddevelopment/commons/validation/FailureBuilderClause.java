@@ -7,12 +7,12 @@
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
  * EUPL (the "Licence");
- * 
+ *
  * You may not use this work except in compliance with the Licence.
  * You may obtain a copy of the Licence at:
- * 
+ *
  * http://ec.europa.eu/idabc/eupl5
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" basis,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,6 +32,12 @@ public class FailureBuilderClause<T> implements Function<T, Function<Failure.Fai
 	private final Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> self;
 	private final List<FailureBuilderClause<T>> constituents = new ArrayList<>();
 
+	private FailureBuilderClause(
+			Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> self
+	) {
+		this.self = self;
+	}
+
 	public static <T> FailureBuilderClause<T> of(Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> function) {
 		return new FailureBuilderClause<>(function);
 	}
@@ -40,30 +46,24 @@ public class FailureBuilderClause<T> implements Function<T, Function<Failure.Fai
 		return of(s -> failureBuilder -> failureBuilder.reason(reason));
 	}
 
-	public FailureBuilderClause<T> andReason(String reason) {
-		return this.and(withReason(reason));
-	}
-
 	public static <T> FailureBuilderClause<T> withCode(String code) {
 		return of(s -> failureBuilder -> failureBuilder.errorCode(code));
-	}
-
-	public FailureBuilderClause<T> andCode(String code) {
-		return this.and(withCode(code));
 	}
 
 	public static <T> FailureBuilderClause<T> withSeverity(Severity level) {
 		return of(s -> failureBuilder -> failureBuilder.severity(level));
 	}
 
-	public FailureBuilderClause<T> andSeverity(Severity level) {
-		return this.and(withSeverity(level));
+	public FailureBuilderClause<T> andReason(String reason) {
+		return this.and(withReason(reason));
 	}
 
-	private FailureBuilderClause(
-			Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> self
-	) {
-		this.self = self;
+	public FailureBuilderClause<T> andCode(String code) {
+		return this.and(withCode(code));
+	}
+
+	public FailureBuilderClause<T> andSeverity(Severity level) {
+		return this.and(withSeverity(level));
 	}
 
 	@Override

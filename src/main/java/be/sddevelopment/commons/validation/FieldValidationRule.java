@@ -29,8 +29,6 @@ import java.util.function.Function;
 import be.sddevelopment.commons.validation.Failure.FailureBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.Value;
 
 /**
  * <p>ValidationRule to be used to check validity of an object's field</p>

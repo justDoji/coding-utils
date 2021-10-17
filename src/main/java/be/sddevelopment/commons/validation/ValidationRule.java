@@ -26,8 +26,6 @@ package be.sddevelopment.commons.validation;
 import java.util.function.Function;
 
 import be.sddevelopment.commons.validation.Failure.FailureBuilder;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Value;
 
 /**

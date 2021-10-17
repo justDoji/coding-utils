@@ -40,6 +40,8 @@
  */
 package be.sddevelopment.commons.access;
 
+import static be.sddevelopment.commons.access.AccessProtectionUtils.AccessProtectionConstants.OPERATION_NOT_ALLOWED;
+import static be.sddevelopment.commons.access.AccessProtectionUtils.AccessProtectionConstants.UTILITY_CLASS;
 import static java.lang.String.format;
 
 /**
@@ -52,29 +54,28 @@ import static java.lang.String.format;
 @Utility
 public final class AccessProtectionUtils {
 
-  private AccessProtectionUtils() {
-    AccessProtectionUtils.utilityClassConstructor();
-  }
+	private AccessProtectionUtils() {
+		AccessProtectionUtils.utilityClassConstructor();
+	}
 
-  public static final class AccessProtectionConstants {
+	public static void utilityClassConstructor() {
+		unsupportedOperation(
+				format(OPERATION_NOT_ALLOWED, UTILITY_CLASS));
+	}
 
-    private AccessProtectionConstants() {
-      utilityClassConstructor();
-    }
+	public static void unsupportedOperation(String reason) {
+		throw new UnsupportedOperationException(
+				format(OPERATION_NOT_ALLOWED, reason));
+	}
 
-    public static final String OPERATION_NOT_ALLOWED = "This operation is not allowed for reason: [ %1$s ]";
-    public static final String UTILITY_CLASS = "Utility classes should not have a public or default constructor";
-  }
+	public static final class AccessProtectionConstants {
 
-  public static void utilityClassConstructor() {
-    unsupportedOperation(
-        format(AccessProtectionConstants.OPERATION_NOT_ALLOWED,
-            AccessProtectionConstants.UTILITY_CLASS));
-  }
+		public static final String OPERATION_NOT_ALLOWED = "This operation is not allowed for reason: [ %1$s ]";
+		public static final String UTILITY_CLASS = "Utility classes should not have a public or default constructor";
 
-  public static void unsupportedOperation(String reason) {
-    throw new UnsupportedOperationException(
-        format(AccessProtectionConstants.OPERATION_NOT_ALLOWED, reason));
-  }
+		private AccessProtectionConstants() {
+			utilityClassConstructor();
+		}
+	}
 
 }

@@ -7,12 +7,12 @@
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
  * EUPL (the "Licence");
- * 
+ *
  * You may not use this work except in compliance with the Licence.
  * You may obtain a copy of the Licence at:
- * 
+ *
  * http://ec.europa.eu/idabc/eupl5
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" basis,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,12 +23,11 @@
 
 package be.sddevelopment.commons.validation;
 
-import static be.sddevelopment.commons.validation.FieldValidationRule.*;
+import static be.sddevelopment.commons.validation.FieldValidationRule.field;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
 
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
@@ -45,11 +44,10 @@ import lombok.Value;
  * These tests are meant to check, and illustrate, the usage of the validation library.
  * As the library aims to make it easier for developers to write reusable, encapsulated validation code inside their projects,
  * the look and feel of client code should be tested.
- *
  */
 @DisplayNameGeneration(ReplaceUnderscoredCamelCasing.class)
 @DisplayName("Tests to illustrate usage of the Validation library")
-public class ValidationToolsUsageTest {
+class ValidationToolsUsageTest {
 
 	@Test
 	void asADeveloper_givenADataClass_IWantToValidateItsContentsAndDisplayErrors() {
