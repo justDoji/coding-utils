@@ -24,6 +24,7 @@
 package be.sddevelopment.commons.validation;
 
 import static be.sddevelopment.commons.validation.ErrorTemplate.template;
+import static be.sddevelopment.commons.validation.FailureBuilderClause.withCode;
 import static be.sddevelopment.commons.validation.FallibleTest.ConsumerServiceStub.consumerStub;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
@@ -128,6 +129,27 @@ class FallibleTest {
 
       assertThat(errors).extracting(Failure::getSeverity)
           .containsExactlyInAnyOrder(Severity.defaultVal());
+    }
+  }
+
+  @Nested
+  @DisplayName("Ensure supports the Fluent failure builder API")
+  class FallibleFluentFailureBuilderTest{
+    @Test
+    void givenAConditionWithAnErrorCode_whenContitionIsNotMet_thenTheFailureContainsTheCode() {
+      List<Failure> errors = Fallible.of("StringToCheck")
+              .ensure(FieldValidationRule.<String>data()
+                      .compliesTo(FallibleTest.this::mayNotContainNaughtyWords)
+                      .elseFail(withCode("NAUGHTY_ERROR"))
+              )
+              .ensure(FieldValidationRule.<String>data()
+                      .compliesTo(StringUtils::isNotBlank)
+                      .elseFail(withCode("MUST_BE_FILLED_IN"))
+              )
+              .failures();
+
+      assertThat(errors).hasSize(1);
+      assertThat(errors).extracting(Failure::getErrorCode).containsExactly("NAUGHTY_ERROR");
     }
   }
 
