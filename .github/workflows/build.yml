@@ -24,13 +24,6 @@ jobs:
       - name: Branch name
         run: echo running on branch ${GITHUB_REF#refs/heads/}
 
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
       - name: Cache Maven packages
         uses: actions/cache@v1
         with:
