@@ -26,16 +26,14 @@ package be.sddevelopment.commons;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import be.sddevelopment.commons.access.Utility;
+import be.sddevelopment.commons.testing.ReflectionAssertionUtils;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
-
-import be.sddevelopment.commons.access.Utility;
-import be.sddevelopment.commons.testing.ReflectionAssertionUtils;
 
 /**
  * <p>
@@ -64,14 +62,16 @@ class CodeInvariantTests {
 		Set<Class<?>> classesToTest = reflections.getTypesAnnotatedWith(Utility.class);
 
 		List<Constructor<?>> constructorsToTest = classesToTest.stream()
-				.map(Class::getDeclaredConstructors)
-				.flatMap(Arrays::stream)
-				.filter(constructor -> !constructor.isAccessible())
-				.collect(toList());
+		                                                       .map(Class::getDeclaredConstructors)
+		                                                       .flatMap(Arrays::stream)
+		                                                       .filter(
+				                                                       constructor -> !constructor.isAccessible())
+		                                                       .collect(toList());
 
 		assertThat(constructorsToTest).isNotEmpty()
-				.allSatisfy(ReflectionAssertionUtils::assertPrivateMember)
-				.allSatisfy(ReflectionAssertionUtils::assertPrivateMemberReflectionProtection);
+		                              .allSatisfy(ReflectionAssertionUtils::assertPrivateMember)
+		                              .allSatisfy(
+				                              ReflectionAssertionUtils::assertPrivateMemberReflectionProtection);
 
 	}
 

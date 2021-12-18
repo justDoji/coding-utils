@@ -24,7 +24,6 @@
 package be.sddevelopment.commons.exceptions;
 
 import java.util.Objects;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -24,7 +24,6 @@
 package be.sddevelopment.commons.testing;
 
 import java.lang.reflect.Method;
-
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 
 /**

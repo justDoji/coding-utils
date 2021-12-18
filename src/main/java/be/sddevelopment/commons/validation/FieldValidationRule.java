@@ -23,10 +23,9 @@
 
 package be.sddevelopment.commons.validation;
 
+import be.sddevelopment.commons.validation.Failure.FailureBuilder;
 import java.util.Optional;
 import java.util.function.Function;
-
-import be.sddevelopment.commons.validation.Failure.FailureBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
@@ -35,7 +34,6 @@ import lombok.Builder;
  *
  * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
  * @version 1.0.0
- * @created 18.10.20, Sunday
  */
 @AllArgsConstructor
 @Builder(toBuilder = true)
@@ -47,14 +45,15 @@ public class FieldValidationRule<R, T> implements Rule<R> {
 
 	public static <R, T> FieldValidationRule<R, T> field(Function<R, T> fieldExtractor) {
 		return FieldValidationRule.<R, T>builder()
-				.extractor(dataStruct -> Optional.of(dataStruct).map(fieldExtractor).orElse(null))
-				.build();
+		                          .extractor(dataStruct -> Optional.of(dataStruct).map(fieldExtractor)
+		                                                           .orElse(null))
+		                          .build();
 	}
 
 	public static <R> FieldValidationRule<R, R> data() {
 		return FieldValidationRule.<R, R>builder()
-				.extractor(dataStruct -> Optional.of(dataStruct).orElse(null))
-				.build();
+		                          .extractor(dataStruct -> Optional.of(dataStruct).orElse(null))
+		                          .build();
 	}
 
 	public FieldValidationRule<R, T> elseFail(FailureBuilderClause<T> failureDelta) {

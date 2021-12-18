@@ -25,7 +25,6 @@ package be.sddevelopment.commons.validation;
 
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 

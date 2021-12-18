@@ -43,15 +43,13 @@ package be.sddevelopment.commons.testing;
 import static org.apache.commons.lang3.StringUtils.isAlpha;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import be.sddevelopment.commons.access.AccessProtectionUtils;
+import be.sddevelopment.commons.access.Utility;
 import java.util.Optional;
 import java.util.function.Supplier;
-
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Condition;
 import org.assertj.core.api.OptionalAssert;
-
-import be.sddevelopment.commons.access.AccessProtectionUtils;
-import be.sddevelopment.commons.access.Utility;
 
 /**
  * <p>Description of file/class</p>

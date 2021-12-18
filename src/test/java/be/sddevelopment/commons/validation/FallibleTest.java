@@ -30,8 +30,8 @@ import static java.util.Collections.singletonList;
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import be.sddevelopment.commons.testing.ReplaceUnderscoredCamelCasing;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,18 +40,12 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import be.sddevelopment.commons.testing.ReplaceUnderscoredCamelCasing;
-
 @DisplayNameGeneration(ReplaceUnderscoredCamelCasing.class)
 @DisplayName("Tests for the Fallible class")
 class FallibleTest {
 
 	public final List<String> NAUGHTY_WORDS = singletonList("string");
 	public final String NAUGHTY_ERROR = "Your word seems to contain a naughty bit [%s]";
-
-	Boolean mayNotContainNaughtyWords(String toCheck) {
-		return NAUGHTY_WORDS.stream().noneMatch(w -> containsIgnoreCase(toCheck, w));
-	}
 
 	static class ConsumerServiceStub<T> {
 
@@ -81,8 +75,8 @@ class FallibleTest {
 		@Test
 		void when1ContitionIsNotMet_thenTheErrorListContains1Failure() {
 			List<Failure> errors = Fallible.of("StringToCheck")
-					.ensure(FallibleTest.this::mayNotContainNaughtyWords)
-					.failures();
+			                               .ensure(FallibleTest.this::mayNotContainNaughtyWords)
+			                               .failures();
 
 			assertThat(errors).hasSize(1);
 		}
@@ -90,8 +84,8 @@ class FallibleTest {
 		@Test
 		void whenAllConditionsAreMet_thenReturnedFailures_mustBeEmpty() {
 			List<Failure> failures = Fallible.of("This text contains no naught words")
-					.ensure(FallibleTest.this::mayNotContainNaughtyWords)
-					.failures();
+			                                 .ensure(FallibleTest.this::mayNotContainNaughtyWords)
+			                                 .failures();
 
 			assertThat(failures).isEmpty();
 		}
@@ -100,8 +94,8 @@ class FallibleTest {
 		void whenAllConditionsAreMet_thenIsValid_returnsTrue() {
 			assertThat(
 					Fallible.of("This text contains no naughty words")
-							.ensure(FallibleTest.this::mayNotContainNaughtyWords)
-							.isValid()
+					        .ensure(FallibleTest.this::mayNotContainNaughtyWords)
+					        .isValid()
 			).isTrue();
 		}
 	}
@@ -113,10 +107,11 @@ class FallibleTest {
 		@Test
 		void givenAConditionWithAnErrorCode_whenContitionIsNotMet_thenTheFailureContainsTheCode() {
 			List<Failure> errors = Fallible.of("StringToCheck")
-					.ensure(FallibleTest.this::mayNotContainNaughtyWords,
-							d -> b -> b.errorCode("NAUGHTY_ERROR"))
-					.ensure(StringUtils::isNotBlank, d -> b -> b.errorCode("MUST_BE_FILLED_IN"))
-					.failures();
+			                               .ensure(FallibleTest.this::mayNotContainNaughtyWords,
+			                                       d -> b -> b.errorCode("NAUGHTY_ERROR"))
+			                               .ensure(StringUtils::isNotBlank,
+			                                       d -> b -> b.errorCode("MUST_BE_FILLED_IN"))
+			                               .failures();
 
 			assertThat(errors).hasSize(1);
 			assertThat(errors).extracting(Failure::getErrorCode).containsExactly("NAUGHTY_ERROR");
@@ -125,55 +120,60 @@ class FallibleTest {
 		@Test
 		void givenMultipleConditionsWithErrorCodes_whenContitionsAreNotMet_thenTheFailureContainsAllCodes() {
 			List<Failure> errors = Fallible.of("")
-					.ensure(FallibleTest.this::mayNotContainNaughtyWords,
-							d -> b -> b.errorCode("NAUGHTY_ERROR"))
-					.ensure(StringUtils::isNotBlank, d -> b -> b.errorCode("MUST_BE_FILLED_IN"))
-					.ensure(StringUtils::isMixedCase, d -> b -> b.errorCode("MUST_BE_MIXED_CASE"))
-					.failures();
+			                               .ensure(FallibleTest.this::mayNotContainNaughtyWords,
+			                                       d -> b -> b.errorCode("NAUGHTY_ERROR"))
+			                               .ensure(StringUtils::isNotBlank,
+			                                       d -> b -> b.errorCode("MUST_BE_FILLED_IN"))
+			                               .ensure(StringUtils::isMixedCase,
+			                                       d -> b -> b.errorCode("MUST_BE_MIXED_CASE"))
+			                               .failures();
 
 			assertThat(errors).extracting(Failure::getErrorCode)
-					.containsExactlyInAnyOrder("MUST_BE_MIXED_CASE", "MUST_BE_FILLED_IN");
+			                  .containsExactlyInAnyOrder("MUST_BE_MIXED_CASE", "MUST_BE_FILLED_IN");
 		}
 
 		@Test
 		void givenConditionWithSeverity_whenContitionsAreNotMet_thenTheFailureHasSetSeverity() {
 			List<Failure> errors = Fallible.of("")
-					.ensure(
-							StringUtils::isNotBlank,
-							d -> b -> b.severity(Severity.ERROR)
-					)
-					.failures();
+			                               .ensure(
+					                               StringUtils::isNotBlank,
+					                               d -> b -> b.severity(Severity.ERROR)
+			                               )
+			                               .failures();
 
 			assertThat(errors).extracting(Failure::getSeverity)
-					.containsExactlyInAnyOrder(Severity.ERROR);
+			                  .containsExactlyInAnyOrder(Severity.ERROR);
 		}
 
 		@Test
 		void givenConditionsWithoutExplicitSeverity_whenContitionsAreNotMet_thenTheFailureHasDefaultSeverity() {
 			List<Failure> errors = Fallible.of("")
-					.ensure(StringUtils::isNotBlank)
-					.failures();
+			                               .ensure(StringUtils::isNotBlank)
+			                               .failures();
 
 			assertThat(errors).extracting(Failure::getSeverity)
-					.containsExactlyInAnyOrder(Severity.defaultVal());
+			                  .containsExactlyInAnyOrder(Severity.defaultVal());
 		}
 	}
 
 	@Nested
 	@DisplayName("Ensure supports the Fluent failure builder API")
 	class FallibleFluentFailureBuilderTest {
+
 		@Test
 		void givenAConditionWithAnErrorCode_whenContitionIsNotMet_thenTheFailureContainsTheCode() {
 			List<Failure> errors = Fallible.of("StringToCheck")
-					.ensure(FieldValidationRule.<String>data()
-							.compliesTo(FallibleTest.this::mayNotContainNaughtyWords)
-							.elseFail(withCode("NAUGHTY_ERROR"))
-					)
-					.ensure(FieldValidationRule.<String>data()
-							.compliesTo(StringUtils::isNotBlank)
-							.elseFail(withCode("MUST_BE_FILLED_IN"))
-					)
-					.failures();
+			                               .ensure(FieldValidationRule.<String>data()
+			                                                          .compliesTo(
+					                                                          FallibleTest.this::mayNotContainNaughtyWords)
+			                                                          .elseFail(withCode("NAUGHTY_ERROR"))
+			                               )
+			                               .ensure(FieldValidationRule.<String>data()
+			                                                          .compliesTo(StringUtils::isNotBlank)
+			                                                          .elseFail(
+					                                                          withCode("MUST_BE_FILLED_IN"))
+			                               )
+			                               .failures();
 
 			assertThat(errors).hasSize(1);
 			assertThat(errors).extracting(Failure::getErrorCode).containsExactly("NAUGHTY_ERROR");
@@ -209,8 +209,8 @@ class FallibleTest {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
 			Fallible.of("This should works")
-					.ensure(StringUtils::isBlank)
-					.orElse(stringConsumer::doSomething);
+			        .ensure(StringUtils::isBlank)
+			        .orElse(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.isCalled()).isTrue();
 		}
@@ -220,10 +220,10 @@ class FallibleTest {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
 			Fallible.of("This should works")
-					.ensure(StringUtils::isAlphanumericSpace)
-					.orElse(stringConsumer::doSomething)
-					.ensure(StringUtils::isBlank)
-					.orElse(stringConsumer::doSomething);
+			        .ensure(StringUtils::isAlphanumericSpace)
+			        .orElse(stringConsumer::doSomething)
+			        .ensure(StringUtils::isBlank)
+			        .orElse(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.callAmount()).isEqualTo(1);
 		}
@@ -259,8 +259,8 @@ class FallibleTest {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
 			Fallible.of("word123")
-					.ensure(StringUtils::isNotBlank)
-					.ifValid(stringConsumer::doSomething);
+			        .ensure(StringUtils::isNotBlank)
+			        .ifValid(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.isCalled()).isTrue();
 		}
@@ -270,8 +270,8 @@ class FallibleTest {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
 			Fallible.of("word123")
-					.ensure(StringUtils::isBlank)
-					.ifValid(stringConsumer::doSomething);
+			        .ensure(StringUtils::isBlank)
+			        .ifValid(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.isCalled()).isFalse();
 		}
@@ -281,10 +281,10 @@ class FallibleTest {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
 			Fallible.of("word123")
-					.ensure(StringUtils::isBlank)
-					.ifValid(stringConsumer::doSomething)
-					.ensure(StringUtils::isNotBlank)
-					.ifValid(stringConsumer::doSomething);
+			        .ensure(StringUtils::isBlank)
+			        .ifValid(stringConsumer::doSomething)
+			        .ensure(StringUtils::isNotBlank)
+			        .ifValid(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.isCalled()).isFalse();
 		}
@@ -294,9 +294,9 @@ class FallibleTest {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
 			Fallible.of("word123")
-					.ensure(StringUtils::isNotBlank)
-					.ensure(StringUtils::isMixedCase)
-					.ifValid(stringConsumer::doSomething);
+			        .ensure(StringUtils::isNotBlank)
+			        .ensure(StringUtils::isMixedCase)
+			        .ifValid(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.isCalled()).isFalse();
 		}
@@ -306,9 +306,9 @@ class FallibleTest {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
 			Fallible.of("word123")
-					.ensure(StringUtils::isNotBlank)
-					.ensure(StringUtils::isAlphanumeric)
-					.ifValid(stringConsumer::doSomething);
+			        .ensure(StringUtils::isNotBlank)
+			        .ensure(StringUtils::isAlphanumeric)
+			        .ifValid(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.callAmount()).isEqualTo(1);
 		}
@@ -318,10 +318,10 @@ class FallibleTest {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
 			Fallible.of("word123")
-					.ensure(StringUtils::isAlphanumeric)
-					.ifValid(stringConsumer::doSomething)
-					.ensure(StringUtils::isNotBlank)
-					.ifValid(stringConsumer::doSomething);
+			        .ensure(StringUtils::isAlphanumeric)
+			        .ifValid(stringConsumer::doSomething)
+			        .ensure(StringUtils::isNotBlank)
+			        .ifValid(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.callAmount()).isEqualTo(2);
 		}
@@ -331,10 +331,10 @@ class FallibleTest {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
 			Fallible.of("word123")
-					.ensure(StringUtils::isAlphanumeric)
-					.ifValid(stringConsumer::doSomething)
-					.ensure(StringUtils::isBlank)
-					.ifValid(stringConsumer::doSomething);
+			        .ensure(StringUtils::isAlphanumeric)
+			        .ifValid(stringConsumer::doSomething)
+			        .ensure(StringUtils::isBlank)
+			        .ifValid(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.callAmount()).isEqualTo(1);
 		}
@@ -348,9 +348,11 @@ class FallibleTest {
 		void givenATemplate_whenAFailureOccurs_thenAFailureExistsWithADerivativeMessage() {
 
 			List<Failure> failures = Fallible.of("")
-					.errorTemplate(template(s -> "The string [" + s + "] does not match rule: {%s}"))
-					.ensure(StringUtils::isNotBlank, s -> b -> b.reason("Input can not be blank"))
-					.failures();
+			                                 .errorTemplate(template(
+					                                 s -> "The string [" + s + "] does not match rule: {%s}"))
+			                                 .ensure(StringUtils::isNotBlank,
+			                                         s -> b -> b.reason("Input can not be blank"))
+			                                 .failures();
 
 			assertThat(failures).hasSize(1);
 			assertThat(failures)
@@ -361,8 +363,9 @@ class FallibleTest {
 		@Test
 		void givenThatNoTemplateIsProvided_andAReasonIsProvided_whenAFailureOccurs_theReasonIsReturnedAsIs() {
 			List<Failure> failures = Fallible.of("")
-					.ensure(StringUtils::isNotBlank, s -> b -> b.reason("Input can not be blank"))
-					.failures();
+			                                 .ensure(StringUtils::isNotBlank,
+			                                         s -> b -> b.reason("Input can not be blank"))
+			                                 .failures();
 
 			assertThat(failures).hasSize(1);
 			assertThat(failures)
@@ -374,9 +377,11 @@ class FallibleTest {
 		void givenATemplateWithoutDataReference_whenAFailureOccurs_thenAFailureExistsWithADerivativeMessage() {
 
 			List<Failure> failures = Fallible.of("")
-					.errorTemplate(template(s -> "The string [" + s + "] does not match rule: {%s}"))
-					.ensure(StringUtils::isNotBlank, s -> b -> b.reason("Input can not be blank"))
-					.failures();
+			                                 .errorTemplate(template(
+					                                 s -> "The string [" + s + "] does not match rule: {%s}"))
+			                                 .ensure(StringUtils::isNotBlank,
+			                                         s -> b -> b.reason("Input can not be blank"))
+			                                 .failures();
 
 			assertThat(failures).hasSize(1);
 			assertThat(failures)
@@ -384,6 +389,10 @@ class FallibleTest {
 					.contains("The string [] does not match rule: {Input can not be blank}");
 		}
 
+	}
+
+	Boolean mayNotContainNaughtyWords(String toCheck) {
+		return NAUGHTY_WORDS.stream().noneMatch(w -> containsIgnoreCase(toCheck, w));
 	}
 
 }

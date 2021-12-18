@@ -23,9 +23,8 @@
 
 package be.sddevelopment.commons.validation;
 
-import java.util.function.Function;
-
 import be.sddevelopment.commons.validation.Failure.FailureBuilder;
+import java.util.function.Function;
 import lombok.AllArgsConstructor;
 
 /**
@@ -80,6 +79,6 @@ public class ErrorTemplate<T> {
 	 */
 	public FailureBuilder failure(T data) {
 		return Failure.failure()
-				.reasonCreator(message -> String.format(this.template.apply(data), message));
+		              .reasonCreator(message -> String.format(this.template.apply(data), message));
 	}
 }

@@ -26,11 +26,10 @@ package be.sddevelopment.commons.testing;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import be.sddevelopment.commons.access.AccessProtectionUtils;
 import be.sddevelopment.commons.access.Utility;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * <p>
@@ -62,16 +61,17 @@ public final class ReflectionAssertionUtils {
 			@SuppressWarnings("rawtypes") final Constructor constructor) {
 		constructor.setAccessible(true);
 		assertThatThrownBy(constructor::newInstance).isInstanceOf(InvocationTargetException.class)
-				.hasCauseInstanceOf(UnsupportedOperationException.class)
-				.hasStackTraceContaining(
-						"This operation is not allowed for reason: [ Utility classes should not have a public or default constructor ]");
+		                                            .hasCauseInstanceOf(
+				                                            UnsupportedOperationException.class)
+		                                            .hasStackTraceContaining(
+				                                            "This operation is not allowed for reason: [ Utility classes should not have a public or default constructor ]");
 	}
 
 	public static void assertPrivateMember(
 			@SuppressWarnings("rawtypes") final Constructor constructor) {
 		assertThatThrownBy(constructor::newInstance,
-				format("Constructor %s is expected to be protected from illegal access",
-						constructor))
+		                   format("Constructor %s is expected to be protected from illegal access",
+		                          constructor))
 				.isInstanceOfAny(InvocationTargetException.class, IllegalAccessException.class);
 	}
 }

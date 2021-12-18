@@ -23,9 +23,8 @@
 
 package be.sddevelopment.commons.validation;
 
-import java.util.function.Function;
-
 import be.sddevelopment.commons.validation.Failure.FailureBuilder;
+import java.util.function.Function;
 import lombok.Value;
 
 /**
@@ -33,7 +32,6 @@ import lombok.Value;
  *
  * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
  * @version 1.0.0
- * @created 18.10.20, Sunday
  */
 @Value
 public class ValidationRule<T> implements Rule<T> {

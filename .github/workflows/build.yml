@@ -16,32 +16,46 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
       - name: Set up JDK 11
         uses: actions/setup-java@v1
         with:
           java-version: 11
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: Print branch name
+        run: echo running on branch ${GITHUB_REF##*/}
+
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+
       - name: Cache Maven packages
         uses: actions/cache@v1
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+
       - name: Test and Analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn clean install -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+
       - name: Build Documentation
         run: bash ./scripts/rebuildDocs.sh
+
       - name: Push Documentation back to repository
         uses: actions-x/commit@v2
         with:
-            name: GitHub Actions Autocommitter
-            files: ./docs/javadoc
-            message: '[GITOPS] Pipeline updated documentation'
+          name: GitHub Actions Autocommitter
+          files: ./docs/javadoc
+          message: '[GITOPS] Pipeline updated documentation'

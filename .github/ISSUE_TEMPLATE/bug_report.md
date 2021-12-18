@@ -1,38 +1,38 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: ''
+title: '[BUG] title'
 labels: bug
 assignees: ''
+
 ---
 
-## Describe the bug
+**Describe the bug**
 A clear and concise description of what the bug is.
 
-## Version
-- [ ] latest
-- [ ] 1.0.0
+**To Reproduce**
+Steps to reproduce the behavior:
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See error
 
-## Development Environment
-### Operating System
-- [ ] Linux
-- [ ] Windows
-- [ ] Mac
+**Expected behavior**
+A clear and concise description of what you expected to happen.
 
-### System versions
-- OS version: ```version goes here``` 
-- JDK version: ```version goes here```
-- Maven version: ```version goes here```
-
-## Screenshots
+**Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-## How to reproduce
-If applicable, add information on how to reproduce the problem.
+**Desktop (please complete the following information):**
+ - OS: [e.g. iOS]
+ - Browser [e.g. chrome, safari]
+ - Version [e.g. 22]
 
-### Gist to unit test showing the issue in action
-If possible, we prefer you create a [gist](https://gist.github.com/discover) with a unit test  
-displaying the faulty behaviour.
+**Smartphone (please complete the following information):**
+ - Device: [e.g. iPhone6]
+ - OS: [e.g. iOS8.1]
+ - Browser [e.g. stock browser, safari]
+ - Version [e.g. 22]
 
-## Additional context
+**Additional context**
 Add any other context about the problem here.

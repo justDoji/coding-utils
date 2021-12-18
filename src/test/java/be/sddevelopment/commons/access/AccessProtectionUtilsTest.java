@@ -25,10 +25,9 @@ package be.sddevelopment.commons.access;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import be.sddevelopment.commons.testing.ReflectionAssertionUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import be.sddevelopment.commons.testing.ReflectionAssertionUtils;
 
 /**
  * <p>Shortcodes for class access restrictions and common error codes</p>

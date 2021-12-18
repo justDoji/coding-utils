@@ -28,17 +28,15 @@ import static be.sddevelopment.commons.exceptions.ExceptionSuppressor.ignore;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import be.sddevelopment.commons.constants.Strings;
+import be.sddevelopment.commons.testing.ReplaceUnderscoredCamelCasing;
 import java.net.MalformedURLException;
 import java.util.Optional;
-
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;
-
-import be.sddevelopment.commons.constants.Strings;
-import be.sddevelopment.commons.testing.ReplaceUnderscoredCamelCasing;
 
 /**
  * <p>
@@ -69,10 +67,25 @@ class ExceptionSuppressorTest {
 			"Precondition: Throwable contains the original exception message"
 	);
 
+	private static final class TestMethods {
+
+		public static final String EXCEPTION_MESSAGE = "You are not allowed to enter a non-empty String";
+		private static final String NO_THROW = "I did not throw it on the floor.";
+
+		static String throwExceptionIfNotBLank(String url) throws MalformedURLException {
+			if (StringUtils.isNotBlank(url)) {
+				throw new MalformedURLException(EXCEPTION_MESSAGE);
+			}
+
+			return NO_THROW;
+		}
+
+	}
+
 	@Test
 	void whenAnExceptionIsSuppressed_usingDefaultSupress_thenChainInterpretsItAsEmptyResult() {
 		Optional<String> result = Optional.of(Strings.NON_EMPTY_STRING)
-				.map(ignore(TestMethods::throwExceptionIfNotBLank));
+		                                  .map(ignore(TestMethods::throwExceptionIfNotBLank));
 
 		assertThat(result).isNotPresent();
 	}
@@ -80,7 +93,7 @@ class ExceptionSuppressorTest {
 	@Test
 	void whenAnExceptionIsNotSuppressed_usingDefaultSupress_thenChainUsesMethodReturnObject() {
 		Optional<String> result = Optional.of(EMPTY_STRING)
-				.map(ignore(TestMethods::throwExceptionIfNotBLank));
+		                                  .map(ignore(TestMethods::throwExceptionIfNotBLank));
 
 		assertThat(result).contains(TestMethods.NO_THROW);
 	}
@@ -97,29 +110,16 @@ class ExceptionSuppressorTest {
 	@Test
 	void whenAnExceptionIsSupressed_ByConvertingToRuntime_thenTheThrownExceptionContainsTheOriginalOne() {
 		assertThatThrownBy(() -> Optional.of(Strings.NON_EMPTY_STRING)
-				.map(ExceptionSuppressor.uncheck(TestMethods::throwExceptionIfNotBLank)))
+		                                 .map(ExceptionSuppressor.uncheck(
+				                                 TestMethods::throwExceptionIfNotBLank)))
 				.satisfies(messageOfOriginalException);
 	}
 
 	@Test
 	void whenAnExceptionIsSupressed_usingIgnoreAsOptional_givenAMethodThatThrowsAnException_TheResultIsAnEmptyOptional() {
 		assertThat(Optional.of(Strings.NON_EMPTY_STRING)
-				.flatMap(ExceptionSuppressor.ignoreAsOptional(TestMethods::throwExceptionIfNotBLank)))
+		                   .flatMap(ExceptionSuppressor.ignoreAsOptional(
+				                   TestMethods::throwExceptionIfNotBLank)))
 				.isEmpty();
-	}
-
-	private static final class TestMethods {
-
-		public static final String EXCEPTION_MESSAGE = "You are not allowed to enter a non-empty String";
-		private static final String NO_THROW = "I did not throw it on the floor.";
-
-		static String throwExceptionIfNotBLank(String url) throws MalformedURLException {
-			if (StringUtils.isNotBlank(url)) {
-				throw new MalformedURLException(EXCEPTION_MESSAGE);
-			}
-
-			return NO_THROW;
-		}
-
 	}
 }

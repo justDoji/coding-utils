@@ -23,11 +23,10 @@
 
 package be.sddevelopment.commons.exceptions;
 
-import java.util.Optional;
-import java.util.function.Function;
-
 import be.sddevelopment.commons.access.AccessProtectionUtils;
 import be.sddevelopment.commons.access.Utility;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -63,7 +62,7 @@ public final class ExceptionSuppressor {
 	 * @param <T>    The input type of the wrapped function
 	 * @param <R>    The return type of the wrapped function
 	 * @return The result of the wrapped function in the happy flow case. The method will return null
-	 * in case an exception occured.
+	 * 		in case an exception occured.
 	 */
 	public static <T, R> Function<T, R> ignore(FallibleFunction<T, R> toWrap) {
 		return t -> ignoreInner(toWrap, t);
@@ -77,7 +76,7 @@ public final class ExceptionSuppressor {
 	 * @param <T>    The input type of the wrapped function
 	 * @param <R>    The return type of the wrapped function
 	 * @return The result of the wrapped function in the happy flow case. The method will return an
-	 * empty {@link Optional<R>} in case an exception occured.
+	 * 		empty {@link Optional<R>} in case an exception occured.
 	 */
 	public static <T, R> Function<T, Optional<R>> ignoreAsOptional(FallibleFunction<T, R> toWrap) {
 		return t -> Optional.ofNullable(ignoreInner(toWrap, t));

@@ -23,14 +23,13 @@
 
 package be.sddevelopment.commons.validation;
 
+import be.sddevelopment.commons.validation.Failure.FailureBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import be.sddevelopment.commons.validation.Failure.FailureBuilder;
 
 /**
  * <p>
@@ -91,7 +90,7 @@ public class Fallible<T> {
 	 * @return a {@link be.sddevelopment.commons.validation.Fallible} object.
 	 */
 	public Fallible<T> ensure(Function<T, Boolean> assertion,
-			Function<T, Function<FailureBuilder, FailureBuilder>> error) {
+	                          Function<T, Function<FailureBuilder, FailureBuilder>> error) {
 		this.failures = null;
 		this.validations.add(new ValidationRule<>(assertion, error));
 		return this;
@@ -165,7 +164,7 @@ public class Fallible<T> {
 	 * all required rules to the data object.</p>
 	 *
 	 * @return a {@link java.util.List} containing {@link be.sddevelopment.commons.validation.Failure}
-	 * objects.
+	 * 		objects.
 	 */
 	public List<Failure> failures() {
 		validate();
@@ -175,11 +174,11 @@ public class Fallible<T> {
 	private void validate() {
 		if (Objects.isNull(this.failures)) {
 			this.failures = validations.stream()
-					.filter(this::assertionFailed)
-					.map(rule -> rule.getFailureCreator().apply(this.data)
-							.apply(errorTemplate.failure(this.data)))
-					.map(FailureBuilder::build)
-					.collect(Collectors.toList());
+			                           .filter(this::assertionFailed)
+			                           .map(rule -> rule.getFailureCreator().apply(this.data)
+			                                            .apply(errorTemplate.failure(this.data)))
+			                           .map(FailureBuilder::build)
+			                           .collect(Collectors.toList());
 		}
 	}
 
