@@ -34,8 +34,7 @@ public class FailureBuilderClause<T> implements
 	private final List<FailureBuilderClause<T>> constituents = new ArrayList<>();
 
 	private FailureBuilderClause(
-			Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> self
-	) {
+			Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> self) {
 		this.self = self;
 	}
 
@@ -74,9 +73,11 @@ public class FailureBuilderClause<T> implements
 	}
 
 	private Function<Failure.FailureBuilder, Failure.FailureBuilder> applyConstituents(T t) {
-		return constituents.stream()
-		                   .map(clause -> clause.apply(t))
-		                   .reduce(Function::andThen).orElse(Function.identity());
+		return constituents
+				.stream()
+				.map(clause -> clause.apply(t))
+				.reduce(Function::andThen)
+				.orElse(Function.identity());
 	}
 
 	private FailureBuilderClause<T> and(FailureBuilderClause<T> toAppend) {

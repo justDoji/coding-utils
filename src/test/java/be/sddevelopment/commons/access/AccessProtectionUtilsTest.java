@@ -51,14 +51,14 @@ class AccessProtectionUtilsTest {
 	 */
 	@Test
 	void givenAUtilityClassWithAPrivateDefaultConstructor_whenInstantiatingAndOverwritingAccessModifier_anExceptionIsThrown() {
-		ReflectionAssertionUtils
-				.assertPrivateMemberReflectionProtection(classToTest.getDeclaredConstructors()[0]);
+		ReflectionAssertionUtils.assertPrivateMemberReflectionProtection(
+				classToTest.getDeclaredConstructors()[0]);
 	}
 
 	@Test
 	void givenAUtilityClassWithAPrivateConstructor_whenInstantiating_anIllegalExceptionIsThrown() {
-		assertThatThrownBy(() -> classToTest.getDeclaredConstructor().newInstance())
-				.isInstanceOf(IllegalAccessException.class);
+		assertThatThrownBy(() -> classToTest.getDeclaredConstructor().newInstance()).isInstanceOf(
+				IllegalAccessException.class);
 	}
 
 	private Class<?> utilityClass() throws ClassNotFoundException {

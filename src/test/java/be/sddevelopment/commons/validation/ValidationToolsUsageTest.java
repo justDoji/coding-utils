@@ -60,52 +60,47 @@ class ValidationToolsUsageTest {
 
 	@Test
 	void asADeveloper_givenADataClass_IWantToValidateItsContentsAndDisplayErrors() {
-		EmailContact toValidate = EmailContact.builder()
-		                                      .email("Invalid Format")
-		                                      .name("Bob")
-		                                      .lastName("The Buider")
-		                                      .userIdentifier(UUID.randomUUID())
-		                                      .build();
+		EmailContact toValidate = EmailContact
+				.builder()
+				.email("Invalid Format")
+				.name("Bob")
+				.lastName("The Buider")
+				.userIdentifier(UUID.randomUUID())
+				.build();
 
-		Fallible<EmailContact> toBeValid = Fallible.of(toValidate)
-		                                           .ensure(emailContact -> Optional.of(emailContact)
-		                                                                           .map(
-				                                                                           EmailContact::getEmail)
-		                                                                           .map(
-				                                                                           mail -> StringUtils.containsIgnoreCase(
-						                                                                           "invalid",
-						                                                                           mail))
-		                                                                           .orElse(false),
-		                                                   emailContact -> failureBuilder -> failureBuilder
-				                                                   .errorCode("ERROR")
-				                                                   .reason(
-						                                                   "email should not contain invalid atoms")
-				                                                   .severity(Severity.ERROR)
-		                                           );
+		Fallible<EmailContact> toBeValid = Fallible
+				.of(toValidate)
+				.ensure(emailContact -> Optional
+						.of(emailContact)
+						.map(EmailContact::getEmail)
+						.map(mail -> StringUtils.containsIgnoreCase("invalid", mail))
+						.orElse(false), emailContact -> failureBuilder -> failureBuilder
+						.errorCode("ERROR")
+						.reason("email should not contain invalid atoms")
+						.severity(Severity.ERROR));
 
-		Fallible<EmailContact> redesigned = Fallible.of(toValidate)
-		                                            .ensure(field(EmailContact::getEmail)
-				                                                    .compliesTo(Objects::nonNull)
-				                                                    .andTo(
-						                                                    mail -> StringUtils.containsIgnoreCase(
-								                                                    "invalid", mail))
-				                                                    .elseFail(
-						                                                    FailureBuilderClause.<String>withCode(
-								                                                                        "ERROR").andReason(
-								                                                                        "email should not contain invalid atoms")
-						                                                                        .andSeverity(
-								                                                                        Severity.ERROR)));
+		Fallible<EmailContact> redesigned = Fallible
+				.of(toValidate)
+				.ensure(field(EmailContact::getEmail)
+						        .compliesTo(Objects::nonNull)
+						        .andTo(mail -> StringUtils.containsIgnoreCase("invalid", mail))
+						        .elseFail(FailureBuilderClause
+								                  .<String>withCode("ERROR")
+								                  .andReason("email should not contain invalid atoms")
+								                  .andSeverity(Severity.ERROR)));
 
 		Assertions.assertThat(toBeValid.isValid()).isFalse();
-		Assertions.assertThat(toBeValid.failures())
-		          .extracting(Failure::getErrorCode, Failure::getReason, Failure::getSeverity)
-		          .containsExactlyInAnyOrder(
-				          Tuple.tuple("ERROR", "email should not contain invalid atoms", Severity.ERROR));
+		Assertions
+				.assertThat(toBeValid.failures())
+				.extracting(Failure::getErrorCode, Failure::getReason, Failure::getSeverity)
+				.containsExactlyInAnyOrder(
+						Tuple.tuple("ERROR", "email should not contain invalid atoms", Severity.ERROR));
 
 		Assertions.assertThat(redesigned.isValid()).isFalse();
-		Assertions.assertThat(redesigned.failures())
-		          .extracting(Failure::getErrorCode, Failure::getReason, Failure::getSeverity)
-		          .containsExactlyInAnyOrder(
-				          Tuple.tuple("ERROR", "email should not contain invalid atoms", Severity.ERROR));
+		Assertions
+				.assertThat(redesigned.failures())
+				.extracting(Failure::getErrorCode, Failure::getReason, Failure::getSeverity)
+				.containsExactlyInAnyOrder(
+						Tuple.tuple("ERROR", "email should not contain invalid atoms", Severity.ERROR));
 	}
 }

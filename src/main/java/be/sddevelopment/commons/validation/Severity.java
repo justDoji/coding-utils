@@ -39,9 +39,7 @@ import lombok.Getter;
 @SuppressWarnings("ALL")
 public enum Severity {
 
-	INFO(false),
-	WARNING(false),
-	ERROR(true);
+	INFO(false), WARNING(false), ERROR(true);
 
 	@Getter
 	private boolean blocking;

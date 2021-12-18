@@ -173,12 +173,15 @@ public class Fallible<T> {
 
 	private void validate() {
 		if (Objects.isNull(this.failures)) {
-			this.failures = validations.stream()
-			                           .filter(this::assertionFailed)
-			                           .map(rule -> rule.getFailureCreator().apply(this.data)
-			                                            .apply(errorTemplate.failure(this.data)))
-			                           .map(FailureBuilder::build)
-			                           .collect(Collectors.toList());
+			this.failures = validations
+					.stream()
+					.filter(this::assertionFailed)
+					.map(rule -> rule
+							.getFailureCreator()
+							.apply(this.data)
+							.apply(errorTemplate.failure(this.data)))
+					.map(FailureBuilder::build)
+					.collect(Collectors.toList());
 		}
 	}
 

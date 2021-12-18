@@ -59,13 +59,11 @@ public final class AccessProtectionUtils {
 	}
 
 	public static void utilityClassConstructor() {
-		unsupportedOperation(
-				format(OPERATION_NOT_ALLOWED, UTILITY_CLASS));
+		unsupportedOperation(format(OPERATION_NOT_ALLOWED, UTILITY_CLASS));
 	}
 
 	public static void unsupportedOperation(String reason) {
-		throw new UnsupportedOperationException(
-				format(OPERATION_NOT_ALLOWED, reason));
+		throw new UnsupportedOperationException(format(OPERATION_NOT_ALLOWED, reason));
 	}
 
 	public static final class AccessProtectionConstants {

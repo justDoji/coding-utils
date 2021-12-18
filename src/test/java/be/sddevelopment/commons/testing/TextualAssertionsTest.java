@@ -23,9 +23,11 @@
 
 package be.sddevelopment.commons.testing;
 
+import static java.util.Optional.of;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+import be.sddevelopment.commons.constants.Strings;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -37,14 +39,10 @@ import org.junit.jupiter.api.Test;
  *
  * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
  * @version $Id: $Id
- * @created 18.10.20, Sunday
  */
 @DisplayName("Test for AssertionUtils")
 @DisplayNameGeneration(ReplaceUnderscoredCamelCasing.class)
-class TextualAssertionUtilsTest {
-
-	public static final String EMPTY_STRING = "";
-	private static final String NULL_STRING = null;
+class TextualAssertionsTest {
 
 	@Nested
 	@DisplayName("Test with empty input")
@@ -52,34 +50,34 @@ class TextualAssertionUtilsTest {
 
 		@Test
 		void whenAssertingANumericalOptional_andTheStringIsEmpty_thenTheAssertFails() {
-			assertThatThrownBy(() -> TextualAssertionUtils.assertThatNumber(
-					this::emptyInputSupplier)).isInstanceOf(AssertionError.class)
-			                              .hasMessageContaining("to be <numeric>");
+			assertThatThrownBy(() -> TextualAssertions.assertThatNumber(this::emptyInputSupplier))
+					.isInstanceOf(AssertionError.class)
+					.hasMessageContaining("to be numeric");
 		}
 
 		@Test
 		void whenAssertingAnAlphaNumericalOptional_andTheStringIsEmpty_thenTheAssertFails() {
-			assertThatThrownBy(() -> TextualAssertionUtils.assertThatAlphanumeric(
-					this::emptyInputSupplier)).isInstanceOf(AssertionError.class)
-			                              .hasMessageContaining("to be <alphanumeric>");
+			assertThatThrownBy(() -> TextualAssertions.assertThatAlphanumeric(this::emptyInputSupplier))
+					.isInstanceOf(AssertionError.class)
+					.hasMessageContaining("to be alphanumeric");
 		}
 
 		@Test
 		void whenAssertingAnAlphaOptional_andTheStringIsEmpty_thenTheAssertFails() {
-			assertThatThrownBy(
-					() -> TextualAssertionUtils.assertThatAlpha(this::emptyInputSupplier)).isInstanceOf(
-					AssertionError.class).hasMessageContaining("to be <alphabetical>");
+			assertThatThrownBy(() -> TextualAssertions.assertThatAlpha(this::emptyInputSupplier))
+					.isInstanceOf(AssertionError.class)
+					.hasMessageContaining("to be alphabetical");
 		}
 
 		@Test
 		void whenAssertingAnEmptyInput_andTheStringIsEmpty_thenTheAssertFails() {
-			assertThatThrownBy(
-					() -> TextualAssertionUtils.assertEmpty(this::emptyInputSupplier)).isInstanceOf(
-					AssertionError.class).hasMessageContaining("Expecting empty Optional");
+			assertThatThrownBy(() -> TextualAssertions.assertEmpty(this::emptyInputSupplier))
+					.isInstanceOf(AssertionError.class)
+					.hasMessageContaining("Expecting empty Optional");
 		}
 
 		private Optional<String> emptyInputSupplier() {
-			return Optional.of(TextualAssertionUtilsTest.EMPTY_STRING);
+			return of(Strings.EMPTY_STRING);
 		}
 	}
 
@@ -89,28 +87,23 @@ class TextualAssertionUtilsTest {
 
 		@Test
 		void whenAssertingANumericalOptional_andTheInputIsNull_thenTheAssertFails() {
-			assertThatThrownBy(() -> TextualAssertionUtils.assertThatAlphanumeric(
-					() -> Optional.ofNullable(TextualAssertionUtilsTest.NULL_STRING))).isInstanceOf(
-							                                                                  AssertionError.class)
-			                                                                      .hasMessageContaining(
-					                                                                      "Field expected to not be empty");
+			assertThatThrownBy(() -> TextualAssertions.assertThatAlphanumeric(Optional::empty))
+					.isInstanceOf(AssertionError.class)
+					.hasMessageContaining("Field expected to not be empty");
 		}
 
 		@Test
 		void whenAssertingAnAlphaNumericalOptional_andTheInputIsNull_thenTheAssertFails() {
-			assertThatThrownBy(() -> TextualAssertionUtils.assertThatAlphanumeric(
-					() -> Optional.ofNullable(TextualAssertionUtilsTest.NULL_STRING))).isInstanceOf(
-							                                                                  AssertionError.class)
-			                                                                      .hasMessageContaining(
-					                                                                      "Field expected to not be empty");
+			assertThatThrownBy(() -> TextualAssertions.assertThatAlphanumeric(Optional::empty))
+					.isInstanceOf(AssertionError.class)
+					.hasMessageContaining("Field expected to not be empty");
 		}
 
 		@Test
 		void whenAssertingAnAlphaOptional_andTheInputIsNull_thenTheAssertFails() {
-			assertThatThrownBy(
-					() -> TextualAssertionUtils.assertThatAlpha(
-							() -> Optional.ofNullable(TextualAssertionUtilsTest.NULL_STRING))).isInstanceOf(
-					AssertionError.class).hasMessageContaining("Field expected to not be empty");
+			assertThatThrownBy(() -> TextualAssertions.assertThatAlpha(Optional::empty))
+					.isInstanceOf(AssertionError.class)
+					.hasMessageContaining("Field expected to not be empty");
 		}
 	}
 
@@ -120,20 +113,20 @@ class TextualAssertionUtilsTest {
 
 		@Test
 		void whenAssertingANumericalOptional_andTheInputContainsOnlyDigits_thenTheAssertFails() {
-			assertThatCode(() -> TextualAssertionUtils.assertThatNumber(
-					() -> Optional.of("1000290"))).doesNotThrowAnyException();
+			assertThatCode(
+					() -> TextualAssertions.assertThatNumber(() -> of("1000290"))).doesNotThrowAnyException();
 		}
 
 		@Test
 		void whenAssertingAnAlphaNumericalOptional_andTheInputContainsLettersAndDigits_thenTheAssertFails() {
-			assertThatCode(() -> TextualAssertionUtils.assertThatAlphanumeric(
-					() -> Optional.of("abcd123jajaja"))).doesNotThrowAnyException();
+			assertThatCode(() -> TextualAssertions.assertThatAlphanumeric(
+					() -> of("abcd123jajaja"))).doesNotThrowAnyException();
 		}
 
 		@Test
 		void whenAssertingAnAlphaOptional_andTheInputIsNull_thenTheAssertFails() {
-			assertThatCode(() -> TextualAssertionUtils.assertThatAlpha(
-					() -> Optional.of("aaaaahjhjahzjahzjahzjahzj"))).doesNotThrowAnyException();
+			assertThatCode(() -> TextualAssertions.assertThatAlpha(
+					() -> of("aaaaahjhjahzjahzjahzjahzj"))).doesNotThrowAnyException();
 		}
 	}
 

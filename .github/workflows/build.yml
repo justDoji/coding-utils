@@ -8,6 +8,7 @@ on:
       - features/**
   pull_request:
     types: [ opened, synchronize, reopened ]
+
 jobs:
   build:
     name: Build
@@ -44,13 +45,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn clean install -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-
-      - name: Build Documentation
-        run: bash ./scripts/rebuildDocs.sh
-
-      - name: commit
-        run: |
-          # Stage the file, commit and push
-          git add ./docs/javadoc
-          git commit -m "[GITOPS] Pipeline updated documentation"
-          git push origin ${GITHUB_REF#refs/heads/}

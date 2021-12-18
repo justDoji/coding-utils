@@ -87,8 +87,7 @@ public class Failure {
 			return this;
 		}
 
-		public FailureBuilder reasonCreator(
-				UnaryOperator<String> reasonCreator) {
+		public FailureBuilder reasonCreator(UnaryOperator<String> reasonCreator) {
 			this.reasonCreator = reasonCreator;
 			return this;
 		}

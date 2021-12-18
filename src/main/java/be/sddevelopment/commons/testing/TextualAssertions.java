@@ -59,11 +59,11 @@ import org.assertj.core.api.OptionalAssert;
  * @created 18.10.20, Sunday
  */
 @Utility
-public final class TextualAssertionUtils {
+public final class TextualAssertions {
 
 	private static final String FIELD_NOT_EMPTY = "Field expected to not be empty";
 
-	private TextualAssertionUtils() {
+	private TextualAssertions() {
 		AccessProtectionUtils.utilityClassConstructor();
 	}
 
@@ -71,6 +71,7 @@ public final class TextualAssertionUtils {
 	public static OptionalAssert<String> assertThatNumber(Supplier<Optional<String>> fieldSelector) {
 		return assertNotEmpty(fieldSelector)
 				.as("must be numeric field")
+				.isPresent()
 				.is(new Condition<>(s -> StringUtils.isNumeric(s.get()), "numeric"));
 	}
 
@@ -94,8 +95,6 @@ public final class TextualAssertionUtils {
 	}
 
 	public static <T> OptionalAssert<T> assertEmpty(Supplier<Optional<T>> fieldSelector) {
-		return assertThat(fieldSelector.get())
-				.as("Expecting empty Optional")
-				.isEmpty();
+		return assertThat(fieldSelector.get()).as("Expecting empty Optional").isEmpty();
 	}
 }

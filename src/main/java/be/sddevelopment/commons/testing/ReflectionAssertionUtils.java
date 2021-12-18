@@ -60,18 +60,19 @@ public final class ReflectionAssertionUtils {
 	public static void assertPrivateMemberReflectionProtection(
 			@SuppressWarnings("rawtypes") final Constructor constructor) {
 		constructor.setAccessible(true);
-		assertThatThrownBy(constructor::newInstance).isInstanceOf(InvocationTargetException.class)
-		                                            .hasCauseInstanceOf(
-				                                            UnsupportedOperationException.class)
-		                                            .hasStackTraceContaining(
-				                                            "This operation is not allowed for reason: [ Utility classes should not have a public or default constructor ]");
+		assertThatThrownBy(constructor::newInstance)
+				.isInstanceOf(InvocationTargetException.class)
+				.hasCauseInstanceOf(UnsupportedOperationException.class)
+				.hasStackTraceContaining(
+						"This operation is not allowed for reason: [ Utility classes should not have a public or default constructor ]");
 	}
 
 	public static void assertPrivateMember(
 			@SuppressWarnings("rawtypes") final Constructor constructor) {
 		assertThatThrownBy(constructor::newInstance,
 		                   format("Constructor %s is expected to be protected from illegal access",
-		                          constructor))
-				.isInstanceOfAny(InvocationTargetException.class, IllegalAccessException.class);
+		                          constructor
+		                   )
+		).isInstanceOfAny(InvocationTargetException.class, IllegalAccessException.class);
 	}
 }

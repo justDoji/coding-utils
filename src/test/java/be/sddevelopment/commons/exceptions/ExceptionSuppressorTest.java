@@ -62,10 +62,9 @@ import org.junit.platform.commons.util.StringUtils;
 class ExceptionSuppressorTest {
 
 	public final Condition<Throwable> messageOfOriginalException = new Condition<>(
-			c -> org.apache.commons.lang3.StringUtils
-					.equalsIgnoreCase(c.getMessage(), TestMethods.EXCEPTION_MESSAGE),
-			"Precondition: Throwable contains the original exception message"
-	);
+			c -> org.apache.commons.lang3.StringUtils.equalsIgnoreCase(c.getMessage(),
+			                                                           TestMethods.EXCEPTION_MESSAGE
+			), "Precondition: Throwable contains the original exception message");
 
 	private static final class TestMethods {
 
@@ -84,16 +83,18 @@ class ExceptionSuppressorTest {
 
 	@Test
 	void whenAnExceptionIsSuppressed_usingDefaultSupress_thenChainInterpretsItAsEmptyResult() {
-		Optional<String> result = Optional.of(Strings.NON_EMPTY_STRING)
-		                                  .map(ignore(TestMethods::throwExceptionIfNotBLank));
+		Optional<String> result = Optional
+				.of(Strings.NON_EMPTY_STRING)
+				.map(ignore(TestMethods::throwExceptionIfNotBLank));
 
 		assertThat(result).isNotPresent();
 	}
 
 	@Test
 	void whenAnExceptionIsNotSuppressed_usingDefaultSupress_thenChainUsesMethodReturnObject() {
-		Optional<String> result = Optional.of(EMPTY_STRING)
-		                                  .map(ignore(TestMethods::throwExceptionIfNotBLank));
+		Optional<String> result = Optional
+				.of(EMPTY_STRING)
+				.map(ignore(TestMethods::throwExceptionIfNotBLank));
 
 		assertThat(result).contains(TestMethods.NO_THROW);
 	}
@@ -101,25 +102,25 @@ class ExceptionSuppressorTest {
 	@Test
 	void whenAnExceptionIsSupressed_ByConvertingToRuntime_thenItIsThrown() {
 		Optional<String> nonEmptyString = Optional.of(Strings.NON_EMPTY_STRING);
-		assertThatThrownBy(() -> nonEmptyString
-				.map(ExceptionSuppressor.uncheck(TestMethods::throwExceptionIfNotBLank)))
+		assertThatThrownBy(() -> nonEmptyString.map(
+				ExceptionSuppressor.uncheck(TestMethods::throwExceptionIfNotBLank)))
 				.isInstanceOf(WrappedException.class)
 				.hasCauseInstanceOf(MalformedURLException.class);
 	}
 
 	@Test
 	void whenAnExceptionIsSupressed_ByConvertingToRuntime_thenTheThrownExceptionContainsTheOriginalOne() {
-		assertThatThrownBy(() -> Optional.of(Strings.NON_EMPTY_STRING)
-		                                 .map(ExceptionSuppressor.uncheck(
-				                                 TestMethods::throwExceptionIfNotBLank)))
-				.satisfies(messageOfOriginalException);
+		assertThatThrownBy(() -> Optional
+				.of(Strings.NON_EMPTY_STRING)
+				.map(ExceptionSuppressor.uncheck(TestMethods::throwExceptionIfNotBLank))).satisfies(
+				messageOfOriginalException);
 	}
 
 	@Test
 	void whenAnExceptionIsSupressed_usingIgnoreAsOptional_givenAMethodThatThrowsAnException_TheResultIsAnEmptyOptional() {
-		assertThat(Optional.of(Strings.NON_EMPTY_STRING)
-		                   .flatMap(ExceptionSuppressor.ignoreAsOptional(
-				                   TestMethods::throwExceptionIfNotBLank)))
-				.isEmpty();
+		assertThat(Optional
+				           .of(Strings.NON_EMPTY_STRING)
+				           .flatMap(ExceptionSuppressor.ignoreAsOptional(
+						           TestMethods::throwExceptionIfNotBLank))).isEmpty();
 	}
 }
