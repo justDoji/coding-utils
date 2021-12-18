@@ -33,11 +33,18 @@ Following changes are known:
 - Added tooling for Fallible classes
 - Added tooling for Exception handling
 - Added Maven set-up for javadoc generation
+- Add README.md to include CONTRIBUTING file
+- Add code style for IntelliJ
 
 ### Changed
 
 - Update tests to use method name writing classes
 - Restructure tests into nested subclasses
 - Rely more heavily on generics
+- Update Java version to 11
+- Extracted JavaDoc publishing to `publishing` flow 
+- Changed code Style
 
 ### Removed
+
+- Removed CodeInvariant tests as it is based on Reflection

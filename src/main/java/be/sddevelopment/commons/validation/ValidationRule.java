@@ -25,22 +25,18 @@ package be.sddevelopment.commons.validation;
 
 import be.sddevelopment.commons.validation.Failure.FailureBuilder;
 import java.util.function.Function;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Value;
 
 /**
  * <p>Description of file/class</p>
  *
  * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
  * @version 1.0.0
- * @created 18.10.20, Sunday
  */
-@Data
-@AllArgsConstructor
-public class ValidationRule<T> {
+@Value
+public class ValidationRule<T> implements Rule<T> {
 
-  private Function<T, Boolean> assertion;
-  private Function<T, Function<FailureBuilder, FailureBuilder>> failureCreator;
-
+	Function<T, Boolean> assertion;
+	Function<T, Function<FailureBuilder, FailureBuilder>> failureCreator;
 
 }

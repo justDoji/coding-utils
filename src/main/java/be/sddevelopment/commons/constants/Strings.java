@@ -46,10 +46,10 @@ import be.sddevelopment.commons.access.AccessProtectionUtils;
  */
 public final class Strings {
 
-  private Strings() {
-    AccessProtectionUtils.utilityClassConstructor();
-  }
+	public static final String EMPTY_STRING = "";
+	public static final String NON_EMPTY_STRING = "Non empty String";
 
-  public static final String EMPTY_STRING = "";
-  public static final String NON_EMPTY_STRING = "Non empty String";
+	private Strings() {
+		AccessProtectionUtils.utilityClassConstructor();
+	}
 }

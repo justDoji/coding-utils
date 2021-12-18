@@ -51,62 +51,62 @@ import java.util.function.Function;
 @Utility
 public final class ExceptionSuppressor {
 
-  private ExceptionSuppressor() {
-    AccessProtectionUtils.utilityClassConstructor();
-  }
+	private ExceptionSuppressor() {
+		AccessProtectionUtils.utilityClassConstructor();
+	}
 
-  /**
-   * Wrapper to be used when you wish to ignore an exception.
-   *
-   * @param toWrap The function call to wrap. Exceptions thrown by this function will be ignored.
-   * @param <T>    The input type of the wrapped function
-   * @param <R>    The return type of the wrapped function
-   * @return The result of the wrapped function in the happy flow case. The method will return null
-   *     in case an exception occured.
-   */
-  public static <T, R> Function<T, R> ignore(FallibleFunction<T, R> toWrap) {
-    return t -> ignoreInner(toWrap, t);
-  }
+	/**
+	 * Wrapper to be used when you wish to ignore an exception.
+	 *
+	 * @param toWrap The function call to wrap. Exceptions thrown by this function will be ignored.
+	 * @param <T>    The input type of the wrapped function
+	 * @param <R>    The return type of the wrapped function
+	 * @return The result of the wrapped function in the happy flow case. The method will return null
+	 * 		in case an exception occured.
+	 */
+	public static <T, R> Function<T, R> ignore(FallibleFunction<T, R> toWrap) {
+		return t -> ignoreInner(toWrap, t);
+	}
 
-  /**
-   * Wrapper to be used when you wish to ignore an exception, and retrieve the result as an
-   * Optional.
-   *
-   * @param toWrap The function call to wrap. Exceptions thrown by this function will be ignored.
-   * @param <T>    The input type of the wrapped function
-   * @param <R>    The return type of the wrapped function
-   * @return The result of the wrapped function in the happy flow case. The method will return an
-   *     empty {@link Optional<R>} in case an exception occured.
-   */
-  public static <T, R> Function<T, Optional<R>> ignoreAsOptional(FallibleFunction<T, R> toWrap) {
-    return t -> Optional.ofNullable(ignoreInner(toWrap, t));
-  }
+	/**
+	 * Wrapper to be used when you wish to ignore an exception, and retrieve the result as an
+	 * Optional.
+	 *
+	 * @param toWrap The function call to wrap. Exceptions thrown by this function will be ignored.
+	 * @param <T>    The input type of the wrapped function
+	 * @param <R>    The return type of the wrapped function
+	 * @return The result of the wrapped function in the happy flow case. The method will return an
+	 * 		empty {@link Optional<R>} in case an exception occured.
+	 */
+	public static <T, R> Function<T, Optional<R>> ignoreAsOptional(FallibleFunction<T, R> toWrap) {
+		return t -> Optional.ofNullable(ignoreInner(toWrap, t));
+	}
 
-  private static <T, R> R ignoreInner(final FallibleFunction<T, R> toWrap, final T t) {
-    try {
-      return toWrap.apply(t);
-    } catch (Exception e) {
-      return null;
-    }
-  }
+	private static <T, R> R ignoreInner(final FallibleFunction<T, R> toWrap, final T t) {
+		try {
+			return toWrap.apply(t);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
-  /**
-   * Wrapper to use to convert an exception from a checked type to an unchecked type.
-   * This method will throw exceptions of the {@link WrappedException} type.
-   *
-   * @param toWrap The function call to wrap. Exceptions thrown by this function will be converted
-   *               to runtime exceptions.
-   * @param <T>    The input type of the wrapped function
-   * @param <R>    The return type of the wrapped function
-   * @return
-   */
-  public static <T, R> Function<T, R> uncheck(FallibleFunction<T, R> toWrap) {
-    return t -> {
-      try {
-        return toWrap.apply(t);
-      } catch (Exception e) {
-        throw new WrappedException(e);
-      }
-    };
-  }
+	/**
+	 * Wrapper to use to convert an exception from a checked type to an unchecked type.
+	 * This method will throw exceptions of the {@link WrappedException} type.
+	 *
+	 * @param toWrap The function call to wrap. Exceptions thrown by this function will be converted
+	 *               to runtime exceptions.
+	 * @param <T>    The input type of the wrapped function
+	 * @param <R>    The return type of the wrapped function
+	 * @return
+	 */
+	public static <T, R> Function<T, R> uncheck(FallibleFunction<T, R> toWrap) {
+		return t -> {
+			try {
+				return toWrap.apply(t);
+			} catch (Exception e) {
+				throw new WrappedException(e);
+			}
+		};
+	}
 }

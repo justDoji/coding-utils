@@ -56,123 +56,136 @@ import java.util.stream.Collectors;
  */
 public class Fallible<T> {
 
-  private static final String DEFAULT_REASON = "Assertion error";
+	private static final String DEFAULT_REASON = "Assertion error";
 
-  private final T data;
-  private final List<ValidationRule<T>> validations = new ArrayList<>();
-  private ErrorTemplate<T> errorTemplate = ErrorTemplate.template();
-  private List<Failure> failures;
+	private final T data;
+	private final List<Rule<T>> validations = new ArrayList<>();
+	private ErrorTemplate<T> errorTemplate = ErrorTemplate.template();
+	private List<Failure> failures;
 
-  private Fallible(T toValidate) {
-    this.data = toValidate;
-  }
+	private Fallible(T toValidate) {
+		this.data = toValidate;
+	}
 
-  /**
-   * <p>
-   * Create a {@link be.sddevelopment.commons.validation.Fallible} for an {@link java.lang.Object}
-   * of
-   * type S.
-   * </p>
-   *
-   * @param toValidate the data object to execute conditional operations on.
-   * @param <S>        class of the data object, will be inferred at creation time.
-   * @return a {@link be.sddevelopment.commons.validation.Fallible} for a data object of class S.
-   */
-  public static <S> Fallible<S> of(S toValidate) {
-    return new Fallible<>(toValidate);
-  }
+	/**
+	 * <p>
+	 * Create a {@link be.sddevelopment.commons.validation.Fallible} for an {@link java.lang.Object}
+	 * of
+	 * type S.
+	 * </p>
+	 *
+	 * @param toValidate the data object to execute conditional operations on.
+	 * @param <S>        class of the data object, will be inferred at creation time.
+	 * @return a {@link be.sddevelopment.commons.validation.Fallible} for a data object of class S.
+	 */
+	public static <S> Fallible<S> of(S toValidate) {
+		return new Fallible<>(toValidate);
+	}
 
-  /**
-   * <p>ensure.</p>
-   *
-   * @param assertion a {@link java.util.function.Function} object.
-   * @param error     a {@link java.util.function.Function} object.
-   * @return a {@link be.sddevelopment.commons.validation.Fallible} object.
-   */
-  public Fallible<T> ensure(Function<T, Boolean> assertion,
-      Function<T, Function<FailureBuilder, FailureBuilder>> error) {
-    this.failures = null;
-    this.validations.add(new ValidationRule<>(assertion, error));
-    return this;
-  }
+	/**
+	 * <p>ensure.</p>
+	 *
+	 * @param assertion a {@link java.util.function.Function} object.
+	 * @param error     a {@link java.util.function.Function} object.
+	 * @return a {@link be.sddevelopment.commons.validation.Fallible} object.
+	 */
+	public Fallible<T> ensure(Function<T, Boolean> assertion,
+	                          Function<T, Function<FailureBuilder, FailureBuilder>> error) {
+		this.failures = null;
+		this.validations.add(new ValidationRule<>(assertion, error));
+		return this;
+	}
 
-  /**
-   * <p>ensure.</p>
-   *
-   * @param assertion a {@link java.util.function.Function} object.
-   * @return a {@link be.sddevelopment.commons.validation.Fallible} object.
-   */
-  public Fallible<T> ensure(Function<T, Boolean> assertion) {
-    return this.ensure(assertion, d -> (b -> b.reason(DEFAULT_REASON)));
-  }
+	/**
+	 * @param rule to check
+	 * @return a {@link be.sddevelopment.commons.validation.Fallible} object.
+	 */
+	public Fallible<T> ensure(Rule<T> rule) {
+		this.failures = null;
+		this.validations.add(rule);
+		return this;
+	}
 
-  /**
-   * <p>
-   * Execute a {@link Consumer} that takes an object of type T, when all previous {#link ensure()}
-   * conditions are met.
-   * </p>
-   *
-   * @param actionToTake a {@link java.util.function.Consumer} object.
-   * @return a {@link be.sddevelopment.commons.validation.Fallible} object.
-   */
-  public Fallible<T> ifValid(Consumer<T> actionToTake) {
-    if (isValid()) {
-      actionToTake.accept(this.data);
-    }
-    return this;
-  }
+	/**
+	 * <p>ensure.</p>
+	 *
+	 * @param assertion a {@link java.util.function.Function} object.
+	 * @return a {@link be.sddevelopment.commons.validation.Fallible} object.
+	 */
+	public Fallible<T> ensure(Function<T, Boolean> assertion) {
+		return this.ensure(assertion, d -> (b -> b.reason(DEFAULT_REASON)));
+	}
 
-  public Fallible<T> orElse(Consumer<T> actionToTake) {
-    if (!isValid()) {
-      actionToTake.accept(this.data);
-    }
-    return this;
-  }
+	/**
+	 * <p>
+	 * Execute a {@link Consumer} that takes an object of type T, when all previous {#link ensure()}
+	 * conditions are met.
+	 * </p>
+	 *
+	 * @param actionToTake a {@link java.util.function.Consumer} object.
+	 * @return a {@link be.sddevelopment.commons.validation.Fallible} object.
+	 */
+	public Fallible<T> ifValid(Consumer<T> actionToTake) {
+		if (isValid()) {
+			actionToTake.accept(this.data);
+		}
+		return this;
+	}
 
-  /**
-   * <p>isValid.</p>
-   *
-   * @return a boolean.
-   */
-  public boolean isValid() {
-    return this.failures().isEmpty();
-  }
+	public Fallible<T> orElse(Consumer<T> actionToTake) {
+		if (!isValid()) {
+			actionToTake.accept(this.data);
+		}
+		return this;
+	}
 
-  /**
-   * <p>errorTemplate.</p>
-   *
-   * @param template a {@link be.sddevelopment.commons.validation.ErrorTemplate} object.
-   * @return a {@link be.sddevelopment.commons.validation.Fallible} object.
-   */
-  public Fallible<T> errorTemplate(ErrorTemplate<T> template) {
-    this.errorTemplate = template;
-    return this;
-  }
+	/**
+	 * <p>isValid.</p>
+	 *
+	 * @return a boolean.
+	 */
+	public boolean isValid() {
+		return this.failures().isEmpty();
+	}
 
-  /**
-   * <p>Get the {@link be.sddevelopment.commons.validation.Failure} objects resulting from applying
-   * all required rules to the data object.</p>
-   *
-   * @return a {@link java.util.List} containing {@link be.sddevelopment.commons.validation.Failure}
-   *     objects.
-   */
-  public List<Failure> failures() {
-    validate();
-    return new ArrayList<>(failures);
-  }
+	/**
+	 * <p>errorTemplate.</p>
+	 *
+	 * @param template a {@link be.sddevelopment.commons.validation.ErrorTemplate} object.
+	 * @return a {@link be.sddevelopment.commons.validation.Fallible} object.
+	 */
+	public Fallible<T> errorTemplate(ErrorTemplate<T> template) {
+		this.errorTemplate = template;
+		return this;
+	}
 
-  private void validate() {
-    if (Objects.isNull(this.failures)) {
-      this.failures = validations.stream()
-          .filter(this::assertionFailed)
-          .map(rule -> rule.getFailureCreator().apply(this.data)
-              .apply(errorTemplate.failure(this.data)))
-          .map(FailureBuilder::build)
-          .collect(Collectors.toList());
-    }
-  }
+	/**
+	 * <p>Get the {@link be.sddevelopment.commons.validation.Failure} objects resulting from applying
+	 * all required rules to the data object.</p>
+	 *
+	 * @return a {@link java.util.List} containing {@link be.sddevelopment.commons.validation.Failure}
+	 * 		objects.
+	 */
+	public List<Failure> failures() {
+		validate();
+		return new ArrayList<>(failures);
+	}
 
-  private boolean assertionFailed(ValidationRule<T> a) {
-    return !a.getAssertion().apply(this.data);
-  }
+	private void validate() {
+		if (Objects.isNull(this.failures)) {
+			this.failures = validations
+					.stream()
+					.filter(this::assertionFailed)
+					.map(rule -> rule
+							.getFailureCreator()
+							.apply(this.data)
+							.apply(errorTemplate.failure(this.data)))
+					.map(FailureBuilder::build)
+					.collect(Collectors.toList());
+		}
+	}
+
+	private boolean assertionFailed(Rule<T> a) {
+		return !a.getAssertion().apply(this.data);
+	}
 }

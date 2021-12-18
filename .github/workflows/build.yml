@@ -4,9 +4,9 @@ on:
     branches:
       - master
       - main
-      - main_*
-  pull_request:
-    types: [ opened, synchronize, reopened ]
+      - main_**
+      - features/**
+
 jobs:
   build:
     name: Build
@@ -15,26 +15,29 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
       - name: Set up JDK 11
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Branch name
+        run: echo running on branch ${GITHUB_REF#refs/heads/}
+
       - name: Cache Maven packages
         uses: actions/cache@v1
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Test and Analyze
+
+      - name: Build and Test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        run: mvn clean install
+
+      - name: Analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn clean install -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-      - name: Build JavaDoc
-        run: bash ./scripts/rebuildDocs.sh
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=sddevelopment_coding-utils

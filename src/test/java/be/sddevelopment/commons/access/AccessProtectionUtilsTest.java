@@ -38,31 +38,31 @@ import org.junit.jupiter.api.Test;
  */
 class AccessProtectionUtilsTest {
 
-  private Class<?> classToTest;
+	private Class<?> classToTest;
 
-  @BeforeEach
-  void setUp() throws ClassNotFoundException {
-    classToTest = utilityClass();
-  }
+	@BeforeEach
+	void setUp() throws ClassNotFoundException {
+		classToTest = utilityClass();
+	}
 
-  /**
-   * @created: 27/02/2021
-   * @reasoning: a private constructor can still be called using Java's Reflection API.
-   */
-  @Test
-  void givenAUtilityClassWithAPrivateDefaultConstructor_whenInstantiatingAndOverwritingAccessModifier_anExceptionIsThrown() {
-    ReflectionAssertionUtils
-        .assertPrivateMemberReflectionProtection(classToTest.getDeclaredConstructors()[0]);
-  }
+	/**
+	 * @created: 27/02/2021
+	 * @reasoning: a private constructor can still be called using Java's Reflection API.
+	 */
+	@Test
+	void givenAUtilityClassWithAPrivateDefaultConstructor_whenInstantiatingAndOverwritingAccessModifier_anExceptionIsThrown() {
+		ReflectionAssertionUtils.assertPrivateMemberReflectionProtection(
+				classToTest.getDeclaredConstructors()[0]);
+	}
 
-  @Test
-  void givenAUtilityClassWithAPrivateConstructor_whenInstantiating_anIllegalExceptionIsThrown() {
-    assertThatThrownBy(() -> classToTest.getDeclaredConstructor().newInstance())
-        .isInstanceOf(IllegalAccessException.class);
-  }
+	@Test
+	void givenAUtilityClassWithAPrivateConstructor_whenInstantiating_anIllegalExceptionIsThrown() {
+		assertThatThrownBy(() -> classToTest.getDeclaredConstructor().newInstance()).isInstanceOf(
+				IllegalAccessException.class);
+	}
 
-  private Class<?> utilityClass() throws ClassNotFoundException {
-    return Class.forName("be.sddevelopment.commons.access.UtilityClass");
-  }
+	private Class<?> utilityClass() throws ClassNotFoundException {
+		return Class.forName("be.sddevelopment.commons.access.UtilityClass");
+	}
 
 }

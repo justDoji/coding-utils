@@ -35,39 +35,45 @@ import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
  */
 public class ReplaceUnderscoredCamelCasing extends ReplaceUnderscores {
 
-  /**
-   * <p>Constructor for ReplaceUnderscoredCamelCasing.</p>
-   */
-  public ReplaceUnderscoredCamelCasing() {
-    super();
-  }
+	/**
+	 * <p>Constructor for ReplaceUnderscoredCamelCasing.</p>
+	 */
+	public ReplaceUnderscoredCamelCasing() {
+		super();
+	}
 
-  /** {@inheritDoc} */
-  @Override
-  public String generateDisplayNameForClass(Class<?> testClass) {
-    return this.replaceCapitals(super.generateDisplayNameForClass(testClass));
-  }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String generateDisplayNameForClass(Class<?> testClass) {
+		return this.replaceCapitals(super.generateDisplayNameForClass(testClass));
+	}
 
-  /** {@inheritDoc} */
-  @Override
-  public String generateDisplayNameForNestedClass(Class<?> nestedClass) {
-    return this.replaceCapitals(super.generateDisplayNameForNestedClass(nestedClass));
-  }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String generateDisplayNameForNestedClass(Class<?> nestedClass) {
+		return this.replaceCapitals(super.generateDisplayNameForNestedClass(nestedClass));
+	}
 
-  /** {@inheritDoc} */
-  @Override
-  public String generateDisplayNameForMethod(Class<?> testClass, Method testMethod) {
-    return this.replaceCapitals(super.generateDisplayNameForMethod(testClass, testMethod));
-  }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String generateDisplayNameForMethod(Class<?> testClass, Method testMethod) {
+		return this.replaceCapitals(super.generateDisplayNameForMethod(testClass, testMethod));
+	}
 
-  private String replaceCapitals(String name) {
-    name = name.replaceAll("([A-Z])", " $1").toLowerCase();
-    name = name.replaceAll("([0-9]+)", " $1");
-    name = name.replace("given", "GIVEN");
-    name = name.replace("when", "WHEN");
-    name = name.replace("then", "THEN");
-    name = name.replace("and", "AND");
-    return name;
-  }
+	private String replaceCapitals(String name) {
+		name = name.replaceAll("([A-Z])", " $1").toLowerCase();
+		name = name.replaceAll("([0-9]+)", " $1");
+		name = name.replace("given", "GIVEN");
+		name = name.replace("when", "WHEN");
+		name = name.replace("then", "THEN");
+		name = name.replace("and", "AND");
+		return name;
+	}
 
 }

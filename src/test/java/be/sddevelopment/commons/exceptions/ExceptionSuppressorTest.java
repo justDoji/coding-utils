@@ -61,62 +61,66 @@ import org.junit.platform.commons.util.StringUtils;
 @DisplayName("ExceptionSuppressor makes chaining more fluent")
 class ExceptionSuppressorTest {
 
-  @Test
-  void whenAnExceptionIsSuppressed_usingDefaultSupress_thenChainInterpretsItAsEmptyResult() {
-    Optional<String> result = Optional.of(Strings.NON_EMPTY_STRING)
-        .map(ignore(TestMethods::throwExceptionIfNotBLank));
+	public final Condition<Throwable> messageOfOriginalException = new Condition<>(
+			c -> org.apache.commons.lang3.StringUtils.equalsIgnoreCase(c.getMessage(),
+			                                                           TestMethods.EXCEPTION_MESSAGE
+			), "Precondition: Throwable contains the original exception message");
 
-    assertThat(result).isNotPresent();
-  }
+	private static final class TestMethods {
 
-  @Test
-  void whenAnExceptionIsNotSuppressed_usingDefaultSupress_thenChainUsesMethodReturnObject() {
-    Optional<String> result = Optional.of(EMPTY_STRING)
-        .map(ignore(TestMethods::throwExceptionIfNotBLank));
+		public static final String EXCEPTION_MESSAGE = "You are not allowed to enter a non-empty String";
+		private static final String NO_THROW = "I did not throw it on the floor.";
 
-    assertThat(result).contains(TestMethods.NO_THROW);
-  }
+		static String throwExceptionIfNotBLank(String url) throws MalformedURLException {
+			if (StringUtils.isNotBlank(url)) {
+				throw new MalformedURLException(EXCEPTION_MESSAGE);
+			}
 
-  @Test
-  void whenAnExceptionIsSupressed_ByConvertingToRuntime_thenItIsThrown() {
-    Optional<String> nonEmptyString = Optional.of(Strings.NON_EMPTY_STRING);
-    assertThatThrownBy(() -> nonEmptyString
-        .map(ExceptionSuppressor.uncheck(TestMethods::throwExceptionIfNotBLank)))
-        .isInstanceOf(WrappedException.class);
-  }
+			return NO_THROW;
+		}
 
-  public final Condition<Throwable> messageOfOriginalException = new Condition<>(
-      c -> org.apache.commons.lang3.StringUtils
-          .equalsIgnoreCase(c.getMessage(), TestMethods.EXCEPTION_MESSAGE),
-      "Precondition: Throwable contains the original exception message"
-  );
+	}
 
-  @Test
-  void whenAnExceptionIsSupressed_ByConvertingToRuntime_thenTheThrownExceptionContainsTheOriginalOne() {
-    assertThatThrownBy(() -> Optional.of(Strings.NON_EMPTY_STRING)
-        .map(ExceptionSuppressor.uncheck(TestMethods::throwExceptionIfNotBLank)))
-        .satisfies(messageOfOriginalException);
-  }
+	@Test
+	void whenAnExceptionIsSuppressed_usingDefaultSupress_thenChainInterpretsItAsEmptyResult() {
+		Optional<String> result = Optional
+				.of(Strings.NON_EMPTY_STRING)
+				.map(ignore(TestMethods::throwExceptionIfNotBLank));
 
-  @Test
-  void whenAnExceptionIsSupressed_usingIgnoreAsOptional_givenAMethodThatThrowsAnException_TheResultIsAnEmptyOptional() {
-    assertThat(Optional.of(Strings.NON_EMPTY_STRING)
-        .flatMap(ExceptionSuppressor.ignoreAsOptional(TestMethods::throwExceptionIfNotBLank)))
-        .isEmpty();
-  }
+		assertThat(result).isNotPresent();
+	}
 
-  private static final class TestMethods {
+	@Test
+	void whenAnExceptionIsNotSuppressed_usingDefaultSupress_thenChainUsesMethodReturnObject() {
+		Optional<String> result = Optional
+				.of(EMPTY_STRING)
+				.map(ignore(TestMethods::throwExceptionIfNotBLank));
 
-    private static final String NO_THROW = "I did not throw it on the floor.";
-    public static final String EXCEPTION_MESSAGE = "You are not allowed to enter a non-empty String";
+		assertThat(result).contains(TestMethods.NO_THROW);
+	}
 
-    static String throwExceptionIfNotBLank(String url) throws MalformedURLException {
-      if (StringUtils.isNotBlank(url)) {
-        throw new MalformedURLException(EXCEPTION_MESSAGE);
-      }
+	@Test
+	void whenAnExceptionIsSupressed_ByConvertingToRuntime_thenItIsThrown() {
+		Optional<String> nonEmptyString = Optional.of(Strings.NON_EMPTY_STRING);
+		assertThatThrownBy(() -> nonEmptyString.map(
+				ExceptionSuppressor.uncheck(TestMethods::throwExceptionIfNotBLank)))
+				.isInstanceOf(WrappedException.class)
+				.hasCauseInstanceOf(MalformedURLException.class);
+	}
 
-      return NO_THROW;
-    }
+	@Test
+	void whenAnExceptionIsSupressed_ByConvertingToRuntime_thenTheThrownExceptionContainsTheOriginalOne() {
+		assertThatThrownBy(() -> Optional
+				.of(Strings.NON_EMPTY_STRING)
+				.map(ExceptionSuppressor.uncheck(TestMethods::throwExceptionIfNotBLank))).satisfies(
+				messageOfOriginalException);
+	}
 
-  }
+	@Test
+	void whenAnExceptionIsSupressed_usingIgnoreAsOptional_givenAMethodThatThrowsAnException_TheResultIsAnEmptyOptional() {
+		assertThat(Optional
+				           .of(Strings.NON_EMPTY_STRING)
+				           .flatMap(ExceptionSuppressor.ignoreAsOptional(
+						           TestMethods::throwExceptionIfNotBLank))).isEmpty();
+	}
 }

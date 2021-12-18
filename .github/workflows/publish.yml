@@ -1,0 +1,28 @@
+name: publish
+
+on:
+  push:
+    branches:
+      - master
+      - main
+      - main_
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Build Documentation
+        run: bash ./scripts/rebuildDocs.sh
+
+      - name: push
+        uses: actions-x/commit@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        with:
+          name: GitHub Actions Autocommitter
+          files: ./docs/javadoc
+          message: '[GITOPS] Pipeline updated documentation'

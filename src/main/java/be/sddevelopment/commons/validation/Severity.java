@@ -39,24 +39,22 @@ import lombok.Getter;
 @SuppressWarnings("ALL")
 public enum Severity {
 
-  INFO(false),
-  WARNING(false),
-  ERROR(true);
+	INFO(false), WARNING(false), ERROR(true);
 
-  @Getter
-  private boolean blocking;
+	@Getter
+	private boolean blocking;
 
-  Severity(boolean blocking) {
-    this.blocking = blocking;
-  }
+	Severity(boolean blocking) {
+		this.blocking = blocking;
+	}
 
-  /**
-   * <p>defaultVal.</p>
-   *
-   * @return a {@link be.sddevelopment.commons.validation.Severity} object.
-   */
-  public static Severity defaultVal() {
-    return WARNING;
-  }
+	/**
+	 * <p>defaultVal.</p>
+	 *
+	 * @return a {@link be.sddevelopment.commons.validation.Severity} object.
+	 */
+	public static Severity defaultVal() {
+		return WARNING;
+	}
 
 }
