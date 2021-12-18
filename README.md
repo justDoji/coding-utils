@@ -1,6 +1,6 @@
 # coding-utils
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=justDoji_coding-utils&metric=alert_status)](https://sonarcloud.io/dashboard?id=justDoji_coding-utils) ![Build](https://github.com/sddevelopment-be/coding-utils/workflows/Build/badge.svg?branch=main)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sddevelopment_coding-utils&metric=alert_status)](https://sonarcloud.io/dashboard?id=justDoji_coding-utils) ![Build](https://github.com/sddevelopment-be/coding-utils/workflows/Build/badge.svg?branch=main)
 
 Generic utilities to promote a clean design of the code we write on a daily basis.
 
