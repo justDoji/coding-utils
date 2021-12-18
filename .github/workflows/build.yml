@@ -48,10 +48,9 @@ jobs:
       - name: Build Documentation
         run: bash ./scripts/rebuildDocs.sh
 
-      - name: Push Documentation back to repository
-        uses: actions-x/commit@v2
-        with:
-          name: GitHub Actions Autocommitter
-          files: ./docs/javadoc
-          branch: ${GITHUB_REF#refs/heads/}
-          message: '[GITOPS] Pipeline updated documentation'
+      - name: commit
+        run: |
+          # Stage the file, commit and push
+          git add ./docs/javadoc
+          git commit -m "[GITOPS] Pipeline updated documentation"
+          git push origin ${GITHUB_REF#refs/heads/}
