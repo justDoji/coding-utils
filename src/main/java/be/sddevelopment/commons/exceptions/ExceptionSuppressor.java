@@ -33,7 +33,7 @@ import java.util.function.Function;
  * When using functional programming techniques in java 8+,
  * a common issue is the inability to chain operations using method references if those
  * called methods throw a checked exception. <br />
- * This class is meant to <b>suppress these checked exceptions</b>.
+ * This class is meant to <strong>suppress these checked exceptions</strong->.
  * <br /><br />
  * It can also be used to write your exception handling in a more fluent way,
  * and to facilitate designs based on using Unchecked Exceptions.
