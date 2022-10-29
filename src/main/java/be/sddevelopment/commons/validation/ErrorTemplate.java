@@ -78,8 +78,6 @@ public class ErrorTemplate<T> {
 	 * @return a {@link be.sddevelopment.commons.validation.Failure.FailureBuilder} object.
 	 */
 	public FailureBuilder failure(T data) {
-		return Failure
-				.failure()
-				.reasonCreator(message -> String.format(this.template.apply(data), message));
+		return Failure.failure().reasonCreator(message -> String.format(this.template.apply(data), message));
 	}
 }

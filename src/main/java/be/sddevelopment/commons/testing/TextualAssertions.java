@@ -69,25 +69,17 @@ public final class TextualAssertions {
 
 	@SuppressWarnings("OptionalGetWithoutIsPresent")
 	public static OptionalAssert<String> assertThatNumber(Supplier<Optional<String>> fieldSelector) {
-		return assertNotEmpty(fieldSelector)
-				.as("must be numeric field")
-				.isPresent()
-				.is(new Condition<>(s -> StringUtils.isNumeric(s.get()), "numeric"));
+		return assertNotEmpty(fieldSelector).as("must be numeric field").isPresent().is(new Condition<>(s -> StringUtils.isNumeric(s.get()), "numeric"));
 	}
 
 	@SuppressWarnings("OptionalGetWithoutIsPresent")
 	public static OptionalAssert<String> assertThatAlpha(Supplier<Optional<String>> fieldSelector) {
-		return assertNotEmpty(fieldSelector)
-				.as("must be alphabetical field")
-				.is(new Condition<>(s -> isAlpha(s.get()), "alphabetical"));
+		return assertNotEmpty(fieldSelector).as("must be alphabetical field").is(new Condition<>(s -> isAlpha(s.get()), "alphabetical"));
 	}
 
 	@SuppressWarnings("OptionalGetWithoutIsPresent")
-	public static OptionalAssert<String> assertThatAlphanumeric(
-			Supplier<Optional<String>> fieldSelector) {
-		return assertNotEmpty(fieldSelector)
-				.as("must be alphabetical field")
-				.is(new Condition<>(s -> StringUtils.isAlphanumeric(s.get()), "alphanumeric"));
+	public static OptionalAssert<String> assertThatAlphanumeric(Supplier<Optional<String>> fieldSelector) {
+		return assertNotEmpty(fieldSelector).as("must be alphabetical field").is(new Condition<>(s -> StringUtils.isAlphanumeric(s.get()), "alphanumeric"));
 	}
 
 	private static OptionalAssert<String> assertNotEmpty(Supplier<Optional<String>> fieldSelector) {

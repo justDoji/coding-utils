@@ -27,19 +27,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class FailureBuilderClause<T> implements
-                                     Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> {
+public class FailureBuilderClause<T> implements Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> {
 
 	private final Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> self;
 	private final List<FailureBuilderClause<T>> constituents = new ArrayList<>();
 
-	private FailureBuilderClause(
-			Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> self) {
+	private FailureBuilderClause(Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> self) {
 		this.self = self;
 	}
 
-	public static <T> FailureBuilderClause<T> of(
-			Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> function) {
+	public static <T> FailureBuilderClause<T> of(Function<T, Function<Failure.FailureBuilder, Failure.FailureBuilder>> function) {
 		return new FailureBuilderClause<>(function);
 	}
 
@@ -73,11 +70,7 @@ public class FailureBuilderClause<T> implements
 	}
 
 	private Function<Failure.FailureBuilder, Failure.FailureBuilder> applyConstituents(T t) {
-		return constituents
-				.stream()
-				.map(clause -> clause.apply(t))
-				.reduce(Function::andThen)
-				.orElse(Function.identity());
+		return constituents.stream().map(clause -> clause.apply(t)).reduce(Function::andThen).orElse(Function.identity());
 	}
 
 	private FailureBuilderClause<T> and(FailureBuilderClause<T> toAppend) {

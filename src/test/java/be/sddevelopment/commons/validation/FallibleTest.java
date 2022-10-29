@@ -74,30 +74,21 @@ class FallibleTest {
 
 		@Test
 		void when1ContitionIsNotMet_thenTheErrorListContains1Failure() {
-			List<Failure> errors = Fallible
-					.of("StringToCheck")
-					.ensure(FallibleTest.this::mayNotContainNaughtyWords)
-					.failures();
+			List<Failure> errors = Fallible.of("StringToCheck").ensure(FallibleTest.this::mayNotContainNaughtyWords).failures();
 
 			assertThat(errors).hasSize(1);
 		}
 
 		@Test
 		void whenAllConditionsAreMet_thenReturnedFailures_mustBeEmpty() {
-			List<Failure> failures = Fallible
-					.of("This text contains no naught words")
-					.ensure(FallibleTest.this::mayNotContainNaughtyWords)
-					.failures();
+			List<Failure> failures = Fallible.of("This text contains no naught words").ensure(FallibleTest.this::mayNotContainNaughtyWords).failures();
 
 			assertThat(failures).isEmpty();
 		}
 
 		@Test
 		void whenAllConditionsAreMet_thenIsValid_returnsTrue() {
-			assertThat(Fallible
-					           .of("This text contains no naughty words")
-					           .ensure(FallibleTest.this::mayNotContainNaughtyWords)
-					           .isValid()).isTrue();
+			assertThat(Fallible.of("This text contains no naughty words").ensure(FallibleTest.this::mayNotContainNaughtyWords).isValid()).isTrue();
 		}
 	}
 
@@ -107,13 +98,7 @@ class FallibleTest {
 
 		@Test
 		void givenAConditionWithAnErrorCode_whenContitionIsNotMet_thenTheFailureContainsTheCode() {
-			List<Failure> errors = Fallible
-					.of("StringToCheck")
-					.ensure(FallibleTest.this::mayNotContainNaughtyWords,
-					        d -> b -> b.errorCode("NAUGHTY_ERROR")
-					)
-					.ensure(StringUtils::isNotBlank, d -> b -> b.errorCode("MUST_BE_FILLED_IN"))
-					.failures();
+			List<Failure> errors = Fallible.of("StringToCheck").ensure(FallibleTest.this::mayNotContainNaughtyWords, d -> b -> b.errorCode("NAUGHTY_ERROR")).ensure(StringUtils::isNotBlank, d -> b -> b.errorCode("MUST_BE_FILLED_IN")).failures();
 
 			assertThat(errors).hasSize(1);
 			assertThat(errors).extracting(Failure::getErrorCode).containsExactly("NAUGHTY_ERROR");
@@ -122,25 +107,18 @@ class FallibleTest {
 		@Test
 		void givenMultipleConditionsWithErrorCodes_whenContitionsAreNotMet_thenTheFailureContainsAllCodes() {
 			List<Failure> errors = Fallible
-					.of("")
-					.ensure(FallibleTest.this::mayNotContainNaughtyWords,
-					        d -> b -> b.errorCode("NAUGHTY_ERROR")
-					)
-					.ensure(StringUtils::isNotBlank, d -> b -> b.errorCode("MUST_BE_FILLED_IN"))
-					.ensure(StringUtils::isMixedCase, d -> b -> b.errorCode("MUST_BE_MIXED_CASE"))
-					.failures();
+					                       .of("")
+					                       .ensure(FallibleTest.this::mayNotContainNaughtyWords, d -> b -> b.errorCode("NAUGHTY_ERROR"))
+					                       .ensure(StringUtils::isNotBlank, d -> b -> b.errorCode("MUST_BE_FILLED_IN"))
+					                       .ensure(StringUtils::isMixedCase, d -> b -> b.errorCode("MUST_BE_MIXED_CASE"))
+					                       .failures();
 
-			assertThat(errors)
-					.extracting(Failure::getErrorCode)
-					.containsExactlyInAnyOrder("MUST_BE_MIXED_CASE", "MUST_BE_FILLED_IN");
+			assertThat(errors).extracting(Failure::getErrorCode).containsExactlyInAnyOrder("MUST_BE_MIXED_CASE", "MUST_BE_FILLED_IN");
 		}
 
 		@Test
 		void givenConditionWithSeverity_whenContitionsAreNotMet_thenTheFailureHasSetSeverity() {
-			List<Failure> errors = Fallible
-					.of("")
-					.ensure(StringUtils::isNotBlank, d -> b -> b.severity(Severity.ERROR))
-					.failures();
+			List<Failure> errors = Fallible.of("").ensure(StringUtils::isNotBlank, d -> b -> b.severity(Severity.ERROR)).failures();
 
 			assertThat(errors).extracting(Failure::getSeverity).containsExactlyInAnyOrder(Severity.ERROR);
 		}
@@ -149,9 +127,7 @@ class FallibleTest {
 		void givenConditionsWithoutExplicitSeverity_whenContitionsAreNotMet_thenTheFailureHasDefaultSeverity() {
 			List<Failure> errors = Fallible.of("").ensure(StringUtils::isNotBlank).failures();
 
-			assertThat(errors)
-					.extracting(Failure::getSeverity)
-					.containsExactlyInAnyOrder(Severity.defaultVal());
+			assertThat(errors).extracting(Failure::getSeverity).containsExactlyInAnyOrder(Severity.defaultVal());
 		}
 	}
 
@@ -162,16 +138,10 @@ class FallibleTest {
 		@Test
 		void givenAConditionWithAnErrorCode_whenContitionIsNotMet_thenTheFailureContainsTheCode() {
 			List<Failure> errors = Fallible
-					.of("StringToCheck")
-					.ensure(FieldValidationRule
-							        .<String>data()
-							        .compliesTo(FallibleTest.this::mayNotContainNaughtyWords)
-							        .elseFail(withCode("NAUGHTY_ERROR")))
-					.ensure(FieldValidationRule
-							        .<String>data()
-							        .compliesTo(StringUtils::isNotBlank)
-							        .elseFail(withCode("MUST_BE_FILLED_IN")))
-					.failures();
+					                       .of("StringToCheck")
+					                       .ensure(FieldValidationRule.<String>data().compliesTo(FallibleTest.this::mayNotContainNaughtyWords).elseFail(withCode("NAUGHTY_ERROR")))
+					                       .ensure(FieldValidationRule.<String>data().compliesTo(StringUtils::isNotBlank).elseFail(withCode("MUST_BE_FILLED_IN")))
+					                       .failures();
 
 			assertThat(errors).hasSize(1);
 			assertThat(errors).extracting(Failure::getErrorCode).containsExactly("NAUGHTY_ERROR");
@@ -182,8 +152,7 @@ class FallibleTest {
 	@DisplayName("Fallible conditional menthod executions when failure")
 	class FallibleFailedConditionalTests {
 
-		public final Condition<ConsumerServiceStub<String>> NOT_YET_CALLED = new Condition<>(
-				c -> !c.isCalled(), "Precondition: Service is not yet called");
+		public final Condition<ConsumerServiceStub<String>> NOT_YET_CALLED = new Condition<>(c -> !c.isCalled(), "Precondition: Service is not yet called");
 		private ConsumerServiceStub<String> stringConsumer;
 
 		@BeforeEach
@@ -204,10 +173,7 @@ class FallibleTest {
 		void givenAFailureActionIsDefined_whenNoConditionsAreMet_thenTHeActionIsNotExecuted() {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
-			Fallible
-					.of("This should works")
-					.ensure(StringUtils::isBlank)
-					.orElse(stringConsumer::doSomething);
+			Fallible.of("This should works").ensure(StringUtils::isBlank).orElse(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.isCalled()).isTrue();
 		}
@@ -216,12 +182,7 @@ class FallibleTest {
 		void givenAFailureActionIsDefined_andMultipleConditionsAreChained_whenTheFirstConditionIsMet_thenTHeActionIsExecutedOnce() {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
-			Fallible
-					.of("This should works")
-					.ensure(StringUtils::isAlphanumericSpace)
-					.orElse(stringConsumer::doSomething)
-					.ensure(StringUtils::isBlank)
-					.orElse(stringConsumer::doSomething);
+			Fallible.of("This should works").ensure(StringUtils::isAlphanumericSpace).orElse(stringConsumer::doSomething).ensure(StringUtils::isBlank).orElse(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.callAmount()).isEqualTo(1);
 		}
@@ -232,8 +193,7 @@ class FallibleTest {
 	@DisplayName("Fallible conditional menthod executions when succesful")
 	class FallibleConditionalExecutionsTests {
 
-		public final Condition<ConsumerServiceStub<String>> NOT_YET_CALLED = new Condition<>(
-				c -> !c.isCalled(), "Precondition: Service is not yet called");
+		public final Condition<ConsumerServiceStub<String>> NOT_YET_CALLED = new Condition<>(c -> !c.isCalled(), "Precondition: Service is not yet called");
 		private ConsumerServiceStub<String> stringConsumer;
 
 		@BeforeEach
@@ -272,12 +232,7 @@ class FallibleTest {
 		void givenASuccesActionIsDefined_andConditionsAreAddedAfterSuccesAction_whenConditionsAreNotMet_thenTheActionIsSkipped() {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
-			Fallible
-					.of("word123")
-					.ensure(StringUtils::isBlank)
-					.ifValid(stringConsumer::doSomething)
-					.ensure(StringUtils::isNotBlank)
-					.ifValid(stringConsumer::doSomething);
+			Fallible.of("word123").ensure(StringUtils::isBlank).ifValid(stringConsumer::doSomething).ensure(StringUtils::isNotBlank).ifValid(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.isCalled()).isFalse();
 		}
@@ -286,11 +241,7 @@ class FallibleTest {
 		void givenASuccesActionIsDefined_AndMultipleConditionsExists_whenConditionsAreNotMet_thenTheActionIsSkipped() {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
-			Fallible
-					.of("word123")
-					.ensure(StringUtils::isNotBlank)
-					.ensure(StringUtils::isMixedCase)
-					.ifValid(stringConsumer::doSomething);
+			Fallible.of("word123").ensure(StringUtils::isNotBlank).ensure(StringUtils::isMixedCase).ifValid(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.isCalled()).isFalse();
 		}
@@ -299,11 +250,7 @@ class FallibleTest {
 		void givenASuccesActionIsDefined_AndMultipleConditionsExists_whenConditionsAreMet_thenTheActionIsExecutedOnce() {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
-			Fallible
-					.of("word123")
-					.ensure(StringUtils::isNotBlank)
-					.ensure(StringUtils::isAlphanumeric)
-					.ifValid(stringConsumer::doSomething);
+			Fallible.of("word123").ensure(StringUtils::isNotBlank).ensure(StringUtils::isAlphanumeric).ifValid(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.callAmount()).isEqualTo(1);
 		}
@@ -312,12 +259,7 @@ class FallibleTest {
 		void givenASuccesActionIsDefined_andConditionsAreAddedAfterSuccesAction_whenConditionsAreMet_thenTheActionIsCalledTwice() {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
-			Fallible
-					.of("word123")
-					.ensure(StringUtils::isAlphanumeric)
-					.ifValid(stringConsumer::doSomething)
-					.ensure(StringUtils::isNotBlank)
-					.ifValid(stringConsumer::doSomething);
+			Fallible.of("word123").ensure(StringUtils::isAlphanumeric).ifValid(stringConsumer::doSomething).ensure(StringUtils::isNotBlank).ifValid(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.callAmount()).isEqualTo(2);
 		}
@@ -326,12 +268,7 @@ class FallibleTest {
 		void givenASuccesActionIsDefined_andConditionsAreAddedAfterSuccesAction_whenOnlyTheFirstConditionIsMet_thenTheActionIsCalledOnce() {
 			assertThat(stringConsumer).is(NOT_YET_CALLED);
 
-			Fallible
-					.of("word123")
-					.ensure(StringUtils::isAlphanumeric)
-					.ifValid(stringConsumer::doSomething)
-					.ensure(StringUtils::isBlank)
-					.ifValid(stringConsumer::doSomething);
+			Fallible.of("word123").ensure(StringUtils::isAlphanumeric).ifValid(stringConsumer::doSomething).ensure(StringUtils::isBlank).ifValid(stringConsumer::doSomething);
 
 			assertThat(stringConsumer.callAmount()).isEqualTo(1);
 		}
@@ -344,24 +281,15 @@ class FallibleTest {
 		@Test
 		void givenATemplate_whenAFailureOccurs_thenAFailureExistsWithADerivativeMessage() {
 
-			List<Failure> failures = Fallible
-					.of("")
-					.errorTemplate(template(s -> "The string [" + s + "] does not match rule: {%s}"))
-					.ensure(StringUtils::isNotBlank, s -> b -> b.reason("Input can not be blank"))
-					.failures();
+			List<Failure> failures = Fallible.of("").errorTemplate(template(s -> "The string [" + s + "] does not match rule: {%s}")).ensure(StringUtils::isNotBlank, s -> b -> b.reason("Input can not be blank")).failures();
 
 			assertThat(failures).hasSize(1);
-			assertThat(failures)
-					.extracting(Failure::getReason)
-					.contains("The string [] does not match rule: {Input can not be blank}");
+			assertThat(failures).extracting(Failure::getReason).contains("The string [] does not match rule: {Input can not be blank}");
 		}
 
 		@Test
 		void givenThatNoTemplateIsProvided_andAReasonIsProvided_whenAFailureOccurs_theReasonIsReturnedAsIs() {
-			List<Failure> failures = Fallible
-					.of("")
-					.ensure(StringUtils::isNotBlank, s -> b -> b.reason("Input can not be blank"))
-					.failures();
+			List<Failure> failures = Fallible.of("").ensure(StringUtils::isNotBlank, s -> b -> b.reason("Input can not be blank")).failures();
 
 			assertThat(failures).hasSize(1);
 			assertThat(failures).extracting(Failure::getReason).contains("Input can not be blank");
@@ -370,16 +298,10 @@ class FallibleTest {
 		@Test
 		void givenATemplateWithoutDataReference_whenAFailureOccurs_thenAFailureExistsWithADerivativeMessage() {
 
-			List<Failure> failures = Fallible
-					.of("")
-					.errorTemplate(template(s -> "The string [" + s + "] does not match rule: {%s}"))
-					.ensure(StringUtils::isNotBlank, s -> b -> b.reason("Input can not be blank"))
-					.failures();
+			List<Failure> failures = Fallible.of("").errorTemplate(template(s -> "The string [" + s + "] does not match rule: {%s}")).ensure(StringUtils::isNotBlank, s -> b -> b.reason("Input can not be blank")).failures();
 
 			assertThat(failures).hasSize(1);
-			assertThat(failures)
-					.extracting(Failure::getReason)
-					.contains("The string [] does not match rule: {Input can not be blank}");
+			assertThat(failures).extracting(Failure::getReason).contains("The string [] does not match rule: {Input can not be blank}");
 		}
 
 	}
