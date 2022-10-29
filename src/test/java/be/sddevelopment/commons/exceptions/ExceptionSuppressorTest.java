@@ -57,8 +57,8 @@ import org.junit.platform.commons.util.StringUtils;
  * @created 01.11.20, Sunday
  * @since 1.0.0
  */
-@DisplayNameGeneration(ReplaceUnderscoredCamelCasing.class)
 @DisplayName("ExceptionSuppressor makes chaining more fluent")
+@DisplayNameGeneration(ReplaceUnderscoredCamelCasing.class)
 class ExceptionSuppressorTest {
 
 	public final Condition<Throwable> messageOfOriginalException = new Condition<>(c -> org.apache.commons.lang3.StringUtils.equalsIgnoreCase(c.getMessage(), TestMethods.EXCEPTION_MESSAGE),

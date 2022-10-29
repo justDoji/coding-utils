@@ -9,9 +9,8 @@
 	<version>1.0.0-SNAPSHOT</version>
 
 	<description>
-		A set of tools and utility classes, aimed at making it easier for developers to write their code
-		in a clean and concise manner. These utilities will mostly be generic implementations that
-		provide a quicker way to implement useful design patterns.
+		A set of tools and utility classes, aimed at making it easier for developers to write their code in a clean and concise manner.
+		These utilities will mostly be generic implementations that provide a quicker way to implement useful design patterns.
 	</description>
 
 	<distributionManagement>

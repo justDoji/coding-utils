@@ -44,8 +44,8 @@ import org.junit.jupiter.api.Test;
  * code inside their projects,
  * the look and feel of client code should be tested.
  */
-@DisplayNameGeneration(ReplaceUnderscoredCamelCasing.class)
 @DisplayName("Tests to illustrate usage of the Validation library")
+@DisplayNameGeneration(ReplaceUnderscoredCamelCasing.class)
 class ValidationToolsUsageTest {
 
 	@Value

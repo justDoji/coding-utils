@@ -40,8 +40,8 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-@DisplayNameGeneration(ReplaceUnderscoredCamelCasing.class)
 @DisplayName("Tests for the Fallible class")
+@DisplayNameGeneration(ReplaceUnderscoredCamelCasing.class)
 class FallibleTest {
 
 	public final List<String> NAUGHTY_WORDS = singletonList("string");
@@ -311,3 +311,4 @@ class FallibleTest {
 	}
 
 }
+

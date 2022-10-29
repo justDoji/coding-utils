@@ -26,7 +26,10 @@ package be.sddevelopment.commons.access;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import be.sddevelopment.commons.testing.ReflectionAssertionUtils;
+import be.sddevelopment.commons.testing.ReplaceUnderscoredCamelCasing;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -36,6 +39,8 @@ import org.junit.jupiter.api.Test;
  * @version $Id: $Id
  * @created 18.10.20, Sunday
  */
+@DisplayName("Test for Access Protection Utilities")
+@DisplayNameGeneration(ReplaceUnderscoredCamelCasing.class)
 class AccessProtectionUtilsTest {
 
 	private Class<?> classToTest;
