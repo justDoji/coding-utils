@@ -112,10 +112,23 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
+        <version>3.13.0</version>
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <stylesheet>maven</stylesheet>
+          <javadocDirectory>src/main/javadoc</javadocDirectory>
+          <addStylesheets>
+            <resources>/styles/stylesheet.css</resources>
+          </addStylesheets>
         </configuration>
       </plugin>
 

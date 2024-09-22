@@ -1,23 +1,22 @@
-name: Build [PR and non-mainline branches]
+name: Build [mainline]
 on:
-  pull_request:
-    branches: main
   push:
     branches:
-      - '!main'
-      - 'feature/**'
+      - main
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    steps:
+    permissions:
+      contents: write
+      pages: write
 
+    steps:
       - uses: actions/checkout@v4
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}  # Needed to get PR information, if any
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
           ref: ${{ github.head_ref }}
 
       - name: Set up JDK 21
@@ -29,13 +28,6 @@ jobs:
 
       - name: Branch name
         run: echo running on branch ${GITHUB_REF#refs/heads/}
-
-      - name: Cache Maven packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -51,15 +43,6 @@ jobs:
 
       - name: Analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=sddevelopment-be_coding-utils
-
-      - name: Commit JavaDocs
-        uses: stefanzweifel/git-auto-commit-action@v5
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}  # Needed to get PR information, if any
-        with:
-          file_pattern: 'docs/*'
-          commit_message: 'Update documentation'
-          disable_globbing: true
