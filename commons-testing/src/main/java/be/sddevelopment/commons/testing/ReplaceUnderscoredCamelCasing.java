@@ -68,7 +68,7 @@ public class ReplaceUnderscoredCamelCasing extends ReplaceUnderscores {
 
 	private String replaceCapitals(String name) {
 		name = name.replaceAll("([A-Z])", " $1").toLowerCase();
-		name = name.replaceAll("([0-9]+)", " $1");
+		name = name.replaceAll("(\\d+)", " $1");
 		name = name.replace("given", "GIVEN");
 		name = name.replace("when", "WHEN");
 		name = name.replace("then", "THEN");

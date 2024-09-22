@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -181,7 +180,7 @@ public class Fallible<T> {
 							                             .apply(this.data)
 							                             .apply(errorTemplate.failure(this.data)))
 					                .map(FailureBuilder::build)
-					                .collect(Collectors.toList());
+					                .toList();
 		}
 	}
 

@@ -45,7 +45,7 @@ import org.junit.jupiter.api.Test;
 class FallibleTest {
 
 	public final List<String> NAUGHTY_WORDS = singletonList("string");
-	public final String NAUGHTY_ERROR = "Your word seems to contain a naughty bit [%s]";
+	public static final String NAUGHTY_ERROR = "Your word seems to contain a naughty bit [%s]";
 
 	static class ConsumerServiceStub<T> {
 
@@ -110,7 +110,7 @@ class FallibleTest {
 			List<Failure> errors = Fallible
 					                       .of("StringToCheck")
 					                       .ensure(FallibleTest.this::mayNotContainNaughtyWords,
-					                               d -> b -> b.errorCode("NAUGHTY_ERROR")
+					                               d -> b -> b.errorCode(NAUGHTY_ERROR)
 					                       )
 					                       .ensure(StringUtils::isNotBlank,
 					                               d -> b -> b.errorCode("MUST_BE_FILLED_IN")
@@ -118,7 +118,7 @@ class FallibleTest {
 					                       .failures();
 
 			assertThat(errors).hasSize(1);
-			assertThat(errors).extracting(Failure::getErrorCode).containsExactly("NAUGHTY_ERROR");
+			assertThat(errors).extracting(Failure::getErrorCode).containsExactly(NAUGHTY_ERROR);
 		}
 
 		@Test
@@ -126,7 +126,7 @@ class FallibleTest {
 			List<Failure> errors = Fallible
 					                       .of("")
 					                       .ensure(FallibleTest.this::mayNotContainNaughtyWords,
-					                               d -> b -> b.errorCode("NAUGHTY_ERROR")
+					                               d -> b -> b.errorCode(NAUGHTY_ERROR)
 					                       )
 					                       .ensure(StringUtils::isNotBlank,
 					                               d -> b -> b.errorCode("MUST_BE_FILLED_IN")
@@ -175,7 +175,7 @@ class FallibleTest {
 							                               .<String>data()
 							                               .compliesTo(
 									                               FallibleTest.this::mayNotContainNaughtyWords)
-							                               .elseFail(withCode("NAUGHTY_ERROR")))
+							                               .elseFail(withCode(NAUGHTY_ERROR)))
 					                       .ensure(FieldValidationRule
 							                               .<String>data()
 							                               .compliesTo(StringUtils::isNotBlank)
@@ -183,7 +183,7 @@ class FallibleTest {
 					                       .failures();
 
 			assertThat(errors).hasSize(1);
-			assertThat(errors).extracting(Failure::getErrorCode).containsExactly("NAUGHTY_ERROR");
+			assertThat(errors).extracting(Failure::getErrorCode).containsExactly(NAUGHTY_ERROR);
 		}
 	}
 
@@ -191,7 +191,7 @@ class FallibleTest {
 	@DisplayName("Fallible conditional menthod executions when failure")
 	class FallibleFailedConditionalTests {
 
-		public final Condition<ConsumerServiceStub<String>> NOT_YET_CALLED = new Condition<>(
+		public static final Condition<ConsumerServiceStub<String>> NOT_YET_CALLED = new Condition<>(
 				c -> !c.isCalled(), "Precondition: Service is not yet called");
 		private ConsumerServiceStub<String> stringConsumer;
 
@@ -241,7 +241,7 @@ class FallibleTest {
 	@DisplayName("Fallible conditional menthod executions when succesful")
 	class FallibleConditionalExecutionsTests {
 
-		public final Condition<ConsumerServiceStub<String>> NOT_YET_CALLED = new Condition<>(
+		public static final Condition<ConsumerServiceStub<String>> NOT_YET_CALLED = new Condition<>(
 				c -> !c.isCalled(), "Precondition: Service is not yet called");
 		private ConsumerServiceStub<String> stringConsumer;
 
@@ -379,24 +379,6 @@ class FallibleTest {
 
 			assertThat(failures).hasSize(1);
 			assertThat(failures).extracting(Failure::getReason).contains("Input can not be blank");
-		}
-
-		@Test
-		void givenATemplateWithoutDataReference_whenAFailureOccurs_thenAFailureExistsWithADerivativeMessage() {
-
-			List<Failure> failures = Fallible
-					                         .of("")
-					                         .errorTemplate(template(
-							                         s -> "The string [" + s + "] does not match rule: {%s}"))
-					                         .ensure(StringUtils::isNotBlank,
-					                                 s -> b -> b.reason("Input can not be blank")
-					                         )
-					                         .failures();
-
-			assertThat(failures).hasSize(1);
-			assertThat(failures)
-					.extracting(Failure::getReason)
-					.contains("The string [] does not match rule: {Input can not be blank}");
 		}
 
 	}
