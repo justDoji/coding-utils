@@ -20,24 +20,6 @@
  * limitations under the Licence.
  * #L%
  */
-
-/* ----------------------------------------------------------------------------
- *     PROJECT : EURES
- *
- *     PACKAGE : eu.europa.ec.empl.eures.services.commons.api.core.util
- *        FILE : AccessProtectionUtils.java
- *
- *  CREATED BY : ARHS Developments
- *          ON : Feb 26, 2021
- *
- * MODIFIED BY : ARHS Developments
- *          ON :
- *     VERSION :
- *
- * ----------------------------------------------------------------------------
- * Copyright (c) 2011 European Commission - DG EMPL
- * ----------------------------------------------------------------------------
- */
 package be.sddevelopment.commons.access;
 
 import static be.sddevelopment.commons.access.AccessProtectionUtils.AccessProtectionConstants.OPERATION_NOT_ALLOWED;

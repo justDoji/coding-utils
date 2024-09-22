@@ -20,24 +20,6 @@
  * limitations under the Licence.
  * #L%
  */
-
-/* ----------------------------------------------------------------------------
- *     PROJECT : EURES
- *
- *     PACKAGE : eu.europa.ec.empl.eures.services.commons.api.util.exception
- *        FILE : UtilityClass.java
- *
- *  CREATED BY : ARHS Developments
- *          ON : Feb 27, 2021
- *
- * MODIFIED BY : ARHS Developments
- *          ON :
- *     VERSION :
- *
- * ----------------------------------------------------------------------------
- * Copyright (c) 2011 European Commission - DG EMPL
- * ----------------------------------------------------------------------------
- */
 package be.sddevelopment.commons.access;
 
 import static be.sddevelopment.commons.access.AccessProtectionUtils.utilityClassConstructor;
@@ -49,7 +31,7 @@ import lombok.SneakyThrows;
  * <p><b>notes</b>:
  * <p>ON : Feb 27, 2021
  *
- * @author ARHS Developments - dejongst
+ * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
  */
 public class UtilityClass {
 

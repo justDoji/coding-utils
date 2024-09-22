@@ -44,11 +44,17 @@ public class FieldValidationRule<R, T> implements Rule<R> {
 	FailureBuilderClause<T> failureCreator;
 
 	public static <R, T> FieldValidationRule<R, T> field(Function<R, T> fieldExtractor) {
-		return FieldValidationRule.<R, T>builder().extractor(dataStruct -> Optional.of(dataStruct).map(fieldExtractor).orElse(null)).build();
+		return FieldValidationRule
+				       .<R, T>builder()
+				       .extractor(dataStruct -> Optional.of(dataStruct).map(fieldExtractor).orElse(null))
+				       .build();
 	}
 
 	public static <R> FieldValidationRule<R, R> data() {
-		return FieldValidationRule.<R, R>builder().extractor(dataStruct -> Optional.of(dataStruct).orElse(null)).build();
+		return FieldValidationRule
+				       .<R, R>builder()
+				       .extractor(dataStruct -> Optional.of(dataStruct).orElse(null))
+				       .build();
 	}
 
 	public FieldValidationRule<R, T> elseFail(FailureBuilderClause<T> failureDelta) {

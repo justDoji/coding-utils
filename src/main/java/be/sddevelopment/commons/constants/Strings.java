@@ -25,6 +25,7 @@ package be.sddevelopment.commons.constants;
 
 import be.sddevelopment.commons.access.AccessProtectionUtils;
 
+
 /**
  * <p>
  * Description of file/class
