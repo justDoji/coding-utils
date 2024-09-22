@@ -32,7 +32,7 @@
   <properties>
     <sonar.organization>sddevelopment-be</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    <sonar.projectKey>sddevelopment_coding-utils</sonar.projectKey>
+    <sonar.projectKey>sddevelopment-be_coding-utils</sonar.projectKey>
     <sonar.coverage.jacoco.xmlReportPaths>${jacoco.build.dir}/jacoco.xml
     </sonar.coverage.jacoco.xmlReportPaths>
     <sonar.coverage.exclusions>**/*.html</sonar.coverage.exclusions>
