@@ -7,6 +7,7 @@
   <groupId>be.sddevelopment</groupId>
   <artifactId>code-utils</artifactId>
   <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
   <description>
     A set of tools and utility classes, aimed at making it easier for developers to write their code
@@ -23,6 +24,10 @@
     </repository>
   </distributionManagement>
 
+  <modules>
+    <module>commons</module>
+    <module>commons-testing</module>
+  </modules>
 
   <properties>
     <sonar.organization>sddevelopment-be</sonar.organization>
@@ -56,47 +61,48 @@
     </developer>
   </developers>
 
-  <dependencies>
-    <!-- BEGIN UTIL SCOPE -->
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>${lombok.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.12.0</version>
-    </dependency>
+  <dependencyManagement>
+    <dependencies>
+      <!-- BEGIN UTIL SCOPE -->
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.15.0</version>
+      </dependency>
 
-    <!-- BEGIN TEST SCOPE -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit.jupiter.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>${assertj.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>${junit.jupiter.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.tngtech.archunit</groupId>
-      <artifactId>archunit-junit5-api</artifactId>
-      <version>${archunit.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <!-- END UTIL SCOPE -->
-
-  </dependencies>
+      <!-- BEGIN TEST SCOPE -->
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>${junit.jupiter.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${assertj.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>${junit.jupiter.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.tngtech.archunit</groupId>
+        <artifactId>archunit-junit5-api</artifactId>
+        <version>${archunit.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <!-- END UTIL SCOPE -->
+    </dependencies>
+  </dependencyManagement>
 
   <build>
     <pluginManagement>
@@ -125,7 +131,7 @@
         <version>3.5.0</version>
         <configuration>
           <stylesheet>maven</stylesheet>
-          <javadocDirectory>src/main/javadoc</javadocDirectory>
+          <javadocDirectory>commons/src/main/javadoc</javadocDirectory>
           <addStylesheets>
             <resources>/styles/stylesheet.css</resources>
           </addStylesheets>
@@ -138,7 +144,7 @@
         <version>1.18.20.0</version>
         <configuration>
           <encoding>UTF-8</encoding>
-          <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+          <sourceDirectory>commons/src/main/java</sourceDirectory>
         </configuration>
       </plugin>
 

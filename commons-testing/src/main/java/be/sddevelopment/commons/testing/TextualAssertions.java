@@ -26,8 +26,6 @@ package be.sddevelopment.commons.testing;
 import static org.apache.commons.lang3.StringUtils.isAlpha;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import be.sddevelopment.commons.access.AccessProtectionUtils;
-import be.sddevelopment.commons.access.Utility;
 import java.util.Optional;
 import java.util.function.Supplier;
 import org.apache.commons.lang3.StringUtils;
@@ -41,13 +39,13 @@ import org.assertj.core.api.OptionalAssert;
  * @version $Id: $Id
  * @created 18.10.20, Sunday
  */
-@Utility
 public final class TextualAssertions {
 
 	private static final String FIELD_NOT_EMPTY = "Field expected to not be empty";
 
 	private TextualAssertions() {
-		AccessProtectionUtils.utilityClassConstructor();
+		throw new UnsupportedOperationException(
+				"Utility classes should not have a public or default constructor");
 	}
 
 	@SuppressWarnings("OptionalGetWithoutIsPresent")

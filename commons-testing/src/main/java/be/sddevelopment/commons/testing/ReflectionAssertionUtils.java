@@ -24,10 +24,8 @@
 package be.sddevelopment.commons.testing;
 
 import static java.lang.String.format;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-import be.sddevelopment.commons.access.AccessProtectionUtils;
-import be.sddevelopment.commons.access.Utility;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -50,11 +48,11 @@ import java.lang.reflect.InvocationTargetException;
  * @created 25.03.21, Thursday
  * @since 1.0.0
  */
-@Utility
 public final class ReflectionAssertionUtils {
 
 	private ReflectionAssertionUtils() {
-		AccessProtectionUtils.utilityClassConstructor();
+		throw new UnsupportedOperationException(
+				"Utility classes should not have a public or default constructor");
 	}
 
 	public static void assertPrivateMemberReflectionProtection(
