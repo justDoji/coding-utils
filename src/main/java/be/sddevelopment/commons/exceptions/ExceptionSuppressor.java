@@ -32,20 +32,21 @@ import java.util.function.Function;
  * <p>
  * When using functional programming techniques in java 8+,
  * a common issue is the inability to chain operations using method references if those
- * called methods throw a checked exception. <br />
+ * called methods throw a checked exception.
  * This class is meant to <strong>suppress these checked exceptions</strong->.
- * <br /><br />
- * It can also be used to write your exception handling in a more fluent way,
- * and to facilitate designs based on using Unchecked Exceptions.
  * </p>
- *
- * <h6>Example usage</h6>
- *
- * <h6>References</h6>
  *
  * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
  * @version 1.0.0
  * @created 01.11.20, Sunday
+ * @apiNote {@link ExceptionSuppressor} can also be used to write your exception handling in a
+ * 		more fluent way,
+ * 		and to facilitate designs based on throwing Unchecked {@link Exception}s from various
+ * 		architectural levels in your codebase.
+ * 		See <a href="https://howtodoinjava.com/java/exception-handling/checked-vs-unchecked-exceptions-in-java/"
+ * 		target="_blank"this article on the difference between checked and unchecked exceptions.</a>
+ * 		and the documentation of <a href="https://projectlombok.org/features/SneakyThrows"
+ * 		target="_blank">Lombok's @SneakyThrows</a> implementation.
  * @since 1.0.0
  */
 @Utility

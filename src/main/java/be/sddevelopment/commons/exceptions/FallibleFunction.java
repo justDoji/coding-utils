@@ -25,16 +25,17 @@ package be.sddevelopment.commons.exceptions;
 
 /**
  * <p>
- * Interface for a Function that can throw an {@link Exception}
+ * An interface to generically represent {@link java.util.function.Function}s that possibly throw an Exception.
+ * To be used in combination with the {@link ExceptionSuppressor} class.
  * </p>
  *
- * <h6>References</h6>
- * {@link java.util.function.Function}
  *
  * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
  * @version 1.0.0
  * @created 01.11.20, Sunday
  * @since 1.0.0
+ * @apiNote Not to be used outside the scope of generic {@link Exception} flow processing.
+ *
  */
 @FunctionalInterface
 interface FallibleFunction<T, R> {
