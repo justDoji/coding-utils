@@ -50,27 +50,29 @@ import java.lang.reflect.InvocationTargetException;
  */
 public final class ReflectionAssertionUtils {
 
+	public static final String PROHIBITED_CONSTRUCTOR_ACCESS =
+			"Utility classes should not have a public or default constructor";
+
 	private ReflectionAssertionUtils() {
-		throw new UnsupportedOperationException(
-				"Utility classes should not have a public or default constructor");
+		throw new UnsupportedOperationException(PROHIBITED_CONSTRUCTOR_ACCESS);
 	}
 
-	public static void assertPrivateMemberReflectionProtection(
-			@SuppressWarnings("rawtypes") final Constructor constructor) {
+	public static void assertPrivateMemberReflectionProtection(final Constructor<?> constructor) {
 		constructor.setAccessible(true);
-		assertThatThrownBy(constructor::newInstance)
+
+		assertThatThrownBy(constructor::newInstance, unprotectedConstructorError(constructor))
 				.isInstanceOf(InvocationTargetException.class)
 				.hasCauseInstanceOf(UnsupportedOperationException.class)
-				.hasStackTraceContaining(
-						"This operation is not allowed for reason: [ Utility classes should not have a public or default constructor ]");
+				.hasStackTraceContaining(PROHIBITED_CONSTRUCTOR_ACCESS);
 	}
 
 	public static void assertPrivateMember(
-			@SuppressWarnings("rawtypes") final Constructor constructor) {
-		assertThatThrownBy(constructor::newInstance,
-		                   format("Constructor %s is expected to be protected from illegal access",
-		                          constructor
-		                   )
-		).isInstanceOfAny(InvocationTargetException.class, IllegalAccessException.class);
+			@SuppressWarnings("rawtypes") final Constructor<?> constructor) {
+		assertThatThrownBy(constructor::newInstance, unprotectedConstructorError(constructor))
+				.isInstanceOfAny(InvocationTargetException.class, IllegalAccessException.class);
+	}
+
+	private static String unprotectedConstructorError(final Constructor<?> constructor) {
+		return format("Constructor %s is expected to be protected from illegal access", constructor);
 	}
 }
