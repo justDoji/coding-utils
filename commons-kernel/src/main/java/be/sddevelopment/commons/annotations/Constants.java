@@ -1,18 +1,18 @@
 /*-
  * #%L
- * code-utils
+ * commons-kernel
  * %%
- * Copyright (C) 2020 SD Development
+ * Copyright (C) 2020 - 2024 SD Development
  * %%
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
  * EUPL (the "Licence");
- *
+ * 
  * You may not use this work except in compliance with the Licence.
  * You may obtain a copy of the Licence at:
- *
+ * 
  * http://ec.europa.eu/idabc/eupl5
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" basis,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,40 +21,19 @@
  * #L%
  */
 
-package be.sddevelopment.commons.constants;
-
-import static be.sddevelopment.commons.access.AccessProtectionUtils.utilityClassConstructor;
-
-import be.sddevelopment.commons.annotations.Constants;
-
+package be.sddevelopment.commons.annotations;
 
 /**
  * <p>
- * Description of file/class
+ * Simple annotation to indicate the class is meant to contain only utilities.
  * </p>
- *
- * <h6>Example usage</h6>
- * <pre>
- *  <code>
- *    // No example available yet
- *  </code>
- * </pre>
- *
- * <h6>References</h6>
  *
  * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
  * @version 1.0.0
- * @created 01.11.20, Sunday
+ * @created 25.03.21, Thursday
  * @since 1.0.0
  */
-@Constants
-public final class Strings {
-
-	public static final String EMPTY_STRING = "";
-	public static final String NON_EMPTY_STRING = "Non empty String";
-
-	private Strings() {
-		utilityClassConstructor();
-	}
+@Utility
+public @interface Constants {
 
 }

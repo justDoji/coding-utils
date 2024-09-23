@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import be.sddevelopment.commons.constants.Strings;
-import be.sddevelopment.commons.testing.ReplaceUnderscoredCamelCasing;
+import be.sddevelopment.commons.testing.naming.ReplaceUnderscoredCamelCasing;
 import java.net.MalformedURLException;
 import java.util.Optional;
 import org.assertj.core.api.Condition;

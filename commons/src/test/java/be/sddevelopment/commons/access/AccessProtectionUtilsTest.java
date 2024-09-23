@@ -23,11 +23,11 @@
 
 package be.sddevelopment.commons.access;
 
+import static be.sddevelopment.commons.testing.ReflectionAssertionUtils.assertPrivateMemberReflectionProtection;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import be.sddevelopment.commons.testing.ReflectionAssertionUtils;
-import be.sddevelopment.commons.testing.ReplaceUnderscoredCamelCasing;
-import org.junit.jupiter.api.BeforeEach;
+import be.sddevelopment.commons.testing.naming.ReplaceUnderscoredCamelCasing;
+import java.lang.reflect.Constructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Test;
@@ -43,31 +43,22 @@ import org.junit.jupiter.api.Test;
 @DisplayNameGeneration(ReplaceUnderscoredCamelCasing.class)
 class AccessProtectionUtilsTest {
 
-	private Class<?> classToTest;
-
-	@BeforeEach
-	void setUp() throws ClassNotFoundException {
-		classToTest = utilityClass();
-	}
-
 	/**
 	 * @created: 27/02/2021
 	 * @reasoning: a private constructor can still be called using Java's Reflection API.
 	 */
 	@Test
-	void givenAUtilityClassWithAPrivateDefaultConstructor_whenInstantiatingAndOverwritingAccessModifier_anExceptionIsThrown() {
-		ReflectionAssertionUtils.assertPrivateMemberReflectionProtection(
-				classToTest.getDeclaredConstructors()[0]);
+	void isAUtilityClass() throws NoSuchMethodException {
+		Constructor<?> constructor = AccessProtectionUtils.class.getDeclaredConstructor();
+
+		assertPrivateMemberReflectionProtection(constructor);
 	}
 
 	@Test
-	void givenAUtilityClassWithAPrivateConstructor_whenInstantiating_anIllegalExceptionIsThrown() {
-		assertThatThrownBy(() -> classToTest.getDeclaredConstructor().newInstance()).isInstanceOf(
-				IllegalAccessException.class);
-	}
+	void constantsAreAUtilityClass() throws NoSuchMethodException {
+		Constructor<?> constructor = AccessProtectionUtils.AccessProtectionConstants.class.getDeclaredConstructor();
 
-	private Class<?> utilityClass() throws ClassNotFoundException {
-		return Class.forName("be.sddevelopment.commons.access.UtilityClass");
+		assertPrivateMemberReflectionProtection(constructor);
 	}
 
 }

@@ -21,7 +21,7 @@
  * #L%
  */
 
-package be.sddevelopment.commons.testing;
+package be.sddevelopment.commons.testing.naming;
 
 import java.lang.reflect.Method;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;

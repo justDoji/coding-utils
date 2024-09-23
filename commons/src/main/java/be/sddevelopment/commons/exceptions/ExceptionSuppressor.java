@@ -24,7 +24,7 @@
 package be.sddevelopment.commons.exceptions;
 
 import be.sddevelopment.commons.access.AccessProtectionUtils;
-import be.sddevelopment.commons.access.Utility;
+import be.sddevelopment.commons.annotations.Utility;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -43,7 +43,8 @@ import java.util.function.Function;
  * 		more fluent way,
  * 		and to facilitate designs based on throwing Unchecked {@link Exception}s from various
  * 		architectural levels in your codebase.
- * 		See <a href="https://howtodoinjava.com/java/exception-handling/checked-vs-unchecked-exceptions-in-java/"
+ * 		See <a
+ * 		href="https://howtodoinjava.com/java/exception-handling/checked-vs-unchecked-exceptions-in-java/"
  * 		target="_blank"this article on the difference between checked and unchecked exceptions.</a>
  * 		and the documentation of <a href="https://projectlombok.org/features/SneakyThrows"
  * 		target="_blank">Lombok's @SneakyThrows</a> implementation.

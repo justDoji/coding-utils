@@ -26,6 +26,8 @@ import static be.sddevelopment.commons.access.AccessProtectionUtils.AccessProtec
 import static be.sddevelopment.commons.access.AccessProtectionUtils.AccessProtectionConstants.UTILITY_CLASS;
 import static java.lang.String.format;
 
+import be.sddevelopment.commons.annotations.Utility;
+
 /**
  * <p>Shortcodes for class access restrictions and common error codes</p>
  *

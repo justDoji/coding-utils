@@ -20,24 +20,19 @@
  * limitations under the Licence.
  * #L%
  */
-package be.sddevelopment.commons.access;
 
-import static be.sddevelopment.commons.access.AccessProtectionUtils.utilityClassConstructor;
-
-import lombok.SneakyThrows;
+package be.sddevelopment.commons.annotations;
 
 /**
- * <class_description>
- * <p><b>notes</b>:
- * <p>ON : Feb 27, 2021
+ * <p>
+ * Simple annotation to indicate the class is meant to be a utility class.
+ * </p>
  *
  * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
+ * @version 1.0.0
+ * @created 25.03.21, Thursday
+ * @since 1.0.0
  */
-public class UtilityClass {
-
-	@SneakyThrows
-	private UtilityClass() {
-		utilityClassConstructor();
-	}
+public @interface Utility {
 
 }

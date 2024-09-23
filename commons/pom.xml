@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>be.sddevelopment</groupId>
+    <groupId>be.sddevelopment.commons</groupId>
     <artifactId>code-utils</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
@@ -28,6 +28,10 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.12.0</version>
+    </dependency>
+    <dependency>
+      <groupId>be.sddevelopment.commons</groupId>
+      <artifactId>commons-kernel</artifactId>
     </dependency>
 
     <!-- BEGIN TEST SCOPE -->
@@ -55,9 +59,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>be.sddevelopment</groupId>
+      <groupId>be.sddevelopment.commons</groupId>
       <artifactId>commons-testing</artifactId>
-      <version>${parent.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
