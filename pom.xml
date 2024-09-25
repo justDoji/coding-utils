@@ -257,6 +257,7 @@
         <configuration>
           <excludes>
             <exclude>be/sddevelopment/commons/constants/**/*.class</exclude>
+            <exclude>be/sddevelopment/commons/testing/conventions/**/*.class</exclude>
           </excludes>
         </configuration>
       </plugin>

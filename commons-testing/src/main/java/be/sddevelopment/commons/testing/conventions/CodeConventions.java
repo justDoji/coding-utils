@@ -88,7 +88,7 @@ public interface CodeConventions {
 		return classes().that().areAnnotatedWith(Constants.class).and().areNotAnnotations();
 	}
 
-	static ArchCondition<? super JavaClass> notBeInstantiatable() {
+	static ArchCondition<JavaClass> notBeInstantiatable() {
 		return new ArchCondition<>("not be instantiatable") {
 			@Override
 			public void check(JavaClass item, ConditionEvents events) {

@@ -24,7 +24,6 @@
 package be.sddevelopment.commons.access;
 
 import static be.sddevelopment.commons.testing.ReflectionAssertionUtils.assertPrivateMemberReflectionProtection;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import be.sddevelopment.commons.testing.naming.ReplaceUnderscoredCamelCasing;
 import java.lang.reflect.Constructor;
