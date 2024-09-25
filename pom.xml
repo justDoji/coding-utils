@@ -34,11 +34,10 @@
     <sonar.organization>sddevelopment-be</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar.projectKey>sddevelopment-be_coding-utils</sonar.projectKey>
-    <sonar.coverage.jacoco.xmlReportPaths>${jacoco.build.dir}/jacoco.xml
-    </sonar.coverage.jacoco.xmlReportPaths>
+    <sonar.coverage.jacoco.xmlReportPaths>${jacoco.build.dir}/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    <jacoco.build.dir>${project.build.directory}/jacoco</jacoco.build.dir>
     <sonar.coverage.exclusions>**/*.html</sonar.coverage.exclusions>
     <sonar.cpd.exclusions>**/*.html</sonar.cpd.exclusions>
-    <jacoco.build.dir>${project.build.directory}/jacoco</jacoco.build.dir>
 
     <java.version>21</java.version>
     <junit.jupiter.version>5.11.0</junit.jupiter.version>
