@@ -17,6 +17,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}  # Needed to get PR information, if any
         with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
           ref: ${{ github.head_ref }}
 
       - name: Set up JDK 21
