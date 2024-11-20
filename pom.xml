@@ -47,8 +47,8 @@
   </distributionManagement>
 
   <scm>
-    <connection>scm:git:git@github.com:sddevelopment-be/coding-utils.git</connection>
-    <developerConnection>scm:git:git@github.com:sddevelopment-be/coding-utils.git</developerConnection>
+    <connection>scm:git:ssh://git@github.com:sddevelopment-be/coding-utils.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:sddevelopment-be/coding-utils.git</developerConnection>
     <url>https://github.com/sddevelopment-be/coding-utils</url>
   </scm>
 
