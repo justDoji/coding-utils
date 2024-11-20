@@ -44,13 +44,6 @@
     </repository>
   </distributionManagement>
 
-  <scm>
-    <connection>scm:git:ssh://git@github.com/sddevelopment-be/coding-utils.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/sddevelopment-be/coding-utils.git</developerConnection>
-    <url>https://github.com/sddevelopment-be/coding-utils</url>
-    <tag>HEAD</tag>
-  </scm>
-
   <url>https://github.com/sddevelopment-be/coding-utils</url>
   <licenses>
     <license>
@@ -59,6 +52,14 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
+  <scm>
+    <connection>scm:git:https://github.com/sddevelopment-be/coding-utils.git</connection>
+    <url>${project.url}</url>
+    <tag>HEAD</tag>
+  </scm>
+
+
 
   <properties>
     <sonar.organization>sddevelopment-be</sonar.organization>
