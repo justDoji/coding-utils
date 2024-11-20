@@ -38,7 +38,7 @@ package be.sddevelopment.commons.exceptions;
  *
  */
 @FunctionalInterface
-interface FallibleFunction<T, R> {
+public interface FallibleFunction<T, R> {
 
 	R apply(T var1) throws Exception;
 
