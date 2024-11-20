@@ -22,6 +22,8 @@ jobs:
           server-password: SONATYPE_TOKEN
       - name: Release with Maven
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           mvn -B -ntp -Dstyle.color=always release:prepare
           VERSION=`cat release.properties | grep scm.tag= | cut -d'=' -f2`
           mvn -B -ntp -Dstyle.color=always release:perform
