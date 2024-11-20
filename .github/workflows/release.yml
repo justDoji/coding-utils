@@ -15,7 +15,6 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-          server-id: 'github'
           cache: maven
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           server-id: central
