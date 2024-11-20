@@ -1,5 +1,6 @@
 name: Publish package to the GitHub Packages
 on:
+  workflow_dispatch:
   release:
     types: [created, published, edited]
 jobs:
@@ -9,6 +10,28 @@ jobs:
       contents: read
       packages: write
     steps:
+      - name: Set up Java for publishing to Maven Central Packages
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          server-id: 'github'
+          cache: maven
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          server-id: central
+          server-username: SONATYPE_USERNAME
+          server-password: SONATYPE_TOKEN
+      - name: Release with Maven
+        run: |
+          mvn -B -ntp -Dstyle.color=always release:prepare
+          VERSION=`cat release.properties | grep scm.tag= | cut -d'=' -f2`
+          mvn -B -ntp -Dstyle.color=always release:perform
+          echo "Released ${VERSION} 🚀" >> $GITHUB_STEP_SUMMARY
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          SONATYPE_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          SONATYPE_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up Java for publishing to GitHub Packages
         uses: actions/setup-java@v4
         with:
