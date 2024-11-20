@@ -4,7 +4,7 @@
 
   <groupId>be.sddevelopment.commons</groupId>
   <artifactId>code-utils</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <description>
@@ -56,7 +56,7 @@
   <scm>
     <connection>scm:git:ssh://git@github.com/sddevelopment-be/coding-utils.git</connection>
     <url>${project.url}</url>
-    <tag>code-utils-1.0.1</tag>
+    <tag>HEAD</tag>
   </scm>
 
 
@@ -85,17 +85,17 @@
       <dependency>
         <groupId>be.sddevelopment.commons</groupId>
         <artifactId>commons</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>be.sddevelopment.commons</groupId>
         <artifactId>commons-kernel</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>be.sddevelopment.commons</groupId>
         <artifactId>commons-testing</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2-SNAPSHOT</version>
       </dependency>
 
       <!-- BEGIN UTIL SCOPE -->
