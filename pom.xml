@@ -54,7 +54,7 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:https://github.com/sddevelopment-be/coding-utils.git</connection>
+    <connection>scm:git:ssh://git@github.com/sddevelopment-be/coding-utils.git</connection>
     <url>${project.url}</url>
     <tag>HEAD</tag>
   </scm>
