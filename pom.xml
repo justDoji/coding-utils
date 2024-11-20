@@ -51,6 +51,15 @@
     <tag>HEAD</tag>
   </scm>
 
+  <url>https://github.com/sddevelopment-be/coding-utils</url>
+  <licenses>
+    <license>
+      <name>EUPL v.1.2</name>
+      <url>https://github.com/sddevelopment-be/coding-utils/blob/main/LICENSE</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <properties>
     <sonar.organization>sddevelopment-be</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -209,7 +218,7 @@
           <emptyLineAfterHeader>true</emptyLineAfterHeader>
           <writeVersions>true</writeVersions>
           <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
-          <licenseName>eupl_v1_1</licenseName>
+          <licenseName>eupl_v1_2</licenseName>
         </configuration>
         <executions>
           <execution>
