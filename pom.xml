@@ -152,7 +152,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.5.0</version>
+        <version>3.6.3</version>
         <configuration>
           <stylesheet>maven</stylesheet>
           <javadocDirectory>commons/src/main/javadoc</javadocDirectory>
@@ -175,7 +175,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.6.3</version>
         <configuration>
           <show>public</show>
           <nohelp>true</nohelp>
@@ -330,7 +330,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.6.3</version>
         <configuration>
           <reportOutputDirectory>docs/javadoc</reportOutputDirectory>
           <destDir>javadoc</destDir>
