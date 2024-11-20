@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>be.sddevelopment.commons</groupId>
   <artifactId>code-utils</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
 
   <description>
@@ -50,6 +48,7 @@
     <connection>scm:git:ssh://git@github.com/sddevelopment-be/coding-utils.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/sddevelopment-be/coding-utils.git</developerConnection>
     <url>https://github.com/sddevelopment-be/coding-utils</url>
+    <tag>code-utils-1.0.0</tag>
   </scm>
 
   <properties>
@@ -76,17 +75,17 @@
       <dependency>
         <groupId>be.sddevelopment.commons</groupId>
         <artifactId>commons</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
       </dependency>
       <dependency>
         <groupId>be.sddevelopment.commons</groupId>
         <artifactId>commons-kernel</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
       </dependency>
       <dependency>
         <groupId>be.sddevelopment.commons</groupId>
         <artifactId>commons-testing</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
       </dependency>
 
       <!-- BEGIN UTIL SCOPE -->
@@ -319,7 +318,7 @@
             <artifactId>rewrite-github-actions</artifactId>
             <version>2.9.2</version>
           </dependency>
-          <dependency >
+          <dependency>
             <groupId>org.openrewrite.recipe</groupId>
             <artifactId>rewrite-static-analysis</artifactId>
             <version>1.20.0</version>
