@@ -82,7 +82,7 @@ class ExceptionSuppressorTest {
 	}
 
 	@Test
-	void whenAnExceptionIsSuppressed_usingDefaultSupress_thenChainInterpretsItAsEmptyResult() {
+	void whenAnExceptionIsSuppressed_usingDefaultSuppression_thenChainInterpretsItAsEmptyResult() {
 		Optional<String> result = Optional
 				                          .of(Strings.NON_EMPTY_STRING)
 				                          .map(ignore(TestMethods::throwExceptionIfNotBLank));

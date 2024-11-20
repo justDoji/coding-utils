@@ -123,6 +123,11 @@
         <artifactId>archunit-junit5-engine</artifactId>
         <version>${archunit.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
+        <version>${junit.jupiter.version}</version>
+      </dependency>
       <!-- END UTIL SCOPE -->
     </dependencies>
   </dependencyManagement>
