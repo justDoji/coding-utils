@@ -16,42 +16,11 @@
     useful design patterns.
   </description>
 
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <name>GitHub SDDevelopment Apache Maven Packages</name>
-      <url>https://maven.pkg.github.com/sddevelopment-be/coding-utils</url>
-    </repository>
-  </distributionManagement>
-
-  <modules>
-    <module>commons</module>
-    <module>commons-testing</module>
-    <module>commons-kernel</module>
-  </modules>
-
-  <properties>
-    <sonar.organization>sddevelopment-be</sonar.organization>
-    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    <sonar.projectKey>sddevelopment-be_coding-utils</sonar.projectKey>
-    <sonar.coverage.jacoco.xmlReportPaths>${jacoco.build.dir}/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-    <jacoco.build.dir>${project.build.directory}/jacoco</jacoco.build.dir>
-    <sonar.coverage.exclusions>**/*.html</sonar.coverage.exclusions>
-    <sonar.cpd.exclusions>**/*.html</sonar.cpd.exclusions>
-
-    <java.version>21</java.version>
-    <junit.jupiter.version>5.11.0</junit.jupiter.version>
-    <assertj.version>3.26.3</assertj.version>
-    <lombok.version>1.18.32</lombok.version>
-    <archunit.version>1.3.0</archunit.version>
-
-    <sd.commons.version>${project.version}</sd.commons.version>
-  </properties>
-
   <organization>
     <name>SD Development</name>
     <url>https://www.sddevelopment.be</url>
   </organization>
+
   <developers>
     <developer>
       <name>Stijn Dejongh</name>
@@ -62,6 +31,39 @@
       </roles>
     </developer>
   </developers>
+
+  <modules>
+    <module>commons</module>
+    <module>commons-testing</module>
+    <module>commons-kernel</module>
+  </modules>
+
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub SDDevelopment Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/sddevelopment-be/coding-utils</url>
+    </repository>
+  </distributionManagement>
+  <properties>
+    <sonar.organization>sddevelopment-be</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.projectKey>sddevelopment-be_coding-utils</sonar.projectKey>
+    <sonar.coverage.jacoco.xmlReportPaths>${jacoco.build.dir}/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    <jacoco.build.dir>${project.build.directory}/jacoco</jacoco.build.dir>
+    <sonar.coverage.exclusions>**/*.html</sonar.coverage.exclusions>
+    <sonar.cpd.exclusions>**/*.html</sonar.cpd.exclusions>
+
+    <java.version>21</java.version>
+    <archunit.version>1.3.0</archunit.version>
+    <junit.jupiter.version>5.11.0</junit.jupiter.version>
+    <assertj.version>3.26.3</assertj.version>
+
+    <lombok.version>1.18.32</lombok.version>
+    <rewrite.version>5.36.0</rewrite.version>
+
+    <sd.commons.version>${project.version}</sd.commons.version>
+  </properties>
 
   <dependencyManagement>
     <dependencies>
@@ -220,7 +222,7 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M5</version>
+        <version>3.1.2</version>
         <dependencies>
           <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -259,6 +261,66 @@
             <exclude>be/sddevelopment/commons/testing/conventions/**/*.class</exclude>
           </excludes>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.openrewrite.maven</groupId>
+        <artifactId>rewrite-maven-plugin</artifactId>
+        <version>${rewrite.version}</version>
+        <configuration>
+          <exportDatatables>true</exportDatatables>
+          <activeRecipes>
+            <recipe>org.openrewrite.java.testing.junit5.JUnit5BestPractices</recipe>
+            <recipe>org.openrewrite.github.PreferTemurinDistributions</recipe>
+            <recipe>org.openrewrite.staticanalysis.AnnotateNullableMethods</recipe>
+            <recipe>org.openrewrite.staticanalysis.ChainStringBuilderAppendCalls</recipe>
+            <recipe>org.openrewrite.staticanalysis.CompareEnumsWithEqualityOperator</recipe>
+            <recipe>org.openrewrite.staticanalysis.ExplicitLambdaArgumentTypes</recipe>
+            <recipe>org.openrewrite.staticanalysis.FixStringFormatExpressions</recipe>
+            <recipe>org.openrewrite.staticanalysis.MissingOverrideAnnotation</recipe>
+            <recipe>org.openrewrite.staticanalysis.ModifierOrder</recipe>
+            <recipe>org.openrewrite.staticanalysis.NeedBraces</recipe>
+            <recipe>org.openrewrite.staticanalysis.NoFinalizedLocalVariables</recipe>
+            <recipe>org.openrewrite.staticanalysis.OperatorWrap</recipe>
+            <recipe>org.openrewrite.staticanalysis.RemoveEmptyJavaDocParameters</recipe>
+            <recipe>org.openrewrite.staticanalysis.RemoveExtraSemicolons</recipe>
+            <recipe>org.openrewrite.staticanalysis.RenameLocalVariablesToCamelCase</recipe>
+            <recipe>org.openrewrite.staticanalysis.SimplifyTernaryRecipes</recipe>
+            <recipe>org.openrewrite.staticanalysis.UseSystemLineSeparator</recipe>
+            <recipe>org.openrewrite.java.dependencies.DependencyVulnerabilityCheck</recipe>
+            <recipe>org.openrewrite.recommendations.CodeStyle</recipe>
+            <recipe>org.openrewrite.recommendations.DependencyManagement</recipe>
+            <recipe>org.openrewrite.maven.OrderPomElements</recipe>
+          </activeRecipes>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.openrewrite.recipe</groupId>
+            <artifactId>rewrite-java-dependencies</artifactId>
+            <version>1.23.0</version>
+          </dependency>
+          <dependency>
+            <groupId>org.openrewrite.recipe</groupId>
+            <artifactId>rewrite-testing-frameworks</artifactId>
+            <version>2.22.0</version>
+          </dependency>
+          <dependency>
+            <groupId>org.openrewrite.recipe</groupId>
+            <artifactId>rewrite-github-actions</artifactId>
+            <version>2.9.2</version>
+          </dependency>
+          <dependency >
+            <groupId>org.openrewrite.recipe</groupId>
+            <artifactId>rewrite-static-analysis</artifactId>
+            <version>1.20.0</version>
+          </dependency>
+          <dependency>
+            <groupId>org.openrewrite.recipe</groupId>
+            <artifactId>rewrite-recommendations</artifactId>
+            <version>1.13.0</version>
+          </dependency>
+
+        </dependencies>
       </plugin>
     </plugins>
   </build>

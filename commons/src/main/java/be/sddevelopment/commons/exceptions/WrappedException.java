@@ -24,7 +24,6 @@
 package be.sddevelopment.commons.exceptions;
 
 import java.util.Objects;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -47,10 +46,14 @@ import lombok.Getter;
  * @since 1.0.0
  */
 @Getter
-@AllArgsConstructor
 public class WrappedException extends RuntimeException {
 
 	private final Exception originalException;
+
+	public WrappedException(Exception cause) {
+		super("Something went wrong", cause);
+		this.originalException = cause;
+	}
 
 	public WrappedException(String message, Exception cause) {
 		super(message, cause);

@@ -83,7 +83,8 @@ class ReflectionAssertionUtilsTest implements WithAssertions {
 
 			ThrowingCallable assertion = () -> assertPrivateMemberReflectionProtection(constructorToTest);
 
-			assertThatCode(assertion).isInstanceOf(AssertionError.class).hasMessageContaining("is expected to be protected from illegal access");
+			assertThatCode(assertion).isInstanceOf(AssertionError.class)
+			                         .hasMessageContaining("is expected to be protected from illegal access");
 		}
 
 		@Test
@@ -93,7 +94,8 @@ class ReflectionAssertionUtilsTest implements WithAssertions {
 
 			ThrowingCallable assertion = () -> assertPrivateMemberReflectionProtection(constructorToTest);
 
-			assertThatCode(assertion).isNotNull().isInstanceOf(AssertionError.class).hasMessageContaining("is expected to be protected from illegal access");
+			assertThatCode(assertion).isNotNull().isInstanceOf(AssertionError.class)
+			                         .hasMessageContaining("is expected to be protected from illegal access");
 		}
 
 		@Test
