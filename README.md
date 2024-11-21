@@ -10,12 +10,36 @@ The source code will contain the classes needed to simplify your code. If you ar
 seeing them in action, take a look at the test cases for a certain utility. These will give you a
 very concrete and runnable example of the utility class in action.
 
-## Documentation
+## Usage
 
-### JavaDoc for Library API
+### Maven
+
+Include one of the following dependencies in your `pom.xml` file:
+
+**Test utilities:**
+```xml
+<dependency>
+    <groupId>be.sddevelopment.commons</groupId>
+    <artifactId>commons-testing</artifactId>
+    <version>1.0.1</version>
+    <scope>test</scope>
+</dependency>
+```
+
+**Generic code utilities:**
+```xml
+<dependency>
+    <groupId>be.sddevelopment.commons</groupId>
+    <artifactId>commons</artifactId>
+    <version>1.0.1</version>
+</dependency>
+```
+
+### API Documentation
 
 If you are wondering how you can use this project, you should do the old-school thing and RTFM (read
-the flippin' manual).  
+the flippin' manual).
+
 The code is documented using standard Java practices, meaning that the public facing APIs are
 documented in JavaDoc. This JavaDoc is then processed through maven and hosted on a github-pages
 webspace, which you can find here:
