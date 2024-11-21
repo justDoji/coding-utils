@@ -36,8 +36,6 @@ import org.assertj.core.api.OptionalAssert;
  * <p>Description of file/class</p>
  *
  * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
- * @version $Id: $Id
- * @created 18.10.20, Sunday
  */
 public final class TextualAssertions {
 

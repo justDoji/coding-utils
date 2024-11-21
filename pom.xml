@@ -14,10 +14,20 @@
     useful design patterns.
   </description>
 
+  <url>https://github.com/sddevelopment-be/coding-utils</url>
+
   <organization>
     <name>SD Development</name>
     <url>https://www.sddevelopment.be</url>
   </organization>
+
+  <licenses>
+    <license>
+      <name>EUPL v.1.2</name>
+      <url>https://github.com/sddevelopment-be/coding-utils/blob/main/LICENSE</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <developers>
     <developer>
@@ -35,6 +45,11 @@
     <module>commons-testing</module>
     <module>commons-kernel</module>
   </modules>
+  <scm>
+    <connection>scm:git:ssh://git@github.com/sddevelopment-be/coding-utils.git</connection>
+    <url>${project.url}</url>
+    <tag>HEAD</tag>
+  </scm>
 
   <distributionManagement>
     <repository>
@@ -43,23 +58,6 @@
       <url>https://maven.pkg.github.com/sddevelopment-be/coding-utils</url>
     </repository>
   </distributionManagement>
-
-  <url>https://github.com/sddevelopment-be/coding-utils</url>
-  <licenses>
-    <license>
-      <name>EUPL v.1.2</name>
-      <url>https://github.com/sddevelopment-be/coding-utils/blob/main/LICENSE</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <scm>
-    <connection>scm:git:ssh://git@github.com/sddevelopment-be/coding-utils.git</connection>
-    <url>${project.url}</url>
-    <tag>HEAD</tag>
-  </scm>
-
-
 
   <properties>
     <sonar.organization>sddevelopment-be</sonar.organization>

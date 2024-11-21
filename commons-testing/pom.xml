@@ -11,6 +11,13 @@
 
   <artifactId>commons-testing</artifactId>
 
+  <description>
+    This module contains testing utilities included in the sddevelopment.be commons projects.
+    It is intended to simplify the testing of other modules in java projects.
+  </description>
+
+  <url>https://github.com/sddevelopment-be/coding-utils</url>
+
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>

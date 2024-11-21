@@ -41,8 +41,7 @@ import org.junit.jupiter.api.Test;
  * @version $Id: $Id
  */
 @DisplayName("Test for AssertionUtils")
-@DisplayNameGeneration(ReplaceUnderscoredCamelCasing.class)
-class TextualAssertionsTest {
+class TextualAssertionsTest implements BaseTest{
 
 	@Nested
 	@DisplayName("Test with empty input")

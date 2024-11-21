@@ -1,18 +1,18 @@
 /*-
  * #%L
- * code-utils
+ * commons-testing
  * %%
- * Copyright (C) 2020 SD Development
+ * Copyright (C) 2020 - 2024 SD Development
  * %%
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
  * EUPL (the "Licence");
- *
+ * 
  * You may not use this work except in compliance with the Licence.
  * You may obtain a copy of the Licence at:
- *
+ * 
  * http://ec.europa.eu/idabc/eupl5
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" basis,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,12 +21,17 @@
  * #L%
  */
 
-/**
- * <p>
- * This module contains testing utilities included in the sddevelopment.be commons projects.
- * It is intended to simplify the testing of other modules in java projects.
- * </p>
- *
- * @author <a href="https://github.com/stijn-dejongh" target="_blank">Stijn Dejongh</a>
- **/
-package be.sddevelopment.commons.testing;
+package be.sddevelopment.commons.testing.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.junit.jupiter.api.Disabled;
+
+@Disabled("Disabled: Work In Progress")
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE, ElementType.METHOD})
+public @interface WIP {
+
+}

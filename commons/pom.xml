@@ -10,6 +10,12 @@
 
   <artifactId>commons</artifactId>
 
+  <description>
+    This module contains utilities, shared exceptions, and constants, included in the sddevelopment.be commons projects.
+  </description>
+
+  <url>https://github.com/sddevelopment-be/coding-utils</url>
+
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
